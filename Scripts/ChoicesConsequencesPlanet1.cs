@@ -29,14 +29,14 @@ public class ChoicesConsequencesPlanet1 : MonoBehaviour
 
     private void Yes()
     {
-        Debug.Log("yes");
+        // Debug.Log("yes");
         SceneManager.LoadScene("Planet 1");
         hasAnswered = 0;
     }
 
     private void No()
     {
-        Debug.Log("no");
+        // Debug.Log("no");
         hasAnswered = 0;
     }
 

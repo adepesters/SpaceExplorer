@@ -24,7 +24,7 @@ public class MakeStarfieldDisappear : MonoBehaviour
     {
         int numParticlesAlive = m_System.GetParticles(m_Particles);
 
-        Debug.Log(numParticlesAlive);
+        // Debug.Log(numParticlesAlive);
         for (int i = 0; i < numParticlesAlive; i++)
         {
             Color color = m_Particles[i].GetCurrentColor(m_System);
