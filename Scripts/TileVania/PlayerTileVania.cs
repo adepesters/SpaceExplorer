@@ -32,9 +32,9 @@ public class PlayerTileVania : MonoBehaviour
         if (!isDead)
         {
             CheckIfIsImmobile();
-            // Jump();
+            Jump();
             Move();
-            Climb();
+            //Climb();
         }
     }
 
@@ -62,47 +62,51 @@ public class PlayerTileVania : MonoBehaviour
             animator.SetBool("isRunning", true);
             float xChange = Input.GetAxis("Horizontal") * runSpeed; // we don't put deltaTime here. See notes.
             rigidBody.velocity = new Vector2(xChange, rigidBody.velocity.y);
-            transform.localScale = new Vector2(Mathf.Sign(xChange) * originalScale.x, originalScale.y);
+            if (xChange != 0)
+            {
+                transform.localScale = new Vector2(Mathf.Sign(xChange) * originalScale.x, originalScale.y);
+            }
+            Debug.Log(xChange);
         }
     }
 
 
 
-    //private void Jump()
+    private void Jump()
+    {
+        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && (FindObjectOfType<Ground>().AreFeetOnTheGround())) // || FindObjectOfType<Ladders>().AreFeetOnTheGround()))
+        {
+            rigidBody.gravityScale = 3; // in case we jump from a ladder (where gravity is 0)
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+            isJumping = true;
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isJumping = false;
+        }
+    }
+
+    //private void Climb()
     //{
-    //    if (Input.GetKeyDown(KeyCode.Space) && (FindObjectOfType<Foreground>().AreFeetOnTheGround() || FindObjectOfType<Ladders>().AreFeetOnTheGround()))
+    //    if (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")) && !isJumping)
     //    {
-    //        rigidBody.gravityScale = 1; // in case we jump from a ladder (where gravity is 0)
-    //        rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
-    //        isJumping = true;
+    //        rigidBody.gravityScale = 0;
+    //        if (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon)
+    //        {
+    //            animator.SetBool("isClimbing", true);
+    //            rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(Input.GetAxis("Vertical")) * climbSpeed);
+    //        }
+    //        else if (Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Epsilon)
+    //        {
+    //            rigidBody.velocity = new Vector2(rigidBody.velocity.x, 0);
+    //        }
     //    }
-    //    if (Input.GetKeyUp(KeyCode.Space))
+    //    else
     //    {
-    //        isJumping = false;
+    //        animator.SetBool("isClimbing", false);
+    //        rigidBody.gravityScale = 1;
     //    }
     //}
-
-    private void Climb()
-    {
-        if (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")) && !isJumping)
-        {
-            rigidBody.gravityScale = 0;
-            if (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon)
-            {
-                animator.SetBool("isClimbing", true);
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, Mathf.Sign(Input.GetAxis("Vertical")) * climbSpeed);
-            }
-            else if (Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Epsilon)
-            {
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, 0);
-            }
-        }
-        else
-        {
-            animator.SetBool("isClimbing", false);
-            rigidBody.gravityScale = 1;
-        }
-    }
 
     //private void OnTriggerEnter2D(Collider2D collision)
     //{
