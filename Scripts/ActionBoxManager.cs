@@ -1,0 +1,35 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ActionBoxManager : MonoBehaviour
+{
+    Vector3 pos;
+
+    [SerializeField] GameObject panel;
+    [SerializeField] Text text;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        GetComponent<Canvas>().enabled = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        panel.GetComponent<RectTransform>().transform.position = Camera.main.WorldToScreenPoint(pos + new Vector3(0, 5, 0));
+
+    }
+
+    public void SetPos(Vector3 currentPos)
+    {
+        pos = currentPos;
+    }
+
+    public void SetText(string currentText)
+    {
+        text.text = currentText;
+    }
+}
