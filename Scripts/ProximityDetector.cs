@@ -10,11 +10,12 @@ public class ProximityDetector : MonoBehaviour
 
     float durationWarning = 0.5f;
 
+    Player player;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -26,10 +27,8 @@ public class ProximityDetector : MonoBehaviour
         //Debug.Log(pressed);
         //Debug.Log(transparentRedCircleAppear);
 
-        Vector2 pos = new Vector2(FindObjectOfType<Player>().transform.position.x, FindObjectOfType<Player>().transform.position.y);
+        Vector2 pos = new Vector2(player.transform.position.x, player.transform.position.y);
         transform.position = pos;
-
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
