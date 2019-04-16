@@ -7,10 +7,9 @@ public class Starfield : MonoBehaviour
     Player player;
     Vector3 playerPos;
 
-    int width = 140;
-    int height = 100;
-
-    int buffer = 20;
+    [SerializeField] int width = 300;
+    [SerializeField] int height = 250;
+    [SerializeField] int buffer = 100;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +30,12 @@ public class Starfield : MonoBehaviour
 
         playerPos = player.transform.position;
 
+        //Debug.Log("x player: " + Mathf.Abs(playerPos[0]));
+        //Debug.Log("x starfield: " + transform.position.x);
+
         if (Mathf.Abs(playerPos[0] - transform.position.x) > (width + ((width - (2 * buffer)) / 2)))
         {
+            Debug.Log("destroyed 1");
             Destroy(gameObject);
         }
 

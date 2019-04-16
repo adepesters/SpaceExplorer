@@ -16,10 +16,9 @@ public class StarfieldGeneratorFast : MonoBehaviour
 
     Vector3 starfieldPos;
 
-    int width = 140;
-    int height = 100;
-
-    int buffer = 20;
+    [SerializeField] int width = 300;
+    [SerializeField] int height = 250;
+    [SerializeField] int buffer = 100;
 
     int thresholdDistX;
     int thresholdDistY;
@@ -38,6 +37,8 @@ public class StarfieldGeneratorFast : MonoBehaviour
 
     bool canSpawn = true;
 
+    [SerializeField] float Zdepth;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,13 +53,13 @@ public class StarfieldGeneratorFast : MonoBehaviour
         valXStarfield = oldValX;
         valYStarfield = oldValY;
 
-        starfieldPos = new Vector3(width / 2, height, 0) + playerPos;
+        starfieldPos = new Vector3(width / 2, height, Zdepth) + playerPos;
         Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
-        starfieldPos = new Vector3(width / 2, 0, 0) + playerPos;
+        starfieldPos = new Vector3(width / 2, 0, Zdepth) + playerPos;
         Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
-        starfieldPos = new Vector3(-width / 2, height, 0) + playerPos;
+        starfieldPos = new Vector3(-width / 2, height, Zdepth) + playerPos;
         Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
-        starfieldPos = new Vector3(-width / 2, 0, 0) + playerPos;
+        starfieldPos = new Vector3(-width / 2, 0, Zdepth) + playerPos;
         Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
 
         speed = starfieldPrefab.GetComponent<StarfieldSpeed>().GetSpeed();
@@ -124,28 +125,28 @@ public class StarfieldGeneratorFast : MonoBehaviour
 
             if (firstY)
             {
-                starfieldPos = new Vector3(valXStarfield, oldValY, 0);
+                starfieldPos = new Vector3(valXStarfield, oldValY, Zdepth);
                 Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
 
-                starfieldPos = new Vector3(valXStarfield, oldValY + height, 0);
+                starfieldPos = new Vector3(valXStarfield, oldValY + height, Zdepth);
                 Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
             }
             else
             {
                 if (oldValY < valYStarfield)
                 {
-                    starfieldPos = new Vector3(valXStarfield, valYStarfield, 0);
+                    starfieldPos = new Vector3(valXStarfield, valYStarfield, Zdepth);
                     Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
 
-                    starfieldPos = new Vector3(valXStarfield, valYStarfield - height, 0);
+                    starfieldPos = new Vector3(valXStarfield, valYStarfield - height, Zdepth);
                     Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
                 }
                 else if (oldValY > valYStarfield)
                 {
-                    starfieldPos = new Vector3(valXStarfield, valYStarfield, 0);
+                    starfieldPos = new Vector3(valXStarfield, valYStarfield, Zdepth);
                     Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
 
-                    starfieldPos = new Vector3(valXStarfield, valYStarfield + height, 0);
+                    starfieldPos = new Vector3(valXStarfield, valYStarfield + height, Zdepth);
                     Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
                 }
             }
@@ -208,28 +209,28 @@ public class StarfieldGeneratorFast : MonoBehaviour
 
             if (firstX)
             {
-                starfieldPos = new Vector3(oldValX + (width / 2), valYStarfield, 0);
+                starfieldPos = new Vector3(oldValX + (width / 2), valYStarfield, Zdepth);
                 Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
 
-                starfieldPos = new Vector3(oldValX - (width / 2), valYStarfield, 0);
+                starfieldPos = new Vector3(oldValX - (width / 2), valYStarfield, Zdepth);
                 Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
             }
             else
             {
                 if (oldValX < valXStarfield)
                 {
-                    starfieldPos = new Vector3(valXStarfield, valYStarfield, 0);
+                    starfieldPos = new Vector3(valXStarfield, valYStarfield, Zdepth);
                     Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
 
-                    starfieldPos = new Vector3(valXStarfield - width, valYStarfield, 0);
+                    starfieldPos = new Vector3(valXStarfield - width, valYStarfield, Zdepth);
                     Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
                 }
                 else if (oldValX > valXStarfield)
                 {
-                    starfieldPos = new Vector3(valXStarfield, valYStarfield, 0);
+                    starfieldPos = new Vector3(valXStarfield, valYStarfield, Zdepth);
                     Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
 
-                    starfieldPos = new Vector3(valXStarfield + width, valYStarfield, 0);
+                    starfieldPos = new Vector3(valXStarfield + width, valYStarfield, Zdepth);
                     Instantiate(starfieldPrefab, starfieldPos, Quaternion.Euler(-270, -90, 90), transform);
                 }
             }
