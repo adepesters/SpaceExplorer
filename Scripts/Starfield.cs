@@ -35,7 +35,7 @@ public class Starfield : MonoBehaviour
 
         if (Mathf.Abs(playerPos[0] - transform.position.x) > (width + ((width - (2 * buffer)) / 2)))
         {
-            Debug.Log("destroyed 1");
+            //            Debug.Log("destroyed 1");
             Destroy(gameObject);
         }
 
