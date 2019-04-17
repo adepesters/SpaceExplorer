@@ -6,7 +6,7 @@ public class PauseMenuController : MonoBehaviour
 {
     public List<string> menuPages;
 
-    string[] defaultMenuPages = new string[] { "pause", "crafting" };
+    string[] defaultMenuPages = new string[] { "pause", "crafting", "world map" };
 
     int indexMenuPage;
 
