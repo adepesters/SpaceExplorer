@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
     {
         Move();
         Fire();
-        AvoidAndFire();
+        //AvoidAndFire();
 
         if (damagePlayerVisualInstance != null)
         {
