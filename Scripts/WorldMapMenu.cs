@@ -21,6 +21,8 @@ public class WorldMapMenu : MonoBehaviour
     float y;
     float z;
 
+    Coroutine checkVisibleClouds;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,15 +40,35 @@ public class WorldMapMenu : MonoBehaviour
         if (FindObjectOfType<PauseController>().IsGamePaused() && FindObjectOfType<PauseMenuController>().GetMenuPage() == "world map")
         {
             gameObject.GetComponent<Canvas>().enabled = true;
+            ZoomOut();
+            ZoomIn();
+            Move();
+            if (checkVisibleClouds == null)
+            {
+                checkVisibleClouds = StartCoroutine(CheckVisibleClouds());
+            }
         }
         else
         {
             gameObject.GetComponent<Canvas>().enabled = false;
+            checkVisibleClouds = null;
         }
 
-        ZoomOut();
-        ZoomIn();
-        Move();
+
+    }
+
+    IEnumerator CheckVisibleClouds()
+    {
+        CloudingWorldmap[] clouds = FindObjectsOfType<CloudingWorldmap>();
+
+        foreach (CloudingWorldmap cloud in clouds)
+        {
+            if (Vector2.Distance(FindObjectOfType<Player>().transform.position, cloud.transform.position) < 2000)
+            {
+                Destroy(cloud.gameObject);
+            }
+        }
+        yield return null;
     }
 
     private void Move()
