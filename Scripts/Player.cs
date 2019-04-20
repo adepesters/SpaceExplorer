@@ -198,7 +198,7 @@ public class Player : MonoBehaviour
             {
                 float xVelocity = Input.GetAxis("Mouse X") / (Mathf.Abs(Input.GetAxis("Mouse X")) + Mathf.Abs(Input.GetAxis("Mouse Y")));
                 float yVelocity = Input.GetAxis("Mouse Y") / (Mathf.Abs(Input.GetAxis("Mouse X")) + Mathf.Abs(Input.GetAxis("Mouse Y")));
-                RotatePlayerToFiringDirection(xVelocity, yVelocity);
+                RotatePlayerToGivenDirection(xVelocity, yVelocity);
             }
         }
     }
@@ -212,7 +212,7 @@ public class Player : MonoBehaviour
 
             if (!hasBeganRotating)
             {
-                RotatePlayerToFiringDirection(xVelocity, yVelocity);
+                RotatePlayerToGivenDirection(xVelocity, yVelocity);
                 hasBeganRotating = true;
             }
             if (FindObjectOfType<AttackStyle>().GetAttackStyle() == "lasers")
@@ -228,7 +228,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void RotatePlayerToFiringDirection(float xVelocity, float yVelocity)
+    private void RotatePlayerToGivenDirection(float xVelocity, float yVelocity)
     {
         Vector2 direction = new Vector2(xVelocity * 10000000, yVelocity * 10000000) + new Vector2(transform.position.x, transform.position.y);
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 270;
@@ -288,6 +288,11 @@ public class Player : MonoBehaviour
             else
             {
                 moveSpeed = originalMoveSpeed;
+            }
+
+            if (isFiringCoroutingActive != true && (Mathf.Abs(Input.GetAxis("Horizontal")) > Mathf.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon))
+            {
+                RotatePlayerToGivenDirection(deltaX, deltaY);
             }
         }
     }
