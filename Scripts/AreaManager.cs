@@ -33,7 +33,7 @@ public class AreaManager : MonoBehaviour
     const string ZONE3_ENEMIES_PARENT = "Zone3 Enemies Parent";
     GameObject zone3EnemiesParent;
     bool zone3Cleaned = false;
-    float spawningFrequencyZone3 = 0.7f;
+    float spawningFrequencyZone3 = 0.3f;
 
     [SerializeField] GameObject areaClearedText;
 
