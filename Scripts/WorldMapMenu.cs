@@ -6,32 +6,60 @@ public class WorldMapMenu : MonoBehaviour
 {
     Camera WorldmapCam;
 
-    float originalZoom;
+    float originalZoom = 6100f;
     float speedZoom = 8000f;
     float minWorldmapCamSize = 1000f;
     float maxWorldmapCamSize = 12000f;
 
     float speedMove = 1000f;
-    float minXWorldmapCamBorder = -10000f;
-    float maxXWorldmapCamBorder = 10000f;
-    float minYWorldmapCamBorder = -10000f;
-    float maxYWorldmapCamBorder = 10000f;
+    float minXWorldmapCamBorder = -30000f; //-10000f;
+    float maxXWorldmapCamBorder = 30000f; //10000f;
+    float minYWorldmapCamBorder = -30000f; //-10000f;
+    float maxYWorldmapCamBorder = 30000f; //10000f;
 
-    float x;
-    float y;
-    float z;
+    float xCam;
+    float yCam;
+    float zCam;
+
+    float xPointer;
+    float yPointer;
+    float zPointer;
+
+    float previousXpointer;
+    float previousYpointer;
 
     Coroutine checkVisibleClouds;
+
+    //Pointer pointer;
+    GameObject pointer;
+
+    bool movePointer = false;
+
+    float currentHeightCam;
+    float currentWidthCam;
+
+    float marginPointer;
 
     // Start is called before the first frame update
     void Start()
     {
         WorldmapCam = GameObject.Find("Worldmap Camera").GetComponent<Camera>();
-        originalZoom = WorldmapCam.orthographicSize;
 
-        x = WorldmapCam.transform.position.x;
-        y = WorldmapCam.transform.position.y;
-        z = WorldmapCam.transform.position.z;
+        WorldmapCam.orthographicSize = originalZoom;
+        //originalZoom = WorldmapCam.orthographicSize;
+
+        xCam = WorldmapCam.transform.position.x;
+        yCam = WorldmapCam.transform.position.y;
+        zCam = WorldmapCam.transform.position.z;
+
+        //pointer = FindObjectOfType<Pointer>();
+        pointer = GameObject.Find("Pointer");
+
+        xPointer = pointer.transform.position.x;
+        yPointer = pointer.transform.position.y;
+        zPointer = pointer.transform.position.z;
+
+        marginPointer = WorldmapCam.orthographicSize / 3f;
     }
 
     // Update is called once per frame
@@ -47,6 +75,24 @@ public class WorldMapMenu : MonoBehaviour
             {
                 checkVisibleClouds = StartCoroutine(CheckVisibleClouds());
             }
+
+            if (FindObjectOfType<PS4ControllerCheck>().IsXPressed())
+            {
+                //if (movePointer)
+                //{
+                //    if (pointer.GetIsOnPlanet())
+                //    {
+                //        pointer.transform.position = pointer.GetPlanet().transform.position;
+                //    }
+                //}
+                movePointer = !movePointer;
+            }
+
+            currentHeightCam = WorldmapCam.orthographicSize;
+            currentWidthCam = 16f * WorldmapCam.orthographicSize / 9f;
+
+            marginPointer = WorldmapCam.orthographicSize / 3f;
+
         }
         else
         {
@@ -54,7 +100,15 @@ public class WorldMapMenu : MonoBehaviour
             checkVisibleClouds = null;
         }
 
+        //Debug.Log(pointer.GetIsOnPlanet());
 
+        //Debug.Log("min border: " + minXWorldmapCamBorder);
+        //Debug.Log("cam size: " + WorldmapCam.orthographicSize);
+        //Debug.Log("corrected cam size: " + (16f * WorldmapCam.orthographicSize / 9f));
+        //Debug.Log("full corrected cam size: " + (minXWorldmapCamBorder - (16f * WorldmapCam.orthographicSize / 9f) + 1500));
+        //Debug.Log("pointer x: " + xPointer);
+        //Debug.Log("width: " + currentWidthCam);
+        //Debug.Log("height: " + currentHeightCam);
     }
 
     IEnumerator CheckVisibleClouds()
@@ -73,21 +127,76 @@ public class WorldMapMenu : MonoBehaviour
 
     private void Move()
     {
-        x += Input.GetAxis("Horizontal") * speedMove;
-        y += Input.GetAxis("Vertical") * speedMove;
+        if (movePointer)
+        {
+            if (!CheckIfPointerIsInside())
+            {
+                xPointer = xCam;
+                yPointer = yCam;
+            }
 
-        x = Mathf.Clamp(x, minXWorldmapCamBorder, maxXWorldmapCamBorder);
-        y = Mathf.Clamp(y, minYWorldmapCamBorder, maxYWorldmapCamBorder);
+            previousXpointer = xPointer;
+            previousYpointer = yPointer;
 
-        WorldmapCam.transform.position = new Vector3(x, y, z);
+            xPointer += Input.GetAxis("Horizontal") * speedMove;
+            yPointer += Input.GetAxis("Vertical") * speedMove;
+
+            //Debug.Log("min border: " + minXWorldmapCamBorder);
+            //Debug.Log("cam size: " + WorldmapCam.orthographicSize);
+            //Debug.Log("corrected cam size: " + (16f * WorldmapCam.orthographicSize / 9f));
+            //Debug.Log("full corrected cam size: " + (minXWorldmapCamBorder - (16f * WorldmapCam.orthographicSize / 9f) + 1500));
+            //Debug.Log("pointer x: " + xPointer);
+            //Debug.Log("width: " + currentWidthCam);
+            //Debug.Log("height: " + currentHeightCam);
+
+            xPointer = Mathf.Clamp(xPointer, minXWorldmapCamBorder + marginPointer, maxXWorldmapCamBorder - marginPointer);
+            yPointer = Mathf.Clamp(yPointer, minYWorldmapCamBorder + marginPointer, maxYWorldmapCamBorder - marginPointer);
+
+            pointer.transform.position = new Vector3(xPointer, yPointer, zPointer);
+
+            if ((yPointer > yCam + currentHeightCam - marginPointer || yPointer < yCam - currentHeightCam + marginPointer ||
+            xPointer > xCam + currentWidthCam - marginPointer || xPointer < xCam - currentWidthCam + marginPointer))
+            {
+                xCam += Input.GetAxis("Horizontal") * speedMove;
+                yCam += Input.GetAxis("Vertical") * speedMove;
+
+                xCam = Mathf.Clamp(xCam, minXWorldmapCamBorder + currentWidthCam, maxXWorldmapCamBorder - currentWidthCam);
+                yCam = Mathf.Clamp(yCam, minYWorldmapCamBorder + currentHeightCam, maxYWorldmapCamBorder - currentHeightCam);
+
+                WorldmapCam.transform.position = new Vector3(xCam, yCam, zCam);
+            }
+        }
+        else
+        {
+            xCam += Input.GetAxis("Horizontal") * speedMove;
+            yCam += Input.GetAxis("Vertical") * speedMove;
+
+            xCam = Mathf.Clamp(xCam, minXWorldmapCamBorder + currentWidthCam, maxXWorldmapCamBorder - currentWidthCam);
+            yCam = Mathf.Clamp(yCam, minYWorldmapCamBorder + currentHeightCam, maxYWorldmapCamBorder - currentHeightCam);
+
+            WorldmapCam.transform.position = new Vector3(xCam, yCam, zCam);
+        }
     }
 
     private void ZoomIn()
     {
         if (FindObjectOfType<PS4ControllerCheck>().ContinuousR2Press())
         {
+            //var xScale = pointer.transform.localScale.x;
+            //var yScale = pointer.transform.localScale.y;
+
             WorldmapCam.orthographicSize -= speedZoom * Time.fixedDeltaTime;
             WorldmapCam.orthographicSize = Mathf.Clamp(WorldmapCam.orthographicSize, minWorldmapCamSize, maxWorldmapCamSize);
+
+            xCam = Mathf.Clamp(xCam, minXWorldmapCamBorder + currentWidthCam, maxXWorldmapCamBorder - currentWidthCam);
+            yCam = Mathf.Clamp(yCam, minYWorldmapCamBorder + currentHeightCam, maxYWorldmapCamBorder - currentHeightCam);
+
+            WorldmapCam.transform.position = new Vector3(xCam, yCam, zCam);
+
+            //xScale -= speedZoom * Time.fixedDeltaTime;
+            //yScale -= speedZoom * Time.fixedDeltaTime;
+
+            //pointer.transform.localScale = new Vector3(xScale, yScale, 1);
         }
     }
 
@@ -97,6 +206,19 @@ public class WorldMapMenu : MonoBehaviour
         {
             WorldmapCam.orthographicSize += speedZoom * Time.fixedDeltaTime;
             WorldmapCam.orthographicSize = Mathf.Clamp(WorldmapCam.orthographicSize, minWorldmapCamSize, maxWorldmapCamSize);
+
+            xCam = Mathf.Clamp(xCam, minXWorldmapCamBorder + currentWidthCam, maxXWorldmapCamBorder - currentWidthCam);
+            yCam = Mathf.Clamp(yCam, minYWorldmapCamBorder + currentHeightCam, maxYWorldmapCamBorder - currentHeightCam);
+
+            WorldmapCam.transform.position = new Vector3(xCam, yCam, zCam);
         }
+    }
+
+    private bool CheckIfPointerIsInside()
+    {
+        return (previousYpointer < yCam + currentHeightCam &&
+                previousYpointer > yCam - currentHeightCam &&
+                previousXpointer < xCam + currentWidthCam &&
+                previousXpointer > xCam - currentWidthCam);
     }
 }

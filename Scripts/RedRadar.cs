@@ -11,7 +11,9 @@ public class RedRadar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        targetZone = GameObject.Find("Dialog Fairy");
+        //targetZone = GameObject.Find("Dialog Fairy");
+
+        targetZone = GameObject.Find("Pointer");
     }
 
     // Update is called once per frame
@@ -20,6 +22,8 @@ public class RedRadar : MonoBehaviour
         //GameObject targetZone = GameObject.Find("Zone 3");
 
         //Debug.Log(targetZone.transform.position);
+
+        targetZone = GameObject.Find("Pointer");
 
         Transform target = targetZone.gameObject.transform;
         Vector2 direction = target.position - FindObjectOfType<Player>().gameObject.transform.position;
