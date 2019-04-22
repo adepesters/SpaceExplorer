@@ -11,7 +11,7 @@ public class WorldMapMenu : MonoBehaviour
     float minWorldmapCamSize = 1000f;
     float maxWorldmapCamSize = 12000f;
 
-    float speedMove = 1000f;
+    float speedCam = 1000f;
     float minXWorldmapCamBorder = -30000f; //-10000f;
     float maxXWorldmapCamBorder = 30000f; //10000f;
     float minYWorldmapCamBorder = -30000f; //-10000f;
@@ -20,6 +20,8 @@ public class WorldMapMenu : MonoBehaviour
     float xCam;
     float yCam;
     float zCam;
+
+    float speedPointer = 300f;
 
     float xPointer;
     float yPointer;
@@ -39,6 +41,10 @@ public class WorldMapMenu : MonoBehaviour
     float currentWidthCam;
 
     float marginPointer;
+
+    Coroutine snapToPlanet;
+    bool snap = false;
+    Planet planetToSnap;
 
     // Start is called before the first frame update
     void Start()
@@ -93,11 +99,33 @@ public class WorldMapMenu : MonoBehaviour
 
             marginPointer = WorldmapCam.orthographicSize / 3f;
 
+            if (snapToPlanet == null)
+            {
+                Planet[] planets = FindObjectsOfType<Planet>();
+                foreach (Planet planet in planets)
+                {
+                    var planetPos = new Vector2(planet.transform.position.x, planet.transform.position.y);
+                    var pointerPos = new Vector2(pointer.transform.position.x, pointer.transform.position.y);
+
+                    if (Vector2.Distance(planetPos, pointerPos) < 400)
+                    {
+                        snap = true;
+                        planetToSnap = planet;
+                        //pointer.transform.position = planet.transform.position;
+                    }
+                }
+            }
+
         }
         else
         {
             gameObject.GetComponent<Canvas>().enabled = false;
             checkVisibleClouds = null;
+        }
+
+        if (snap == true && snapToPlanet == null)
+        {
+            snapToPlanet = StartCoroutine(SnapToPlanet(planetToSnap));
         }
 
         //Debug.Log(pointer.GetIsOnPlanet());
@@ -109,6 +137,17 @@ public class WorldMapMenu : MonoBehaviour
         //Debug.Log("pointer x: " + xPointer);
         //Debug.Log("width: " + currentWidthCam);
         //Debug.Log("height: " + currentHeightCam);
+    }
+
+    IEnumerator SnapToPlanet(Planet planet)
+    {
+        //Debug.Log("into coroutine");
+        pointer.transform.position = planet.transform.position;
+        movePointer = false;
+        yield return new WaitForSecondsRealtime(0.01f);
+        //Debug.Log("out of coroutine");
+        movePointer = true;
+        snap = false;
     }
 
     IEnumerator CheckVisibleClouds()
@@ -129,6 +168,7 @@ public class WorldMapMenu : MonoBehaviour
     {
         if (movePointer)
         {
+            snapToPlanet = null;
             if (!CheckIfPointerIsInside())
             {
                 xPointer = xCam;
@@ -138,8 +178,8 @@ public class WorldMapMenu : MonoBehaviour
             previousXpointer = xPointer;
             previousYpointer = yPointer;
 
-            xPointer += Input.GetAxis("Horizontal") * speedMove;
-            yPointer += Input.GetAxis("Vertical") * speedMove;
+            xPointer += Input.GetAxis("Horizontal") * speedPointer;
+            yPointer += Input.GetAxis("Vertical") * speedPointer;
 
             //Debug.Log("min border: " + minXWorldmapCamBorder);
             //Debug.Log("cam size: " + WorldmapCam.orthographicSize);
@@ -157,8 +197,8 @@ public class WorldMapMenu : MonoBehaviour
             if ((yPointer > yCam + currentHeightCam - marginPointer || yPointer < yCam - currentHeightCam + marginPointer ||
             xPointer > xCam + currentWidthCam - marginPointer || xPointer < xCam - currentWidthCam + marginPointer))
             {
-                xCam += Input.GetAxis("Horizontal") * speedMove;
-                yCam += Input.GetAxis("Vertical") * speedMove;
+                xCam += Input.GetAxis("Horizontal") * speedPointer;
+                yCam += Input.GetAxis("Vertical") * speedPointer;
 
                 xCam = Mathf.Clamp(xCam, minXWorldmapCamBorder + currentWidthCam, maxXWorldmapCamBorder - currentWidthCam);
                 yCam = Mathf.Clamp(yCam, minYWorldmapCamBorder + currentHeightCam, maxYWorldmapCamBorder - currentHeightCam);
@@ -166,10 +206,10 @@ public class WorldMapMenu : MonoBehaviour
                 WorldmapCam.transform.position = new Vector3(xCam, yCam, zCam);
             }
         }
-        else
+        else if (snap == false)
         {
-            xCam += Input.GetAxis("Horizontal") * speedMove;
-            yCam += Input.GetAxis("Vertical") * speedMove;
+            xCam += Input.GetAxis("Horizontal") * speedCam;
+            yCam += Input.GetAxis("Vertical") * speedCam;
 
             xCam = Mathf.Clamp(xCam, minXWorldmapCamBorder + currentWidthCam, maxXWorldmapCamBorder - currentWidthCam);
             yCam = Mathf.Clamp(yCam, minYWorldmapCamBorder + currentHeightCam, maxYWorldmapCamBorder - currentHeightCam);
