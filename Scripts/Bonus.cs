@@ -96,19 +96,19 @@ public class Bonus : MonoBehaviour
                         DestroyExistingPowerUp3();
                         powerUp3Routine = StartCoroutine(PowerUp3Routine());
                     }
-                    if (this.name.Contains("star_bronze"))
+                    if (this.name.Contains("pink"))
                     {
                         FindObjectOfType<GameSession>().counterStarBronze++;
                         Destroy(gameObject);
                         AudioSource.PlayClipAtPoint(coinSound, player.transform.position, volumeSound);
                     }
-                    if (this.name.Contains("star_silver"))
+                    if (this.name.Contains("cyan"))
                     {
                         FindObjectOfType<GameSession>().counterStarSilver++;
                         Destroy(gameObject);
                         AudioSource.PlayClipAtPoint(coinSound, player.transform.position, volumeSound);
                     }
-                    if (this.name.Contains("star_gold"))
+                    if (this.name.Contains("green"))
                     {
                         FindObjectOfType<GameSession>().counterStarGold++;
                         Destroy(gameObject);
