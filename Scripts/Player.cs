@@ -238,7 +238,8 @@ public class Player : MonoBehaviour
 
     private void InstantiateLaser(float xVelocity, float yVelocity)
     {
-        Laser projectile = Instantiate(laserPrefab, transform.position, transform.rotation, playerLasersParent.transform);
+        var projectilePos = new Vector3(transform.position.x, transform.position.y, 0.1f);
+        Laser projectile = Instantiate(laserPrefab, projectilePos, transform.rotation, playerLasersParent.transform);
         // projectileFiringPeriod = 0.1f;
         Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * laserSpeed;
         projectile.GetComponent<Rigidbody2D>().velocity = directionOfFiring;
@@ -247,7 +248,8 @@ public class Player : MonoBehaviour
 
     private void InstantiateBomb(float xVelocity, float yVelocity)
     {
-        BombPlayer projectile = Instantiate(bombPrefab, transform.position, transform.rotation, playerLasersParent.transform);
+        var projectilePos = new Vector3(transform.position.x, transform.position.y, 0.1f);
+        BombPlayer projectile = Instantiate(bombPrefab, projectilePos, transform.rotation, playerLasersParent.transform);
         // projectileFiringPeriod = 0.5f;
         Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * bombSpeed;
         projectile.GetComponent<Rigidbody2D>().velocity = directionOfFiring;
