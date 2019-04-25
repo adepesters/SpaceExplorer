@@ -213,4 +213,9 @@ public class PS4ControllerCheck : MonoBehaviour
         }
         return isTrue;
     }
+
+    public bool IsSquarePressed()
+    {
+        return Input.GetKeyDown(KeyCode.JoystickButton0);
+    }
 }
