@@ -20,6 +20,9 @@ public class PlayerTileVania : MonoBehaviour
 
     bool isJumping = false;
 
+    [SerializeField] Sword rightSwordPrefab;
+    [SerializeField] Sword leftSwordPrefab;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -34,6 +37,14 @@ public class PlayerTileVania : MonoBehaviour
             CheckIfIsImmobile();
             Jump();
             Move();
+            if (Mathf.Sign(transform.localScale.x) > 0)
+            {
+                SwingSwordRight();
+            }
+            else
+            {
+                SwingSwordLeft();
+            }
             //Climb();
         }
     }
@@ -66,7 +77,6 @@ public class PlayerTileVania : MonoBehaviour
             {
                 transform.localScale = new Vector2(Mathf.Sign(xChange) * originalScale.x, originalScale.y);
             }
-            Debug.Log(xChange);
         }
     }
 
@@ -153,5 +163,23 @@ public class PlayerTileVania : MonoBehaviour
     public bool IsPlayerDead()
     {
         return isDead;
+    }
+
+    private void SwingSwordRight()
+    {
+        if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+        {
+            var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
+            Sword sword = Instantiate(rightSwordPrefab, swordPos, Quaternion.identity);
+        }
+    }
+
+    private void SwingSwordLeft()
+    {
+        if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+        {
+            var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
+            Sword sword = Instantiate(leftSwordPrefab, swordPos, Quaternion.identity);
+        }
     }
 }
