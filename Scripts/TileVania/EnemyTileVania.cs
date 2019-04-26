@@ -52,14 +52,7 @@ public class EnemyTileVania : MonoBehaviour
     {
         List<GameObject> listOfBonuses = FindObjectOfType<ListOfBonuses>().listOfBonuses;
         int numBonuses = listOfBonuses.Count;
-
-        for (int i = 0; i < listOfBonuses.Count; i++)
-        {
-            GameObject temp = listOfBonuses[i];
-            int randomIndex = Random.Range(i, listOfBonuses.Count);
-            listOfBonuses[i] = listOfBonuses[randomIndex];
-            listOfBonuses[randomIndex] = temp;
-        }
+        RandomizeOrder(listOfBonuses);
 
         for (int bonusIndex = 0; bonusIndex < numBonuses; bonusIndex++)
         {
@@ -74,6 +67,17 @@ public class EnemyTileVania : MonoBehaviour
                     Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity);
                 }
             }
+        }
+    }
+
+    private static void RandomizeOrder(List<GameObject> listOfBonuses)
+    {
+        for (int i = 0; i < listOfBonuses.Count; i++)
+        {
+            GameObject temp = listOfBonuses[i];
+            int randomIndex = Random.Range(i, listOfBonuses.Count);
+            listOfBonuses[i] = listOfBonuses[randomIndex];
+            listOfBonuses[randomIndex] = temp;
         }
     }
 
