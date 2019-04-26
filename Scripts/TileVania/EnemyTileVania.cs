@@ -50,7 +50,17 @@ public class EnemyTileVania : MonoBehaviour
 
     private void BleedParticles()
     {
-        int numBonuses = FindObjectOfType<ListOfBonuses>().listOfBonuses.Count;
+        List<GameObject> listOfBonuses = FindObjectOfType<ListOfBonuses>().listOfBonuses;
+        int numBonuses = listOfBonuses.Count;
+
+        for (int i = 0; i < listOfBonuses.Count; i++)
+        {
+            GameObject temp = listOfBonuses[i];
+            int randomIndex = Random.Range(i, listOfBonuses.Count);
+            listOfBonuses[i] = listOfBonuses[randomIndex];
+            listOfBonuses[randomIndex] = temp;
+        }
+
         for (int bonusIndex = 0; bonusIndex < numBonuses; bonusIndex++)
         {
             for (int i = 0; i < maxNumberOfParticles[bonusIndex]; i++)
@@ -61,7 +71,7 @@ public class EnemyTileVania : MonoBehaviour
                     Vector3 bonusPos = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                     UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                     transform.position.z);
-                    Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[bonusIndex], bonusPos, Quaternion.identity);
+                    Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity);
                 }
             }
         }
