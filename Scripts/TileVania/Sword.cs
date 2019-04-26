@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
+    float damage = 100;
 
     // Start is called before the first frame update
     void Start()
@@ -14,10 +15,16 @@ public class Sword : MonoBehaviour
     void Update()
     {
         var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
+        transform.position = swordPos;
     }
 
     public void DestroySword()
     {
         Destroy(gameObject);
+    }
+
+    public float GetDamage()
+    {
+        return damage;
     }
 }
