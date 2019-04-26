@@ -8,7 +8,7 @@ public class EnemyTileVania : MonoBehaviour
     Color originalColor;
     float[] maxNumberOfParticles = new float[] { 2f, 3f, 1f, 2f, 4f, 2f, 2f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
-    float jitter = 0f;
+    Vector3 originalPos;
 
     const string PIXEL_BLOOD = "PixelBlood Parent";
     GameObject pixelBloodParent;
@@ -23,19 +23,23 @@ public class EnemyTileVania : MonoBehaviour
         }
 
         originalColor = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color;
+        originalPos = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        transform.position = originalPos;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name.Contains("Sword"))
         {
-            ProcessHit(collision);
+            ContactPoint2D[] contact = new ContactPoint2D[1];
+            collision.GetContacts(contact);
+
+            ProcessHit(collision, contact[0].point);
             if (health <= 0)
             {
                 KillEnemy();
@@ -43,11 +47,11 @@ public class EnemyTileVania : MonoBehaviour
         }
     }
 
-    private void ProcessHit(Collider2D collision)
+    private void ProcessHit(Collision2D collision, Vector2 contactPoint)
     {
         health -= collision.gameObject.GetComponent<Sword>().GetDamage();
         StartCoroutine(ChangeColorWhenHit());
-        BleedParticles();
+        BleedParticles(contactPoint);
     }
 
     IEnumerator ChangeColorWhenHit()
@@ -57,7 +61,7 @@ public class EnemyTileVania : MonoBehaviour
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
     }
 
-    private void BleedParticles()
+    private void BleedParticles(Vector2 contactPoint)
     {
         List<GameObject> listOfBonuses = FindObjectOfType<ListOfBonuses>().listOfBonuses;
         int numBonuses = listOfBonuses.Count;
@@ -70,9 +74,11 @@ public class EnemyTileVania : MonoBehaviour
                 float rand = UnityEngine.Random.Range(0f, 1f);
                 if (rand < probabilityOfParticles[bonusIndex])
                 {
-                    Vector3 bonusPos = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
-                    UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
-                    transform.position.z);
+                    //Vector3 bonusPos = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
+                    //UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
+                    //transform.position.z);
+
+                    Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, transform.position.z);
                     Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
                 }
             }
