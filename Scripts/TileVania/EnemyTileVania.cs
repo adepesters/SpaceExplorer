@@ -6,13 +6,22 @@ public class EnemyTileVania : MonoBehaviour
 {
     float health = 500f;
     Color originalColor;
-    float[] maxNumberOfParticles = new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f };
-    float[] probabilityOfParticles = new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f };
+    float[] maxNumberOfParticles = new float[] { 2f, 3f, 1f, 2f, 4f, 2f, 2f };
+    float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
     float jitter = 0f;
+
+    const string PIXEL_BLOOD = "PixelBlood Parent";
+    GameObject pixelBloodParent;
 
     // Start is called before the first frame update
     void Start()
     {
+        pixelBloodParent = GameObject.Find(PIXEL_BLOOD);
+        if (!pixelBloodParent)
+        {
+            pixelBloodParent = new GameObject(PIXEL_BLOOD);
+        }
+
         originalColor = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color;
     }
 
@@ -64,7 +73,7 @@ public class EnemyTileVania : MonoBehaviour
                     Vector3 bonusPos = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                     UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                     transform.position.z);
-                    Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity);
+                    Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
                 }
             }
         }
