@@ -12,7 +12,7 @@ public class PixelBlood : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        float forceX = UnityEngine.Random.Range(-10f, 10f);
+        float forceX = UnityEngine.Random.Range(-100f, 100f);
         float forceY = UnityEngine.Random.Range(100f, 200f);
         GetComponent<Rigidbody2D>().AddForce(new Vector2(forceX, forceY));
 

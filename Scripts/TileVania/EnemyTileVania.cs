@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
 
 public class EnemyTileVania : MonoBehaviour
 {
     float health = 500f;
     Color originalColor;
-    float[] maxNumberOfParticles = new float[] { 2f, 3f, 1f, 2f, 4f, 2f, 2f };
+    float[] maxNumberOfParticles = new float[] { 4f, 4f, 4f, 4f, 4f, 4f, 4f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
     Vector3 originalPos;
 
     const string PIXEL_BLOOD = "PixelBlood Parent";
     GameObject pixelBloodParent;
+
+    HashSet<Color> colorSet;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +28,22 @@ public class EnemyTileVania : MonoBehaviour
 
         originalColor = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color;
         originalPos = transform.position;
+
+        Sprite enemySprite = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite;
+        Texture2D texture = enemySprite.texture;
+        colorSet = new HashSet<Color>();
+
+        for (int y = 0; y < texture.height; y++)
+        {
+            for (int x = 0; x < texture.width; x++)
+            {
+                Color pixelColor = texture.GetPixel(x, y) * transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color;
+                if (pixelColor.a == 1f)
+                {
+                    colorSet.Add(pixelColor);
+                }
+            }
+        }
     }
 
     // Update is called once per frame
@@ -66,6 +86,7 @@ public class EnemyTileVania : MonoBehaviour
         List<GameObject> listOfBonuses = FindObjectOfType<ListOfBonuses>().listOfBonuses;
         int numBonuses = listOfBonuses.Count;
         RandomizeOrder(listOfBonuses);
+        System.Random randomizer = new System.Random();
 
         for (int bonusIndex = 0; bonusIndex < numBonuses; bonusIndex++)
         {
@@ -78,8 +99,12 @@ public class EnemyTileVania : MonoBehaviour
                     //UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                     //transform.position.z);
 
+                    Color[] asArray = colorSet.ToArray();
+                    Color randomColor = asArray[randomizer.Next(asArray.Length)];
+
                     Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, transform.position.z);
-                    Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
+                    GameObject bloodPixel = Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
+                    bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 }
             }
         }
@@ -90,7 +115,7 @@ public class EnemyTileVania : MonoBehaviour
         for (int i = 0; i < listOfBonuses.Count; i++)
         {
             GameObject temp = listOfBonuses[i];
-            int randomIndex = Random.Range(i, listOfBonuses.Count);
+            int randomIndex = UnityEngine.Random.Range(i, listOfBonuses.Count);
             listOfBonuses[i] = listOfBonuses[randomIndex];
             listOfBonuses[randomIndex] = temp;
         }
