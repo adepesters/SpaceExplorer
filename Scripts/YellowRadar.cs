@@ -13,6 +13,10 @@ public class YellowRadar : MonoBehaviour
 
     float detectionDistance;
 
+    float distanceThreshold;
+
+    [SerializeField] Sprite[] yellowRadarSprites;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +36,25 @@ public class YellowRadar : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        distanceThreshold = Mathf.Floor(Vector2.Distance(player.transform.position, target.transform.position) / 100);
+
+        switch (distanceThreshold)
+        {
+            case 0:
+                GetComponent<Image>().sprite = yellowRadarSprites[3];
+                break;
+            case 1:
+                GetComponent<Image>().sprite = yellowRadarSprites[2];
+                break;
+            case 2:
+                GetComponent<Image>().sprite = yellowRadarSprites[1];
+                break;
+            case 3:
+                GetComponent<Image>().sprite = yellowRadarSprites[0];
+                break;
+        }
+
     }
 
     public void SetTarget(GameObject currentTarget, float currentDetectionDistance)
