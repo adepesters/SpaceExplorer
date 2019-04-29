@@ -6,7 +6,7 @@ using System;
 
 public class EnemyTileVania : MonoBehaviour
 {
-    float health = 500f;
+    float health = 5000f;
     Color originalColor;
     float[] maxNumberOfParticles = new float[] { 4f, 4f, 4f, 4f, 4f, 4f, 4f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
@@ -16,6 +16,9 @@ public class EnemyTileVania : MonoBehaviour
     GameObject pixelBloodParent;
 
     HashSet<Color> colorSet;
+
+    Animator animator;
+    bool beingHit;
 
     // Start is called before the first frame update
     void Start()
@@ -44,12 +47,18 @@ public class EnemyTileVania : MonoBehaviour
                 }
             }
         }
+
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = originalPos;
+        if (!beingHit)
+        {
+            transform.position = new Vector2(originalPos.x, transform.position.y);
+        }
+        Debug.Log(beingHit);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -67,18 +76,39 @@ public class EnemyTileVania : MonoBehaviour
         }
     }
 
+
     private void ProcessHit(Collision2D collision, Vector2 contactPoint)
     {
         health -= collision.gameObject.GetComponent<Sword>().GetDamage();
+        collision.gameObject.GetComponent<Sword>().SetCanHit(false);
         StartCoroutine(ChangeColorWhenHit());
         BleedParticles(contactPoint);
+        // StartCoroutine(ElevatePlayer());
     }
+
 
     IEnumerator ChangeColorWhenHit()
     {
+        //Debug.Log(FindObjectOfType<Sword>().SpeedAnimation);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-        yield return new WaitForSeconds(0.1f);
+        animator.speed = 0f;
+        FindObjectOfType<Sword>().SpeedAnimation = 0f;
+        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(true, FindObjectOfType<PlayerTileVania>().transform.position);
+        //beingHit = true;
+        yield return new WaitForSeconds(0.15f);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
+        animator.speed = 1f;
+        var targetPos = new Vector2(transform.position.x - 0.75f, transform.position.y + 0.75f);
+        float step = 100f * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
+        if (Vector2.Distance(transform.position, targetPos) < Mathf.Epsilon)
+        {
+            beingHit = false;
+        }
+        originalPos = targetPos;
+        FindObjectOfType<Sword>().SpeedAnimation = 1f;
+        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
+        //beingHit = false;
     }
 
     private void BleedParticles(Vector2 contactPoint)

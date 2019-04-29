@@ -23,6 +23,9 @@ public class PlayerTileVania : MonoBehaviour
     [SerializeField] Sword rightSwordPrefab;
     [SerializeField] Sword leftSwordPrefab;
 
+    bool playerIsFrozen;
+    Vector2 frozenPosition;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -32,8 +35,9 @@ public class PlayerTileVania : MonoBehaviour
 
     void Update()
     {
-        if (!isDead)
+        if (!isDead && !playerIsFrozen)
         {
+            animator.speed = 1f;
             CheckIfIsImmobile();
             Jump();
             Move();
@@ -46,6 +50,11 @@ public class PlayerTileVania : MonoBehaviour
                 SwingSwordLeft();
             }
             //Climb();
+        }
+        else if (!isDead && playerIsFrozen)
+        {
+            animator.speed = 0f;
+            transform.position = frozenPosition;
         }
     }
 
@@ -181,5 +190,11 @@ public class PlayerTileVania : MonoBehaviour
             var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
             Sword sword = Instantiate(leftSwordPrefab, swordPos, Quaternion.identity);
         }
+    }
+
+    public void SetFrozenPlayer(bool currentPlayerIsFrozen, Vector2 currentFrozenPosition)
+    {
+        playerIsFrozen = currentPlayerIsFrozen;
+        frozenPosition = currentFrozenPosition;
     }
 }
