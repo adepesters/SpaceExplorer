@@ -25,6 +25,10 @@ public class EnemyTileVania : MonoBehaviour
     PlayerTileVania player;
     Vector2 originalPlayerPos;
 
+    float chanceOfCriticalHit = 0.2f;
+
+    Vector2 targetPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +68,16 @@ public class EnemyTileVania : MonoBehaviour
         {
             transform.position = new Vector2(originalPos.x, transform.position.y);
         }
+        if (beingHit)
+        {
+            float step = 10f * Time.deltaTime;
+            transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
+            if (Vector2.Distance(transform.position, targetPos) < Mathf.Epsilon)
+            {
+                beingHit = false;
+            }
+            originalPos = targetPos;
+        }
         Debug.Log(beingHit);
     }
 
@@ -87,7 +101,15 @@ public class EnemyTileVania : MonoBehaviour
     {
         health -= collision.gameObject.GetComponent<Sword>().GetDamage();
         collision.gameObject.GetComponent<Sword>().SetCanHit(false);
-        StartCoroutine(ChangeColorWhenHit());
+        float rand = UnityEngine.Random.Range(0f, 1f);
+        if (rand < chanceOfCriticalHit)
+        {
+            StartCoroutine(SFXCriticalHit());
+        }
+        else
+        {
+            StartCoroutine(SFXNormalHit());
+        }
         BleedParticles(contactPoint);
         originalPlayerPos = player.transform.position;
         StartCoroutine(ElevatePlayer(originalPlayerPos));
@@ -96,33 +118,41 @@ public class EnemyTileVania : MonoBehaviour
     IEnumerator ElevatePlayer(Vector2 currentOriginalPlayerPos)
     {
         player.SetPlayerOnAir(true, currentOriginalPlayerPos);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.3f);
         player.SetPlayerOnAir(false, currentOriginalPlayerPos);
     }
 
-    IEnumerator ChangeColorWhenHit()
+    IEnumerator SFXNormalHit()
     {
-        //Debug.Log(FindObjectOfType<Sword>().SpeedAnimation);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         animator.speed = 0f;
         FindObjectOfType<Sword>().SpeedAnimation = 0f;
         FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(true, FindObjectOfType<PlayerTileVania>().transform.position);
-        //beingHit = true;
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.05f);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
-        var targetPos = new Vector2(transform.position.x - 0.75f, transform.position.y + 0.75f);
-        float step = 100f * Time.deltaTime;
-        transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
-        if (Vector2.Distance(transform.position, targetPos) < Mathf.Epsilon)
-        {
-            beingHit = false;
-        }
-        originalPos = targetPos;
         FindObjectOfType<Sword>().SpeedAnimation = 1f;
         FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
-        //beingHit = false;
     }
+
+    IEnumerator SFXCriticalHit()
+    {
+        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        animator.speed = 0f;
+        FindObjectOfType<Sword>().SpeedAnimation = 0f;
+        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(true, FindObjectOfType<PlayerTileVania>().transform.position);
+        yield return new WaitForSeconds(0.3f);
+        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
+        animator.speed = 1f;
+        beingHit = true;
+        targetPos = new Vector2(transform.position.x - 3f, transform.position.y + 0.75f);
+        if (FindObjectOfType<Sword>() != null)
+        {
+            FindObjectOfType<Sword>().SpeedAnimation = 1f;
+        }
+        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
+    }
+
 
     private void BleedParticles(Vector2 contactPoint)
     {
@@ -138,10 +168,6 @@ public class EnemyTileVania : MonoBehaviour
                 float rand = UnityEngine.Random.Range(0f, 1f);
                 if (rand < probabilityOfParticles[bonusIndex])
                 {
-                    //Vector3 bonusPos = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
-                    //UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
-                    //transform.position.z);
-
                     Color[] asArray = colorSet.ToArray();
                     Color randomColor = asArray[randomizer.Next(asArray.Length)];
 

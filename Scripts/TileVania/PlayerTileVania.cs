@@ -106,8 +106,6 @@ public class PlayerTileVania : MonoBehaviour
         }
     }
 
-
-
     private void Jump()
     {
         if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && (FindObjectOfType<Ground>().AreFeetOnTheGround())) // || FindObjectOfType<Ladders>().AreFeetOnTheGround()))
