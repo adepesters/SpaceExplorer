@@ -49,7 +49,7 @@ public class WorldMapMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        WorldmapCam = GameObject.Find("Worldmap Camera").GetComponent<Camera>();
+        WorldmapCam = GameObject.Find("Worldmap Camera without Perspective").GetComponent<Camera>();
 
         WorldmapCam.orthographicSize = originalZoom;
         //originalZoom = WorldmapCam.orthographicSize;
