@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class YellowRadarManager : MonoBehaviour
 {
@@ -31,10 +32,8 @@ public class YellowRadarManager : MonoBehaviour
             {
                 if (!targetsFound.Contains(target.gameObject))
                 {
-                    Debug.Log("added");
                     targetsFound.Add(target.gameObject);
-                    GameObject newYellowRadar = Instantiate(yellowRadarPrefab, transform.position, Quaternion.identity, transform.parent);
-                    newYellowRadar.GetComponent<YellowRadar>().SetTarget(target.gameObject, detectionDistance);
+                    StartCoroutine(DisplayYellowRadar(target));
                 }
             }
             else
@@ -43,4 +42,14 @@ public class YellowRadarManager : MonoBehaviour
             }
         }
     }
+
+    IEnumerator DisplayYellowRadar(YellowRadarActivator target)
+    {
+        GameObject newYellowRadar = Instantiate(yellowRadarPrefab, transform.position, Quaternion.identity, transform.parent);
+        newYellowRadar.GetComponent<YellowRadar>().SetTarget(target.gameObject, detectionDistance);
+        newYellowRadar.GetComponent<Image>().enabled = false;
+        yield return new WaitForSeconds(0.8f); // added small delay because it takes some time for the radar to rotate to point towards the correct direction
+        newYellowRadar.GetComponent<Image>().enabled = true;
+    }
+
 }
