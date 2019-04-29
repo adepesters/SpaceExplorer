@@ -20,6 +20,11 @@ public class EnemyTileVania : MonoBehaviour
     Animator animator;
     bool beingHit;
 
+    bool playerOnAir = false;
+
+    PlayerTileVania player;
+    Vector2 originalPlayerPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +54,7 @@ public class EnemyTileVania : MonoBehaviour
         }
 
         animator = GetComponent<Animator>();
+        player = FindObjectOfType<PlayerTileVania>();
     }
 
     // Update is called once per frame
@@ -83,9 +89,16 @@ public class EnemyTileVania : MonoBehaviour
         collision.gameObject.GetComponent<Sword>().SetCanHit(false);
         StartCoroutine(ChangeColorWhenHit());
         BleedParticles(contactPoint);
-        // StartCoroutine(ElevatePlayer());
+        originalPlayerPos = player.transform.position;
+        StartCoroutine(ElevatePlayer(originalPlayerPos));
     }
 
+    IEnumerator ElevatePlayer(Vector2 currentOriginalPlayerPos)
+    {
+        player.SetPlayerOnAir(true, currentOriginalPlayerPos);
+        yield return new WaitForSeconds(1f);
+        player.SetPlayerOnAir(false, currentOriginalPlayerPos);
+    }
 
     IEnumerator ChangeColorWhenHit()
     {

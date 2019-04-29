@@ -25,6 +25,8 @@ public class PlayerTileVania : MonoBehaviour
 
     bool playerIsFrozen;
     Vector2 frozenPosition;
+    bool playerOnAir;
+    Vector2 onAirPos;
 
     void Start()
     {
@@ -35,7 +37,21 @@ public class PlayerTileVania : MonoBehaviour
 
     void Update()
     {
-        if (!isDead && !playerIsFrozen)
+        if (!isDead && playerOnAir && !playerIsFrozen)
+        {
+            animator.speed = 0.2f;
+            transform.position = onAirPos;
+            if (Mathf.Sign(transform.localScale.x) > 0)
+            {
+                SwingSwordRight();
+            }
+            else
+            {
+                SwingSwordLeft();
+            }
+        }
+
+        if (!isDead && !playerIsFrozen && !playerOnAir)
         {
             animator.speed = 1f;
             CheckIfIsImmobile();
@@ -51,7 +67,8 @@ public class PlayerTileVania : MonoBehaviour
             }
             //Climb();
         }
-        else if (!isDead && playerIsFrozen)
+
+        if (!isDead && playerIsFrozen)
         {
             animator.speed = 0f;
             transform.position = frozenPosition;
@@ -196,5 +213,11 @@ public class PlayerTileVania : MonoBehaviour
     {
         playerIsFrozen = currentPlayerIsFrozen;
         frozenPosition = currentFrozenPosition;
+    }
+
+    public void SetPlayerOnAir(bool currentPlayerOnAir, Vector2 currentPlayerPos)
+    {
+        playerOnAir = currentPlayerOnAir;
+        onAirPos = currentPlayerPos;
     }
 }
