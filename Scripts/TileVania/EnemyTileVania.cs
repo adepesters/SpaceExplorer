@@ -174,7 +174,7 @@ public class EnemyTileVania : MonoBehaviour
                     Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, transform.position.z);
                     GameObject bloodPixel = Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
                     bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
-                    //FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor);
+                    FindObjectOfType<GameSession>().CounterPixelBlood[FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor)]++;
                 }
             }
         }

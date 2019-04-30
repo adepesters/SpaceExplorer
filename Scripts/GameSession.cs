@@ -16,6 +16,10 @@ public class GameSession : MonoBehaviour
     public int counterStarSilver = 0;
     public int counterStarGold = 0;
 
+    int[] counterPixelBlood = new int[8];
+
+    public int[] CounterPixelBlood { get => counterPixelBlood; set => counterPixelBlood = value; }
+
     // cached variables
 
     private void Awake()
@@ -36,6 +40,11 @@ public class GameSession : MonoBehaviour
     {
         scoreText.text = score.ToString("D6");
         healthText.text = FindObjectOfType<Player>().GetHealthPlayer().ToString();
+
+        for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
+        {
+            CounterPixelBlood[i] = 0;
+        }
     }
 
     // Update is called once per frame
@@ -50,6 +59,11 @@ public class GameSession : MonoBehaviour
         else
         {
             FindObjectOfType<GameSession>().healthText.text = "000";
+        }
+
+        for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
+        {
+            Debug.Log(i + ": " + CounterPixelBlood[i]);
         }
 
     }

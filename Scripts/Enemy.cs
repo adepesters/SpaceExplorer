@@ -203,7 +203,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                Debug.Log(FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor));
+                FindObjectOfType<GameSession>().CounterPixelBlood[FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor)]++;
             }
         }
 
@@ -221,7 +221,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                Debug.Log(FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor));
+                FindObjectOfType<GameSession>().CounterPixelBlood[FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor)]++;
             }
         }
 
@@ -239,7 +239,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                Debug.Log(FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor));
+                FindObjectOfType<GameSession>().CounterPixelBlood[FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor)]++;
             }
         }
 
