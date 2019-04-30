@@ -60,7 +60,7 @@ public class Enemy : MonoBehaviour
     bool isImmobile;
 
     Color originalColor;
-    HashSet<Color> colorSet;
+    List<Color> colorSet;
 
     // Start is called before the first frame update
     void Start()
@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
 
         Sprite enemySprite = GetComponent<SpriteRenderer>().sprite;
         Texture2D texture = enemySprite.texture;
-        colorSet = new HashSet<Color>();
+        colorSet = new List<Color>();
 
         for (int y = 0; y < texture.height; y++)
         {
@@ -188,14 +188,13 @@ public class Enemy : MonoBehaviour
     private void DistributeBonuses()
     {
         System.Random randomizer = new System.Random();
-        Color[] asArray = colorSet.ToArray();
 
         for (int i = 0; i < maxNumberOfGoldStar; i++)
         {
             float rand = UnityEngine.Random.Range(0f, 1f);
             if (rand < probabilityOfGoldStar)
             {
-                Color randomColor = asArray[randomizer.Next(asArray.Length)];
+                Color randomColor = colorSet[randomizer.Next(colorSet.Count)];
 
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
@@ -204,6 +203,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
+                Debug.Log(FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor));
             }
         }
 
@@ -212,7 +212,7 @@ public class Enemy : MonoBehaviour
             float rand = UnityEngine.Random.Range(0f, 1f);
             if (rand < probabilityOfSilverStar)
             {
-                Color randomColor = asArray[randomizer.Next(asArray.Length)];
+                Color randomColor = colorSet[randomizer.Next(colorSet.Count)];
 
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
@@ -221,6 +221,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
+                Debug.Log(FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor));
             }
         }
 
@@ -229,7 +230,7 @@ public class Enemy : MonoBehaviour
             float rand = UnityEngine.Random.Range(0f, 1f);
             if (rand < probabilityOfBronzeStar)
             {
-                Color randomColor = asArray[randomizer.Next(asArray.Length)];
+                Color randomColor = colorSet[randomizer.Next(colorSet.Count)];
 
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
@@ -238,6 +239,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
+                Debug.Log(FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor));
             }
         }
 
