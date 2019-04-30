@@ -52,7 +52,10 @@ public class YellowRadarManager : MonoBehaviour
         newYellowRadar.GetComponent<YellowRadar>().SetTarget(target.gameObject, detectionDistance);
         newYellowRadar.GetComponent<Image>().enabled = false;
         yield return new WaitForSeconds(0.8f); // added small delay because it takes some time for the radar to rotate to point towards the correct direction
-        newYellowRadar.GetComponent<Image>().enabled = true;
+        if (newYellowRadar != null)
+        {
+            newYellowRadar.GetComponent<Image>().enabled = true;
+        }
     }
 
 }
