@@ -40,7 +40,14 @@ public class EnemyTileVania : MonoBehaviour
 
         originalColor = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color;
         originalPos = transform.position;
+        AnalyzeColorsInSprite();
 
+        animator = GetComponent<Animator>();
+        player = FindObjectOfType<PlayerTileVania>();
+    }
+
+    private void AnalyzeColorsInSprite()
+    {
         Sprite enemySprite = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite;
         Texture2D texture = enemySprite.texture;
         colorSet = new List<Color>();
@@ -49,16 +56,13 @@ public class EnemyTileVania : MonoBehaviour
         {
             for (int x = 0; x < texture.width; x++)
             {
-                Color pixelColor = texture.GetPixel(x, y) * transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color;
+                Color pixelColor = texture.GetPixel(x, y) * originalColor;
                 if (pixelColor.a == 1f)
                 {
                     colorSet.Add(pixelColor);
                 }
             }
         }
-
-        animator = GetComponent<Animator>();
-        player = FindObjectOfType<PlayerTileVania>();
     }
 
     // Update is called once per frame

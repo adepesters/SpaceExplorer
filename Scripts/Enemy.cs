@@ -89,7 +89,11 @@ public class Enemy : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360));
 
         originalColor = GetComponent<SpriteRenderer>().color;
+        AnalyzeColorsInSprite();
+    }
 
+    private void AnalyzeColorsInSprite()
+    {
         Sprite enemySprite = GetComponent<SpriteRenderer>().sprite;
         Texture2D texture = enemySprite.texture;
         colorSet = new List<Color>();
