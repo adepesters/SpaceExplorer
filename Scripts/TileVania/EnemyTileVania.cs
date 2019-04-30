@@ -6,7 +6,7 @@ using System;
 
 public class EnemyTileVania : MonoBehaviour
 {
-    float health = 1000f;
+    float health = 5000f;
     Color originalColor;
     float[] maxNumberOfParticles = new float[] { 4f, 4f, 4f, 4f, 4f, 4f, 4f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
@@ -15,7 +15,7 @@ public class EnemyTileVania : MonoBehaviour
     const string PIXEL_BLOOD = "PixelBlood Parent";
     GameObject pixelBloodParent;
 
-    HashSet<Color> colorSet;
+    List<Color> colorSet;
 
     Animator animator;
     bool beingHit;
@@ -43,7 +43,7 @@ public class EnemyTileVania : MonoBehaviour
 
         Sprite enemySprite = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite;
         Texture2D texture = enemySprite.texture;
-        colorSet = new HashSet<Color>();
+        colorSet = new List<Color>();
 
         for (int y = 0; y < texture.height; y++)
         {
@@ -89,10 +89,7 @@ public class EnemyTileVania : MonoBehaviour
             collision.GetContacts(contact);
 
             ProcessHit(collision, contact[0].point);
-            if (health <= 0)
-            {
-                KillEnemy();
-            }
+
         }
     }
 
@@ -100,6 +97,10 @@ public class EnemyTileVania : MonoBehaviour
     private void ProcessHit(Collision2D collision, Vector2 contactPoint)
     {
         health -= collision.gameObject.GetComponent<Sword>().GetDamage();
+        if (health <= 0)
+        {
+            KillEnemy();
+        }
         collision.gameObject.GetComponent<Sword>().SetCanHit(false);
         float rand = UnityEngine.Random.Range(0f, 1f);
         if (rand < chanceOfCriticalHit)
@@ -168,12 +169,12 @@ public class EnemyTileVania : MonoBehaviour
                 float rand = UnityEngine.Random.Range(0f, 1f);
                 if (rand < probabilityOfParticles[bonusIndex])
                 {
-                    Color[] asArray = colorSet.ToArray();
-                    Color randomColor = asArray[randomizer.Next(asArray.Length)];
+                    Color randomColor = colorSet[randomizer.Next(colorSet.Count)];
 
                     Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, transform.position.z);
                     GameObject bloodPixel = Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
                     bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
+                    //FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor);
                 }
             }
         }
