@@ -78,7 +78,7 @@ public class EnemyTileVania : MonoBehaviour
             }
             originalPos = targetPos;
         }
-        Debug.Log(beingHit);
+        //Debug.Log(beingHit);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
