@@ -32,8 +32,11 @@ public class YellowRadarManager : MonoBehaviour
             {
                 if (!targetsFound.Contains(target.gameObject))
                 {
-                    targetsFound.Add(target.gameObject);
-                    StartCoroutine(DisplayYellowRadar(target));
+                    if (!target.HasBeenDiscovered)
+                    {
+                        targetsFound.Add(target.gameObject);
+                        StartCoroutine(DisplayYellowRadar(target));
+                    }
                 }
             }
             else

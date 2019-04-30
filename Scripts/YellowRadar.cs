@@ -17,6 +17,8 @@ public class YellowRadar : MonoBehaviour
 
     [SerializeField] Sprite[] yellowRadarSprites;
 
+    float discoveryThresholdDist = 15f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,11 +28,7 @@ public class YellowRadar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Transform targetTransform = target.transform;
-        Vector2 direction = targetTransform.position - FindObjectOfType<Player>().gameObject.transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 135;
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, facingSpeed * Time.deltaTime);
+        RotateTowardsTarget();
 
         if (Vector2.Distance(player.transform.position, target.transform.position) > detectionDistance)
         {
@@ -39,6 +37,17 @@ public class YellowRadar : MonoBehaviour
 
         distanceThreshold = Mathf.Floor(Vector2.Distance(player.transform.position, target.transform.position) / 100);
 
+        Display();
+
+        if (Vector2.Distance(player.transform.position, target.transform.position) < discoveryThresholdDist)
+        {
+            Destroy(gameObject);
+        }
+
+    }
+
+    private void Display()
+    {
         switch (distanceThreshold)
         {
             case 0:
@@ -54,7 +63,15 @@ public class YellowRadar : MonoBehaviour
                 GetComponent<Image>().sprite = yellowRadarSprites[0];
                 break;
         }
+    }
 
+    private void RotateTowardsTarget()
+    {
+        Transform targetTransform = target.transform;
+        Vector2 direction = targetTransform.position - FindObjectOfType<Player>().gameObject.transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 135;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, facingSpeed * Time.deltaTime);
     }
 
     public void SetTarget(GameObject currentTarget, float currentDetectionDistance)
