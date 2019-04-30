@@ -35,10 +35,10 @@ public class ColorClassifier : MonoBehaviour
     {
         colors = new Vector3[] { red, green, blue, cyan, pink, yellow, purple };
 
-        colorSprite = new Vector3(GetComponent<SpriteRenderer>().color.r,
-        GetComponent<SpriteRenderer>().color.g,
-        GetComponent<SpriteRenderer>().color.b);
-        ClassifyColor();
+        //colorSprite = new Vector3(GetComponent<SpriteRenderer>().color.r,
+        //GetComponent<SpriteRenderer>().color.g,
+        //GetComponent<SpriteRenderer>().color.b);
+        //ClassifyColor();
 
     }
 
