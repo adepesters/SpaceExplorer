@@ -61,10 +61,10 @@ public class GameSession : MonoBehaviour
             FindObjectOfType<GameSession>().healthText.text = "000";
         }
 
-        for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
-        {
-            Debug.Log(i + ": " + CounterPixelBlood[i]);
-        }
+        //for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
+        //{
+        //    Debug.Log(i + ": " + CounterPixelBlood[i]);
+        //}
 
     }
 }
