@@ -6,7 +6,7 @@ using System;
 
 public class EnemyTileVania : MonoBehaviour
 {
-    float health = 5000f;
+    float health = 1000f;
     Color originalColor;
     float[] maxNumberOfParticles = new float[] { 4f, 4f, 4f, 4f, 4f, 4f, 4f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
