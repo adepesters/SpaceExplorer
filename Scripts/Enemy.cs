@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Enemy : MonoBehaviour
 {
@@ -58,6 +59,9 @@ public class Enemy : MonoBehaviour
 
     bool isImmobile;
 
+    Color originalColor;
+    HashSet<Color> colorSet;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -83,6 +87,24 @@ public class Enemy : MonoBehaviour
         }
 
         transform.rotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360));
+
+        originalColor = GetComponent<SpriteRenderer>().color;
+
+        Sprite enemySprite = GetComponent<SpriteRenderer>().sprite;
+        Texture2D texture = enemySprite.texture;
+        colorSet = new HashSet<Color>();
+
+        for (int y = 0; y < texture.height; y++)
+        {
+            for (int x = 0; x < texture.width; x++)
+            {
+                Color pixelColor = texture.GetPixel(x, y) * originalColor;
+                if (pixelColor.a == 1f)
+                {
+                    colorSet.Add(pixelColor);
+                }
+            }
+        }
     }
 
     // Update is called once per frame
@@ -165,15 +187,23 @@ public class Enemy : MonoBehaviour
 
     private void DistributeBonuses()
     {
+        System.Random randomizer = new System.Random();
+        Color[] asArray = colorSet.ToArray();
+
         for (int i = 0; i < maxNumberOfGoldStar; i++)
         {
             float rand = UnityEngine.Random.Range(0f, 1f);
             if (rand < probabilityOfGoldStar)
             {
+                Color randomColor = asArray[randomizer.Next(asArray.Length)];
+
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[2], positionStar, Quaternion.identity, bonusesParent.transform);
+                GameObject bloodPixel = Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[2], positionStar, Quaternion.identity, bonusesParent.transform);
+                bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
+                Bonus newBonus = bloodPixel.GetComponent<Bonus>();
+                newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
             }
         }
 
@@ -182,10 +212,15 @@ public class Enemy : MonoBehaviour
             float rand = UnityEngine.Random.Range(0f, 1f);
             if (rand < probabilityOfSilverStar)
             {
+                Color randomColor = asArray[randomizer.Next(asArray.Length)];
+
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[1], positionStar, Quaternion.identity, bonusesParent.transform);
+                GameObject bloodPixel = Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[1], positionStar, Quaternion.identity, bonusesParent.transform);
+                bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
+                Bonus newBonus = bloodPixel.GetComponent<Bonus>();
+                newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
             }
         }
 
@@ -194,11 +229,14 @@ public class Enemy : MonoBehaviour
             float rand = UnityEngine.Random.Range(0f, 1f);
             if (rand < probabilityOfBronzeStar)
             {
+                Color randomColor = asArray[randomizer.Next(asArray.Length)];
+
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                GameObject tmpBonus = Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[0], positionStar, Quaternion.identity, bonusesParent.transform);
-                Bonus newBonus = tmpBonus.GetComponent<Bonus>();
+                GameObject bloodPixel = Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[0], positionStar, Quaternion.identity, bonusesParent.transform);
+                bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
+                Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
             }
         }
