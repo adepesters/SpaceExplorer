@@ -107,7 +107,7 @@ public class WorldMapMenu : MonoBehaviour
                     var planetPos = new Vector2(planet.transform.position.x, planet.transform.position.y);
                     var pointerPos = new Vector2(pointer.transform.position.x, pointer.transform.position.y);
 
-                    if (Vector2.Distance(planetPos, pointerPos) < 400)
+                    if (Vector2.Distance(planetPos, pointerPos) < 400 && planet.transform.GetChild(1).GetComponent<WorldMapIcon>().HasBeenDisovered == true)
                     {
                         snap = true;
                         planetToSnap = planet;
