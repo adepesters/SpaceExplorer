@@ -28,6 +28,8 @@ public class PlayerTileVania : MonoBehaviour
     bool playerOnAir;
     Vector2 onAirPos;
 
+    bool canJump = false;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -108,17 +110,36 @@ public class PlayerTileVania : MonoBehaviour
 
     private void Jump()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && (FindObjectOfType<Ground>().AreFeetOnTheGround())) // || FindObjectOfType<Ladders>().AreFeetOnTheGround()))
+        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && (FindObjectOfType<Ground>().AreFeetCloseToTheGround()))
+        {
+            canJump = true;
+        }
+        if (canJump == true && (FindObjectOfType<Ground>().AreFeetOnTheGround()))
         {
             rigidBody.gravityScale = 3; // in case we jump from a ladder (where gravity is 0)
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
             isJumping = true;
+            canJump = false;
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
             isJumping = false;
         }
     }
+
+    //private void Jump()
+    //{
+    //    if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && (FindObjectOfType<Ground>().AreFeetOnTheGround())) // || FindObjectOfType<Ladders>().AreFeetOnTheGround()))
+    //    {
+    //        rigidBody.gravityScale = 3; // in case we jump from a ladder (where gravity is 0)
+    //        rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+    //        isJumping = true;
+    //    }
+    //    if (Input.GetKeyUp(KeyCode.Space))
+    //    {
+    //        isJumping = false;
+    //    }
+    //}
 
     //private void Climb()
     //{
