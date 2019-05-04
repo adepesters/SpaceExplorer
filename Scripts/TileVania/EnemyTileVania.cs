@@ -6,7 +6,7 @@ using System;
 
 public class EnemyTileVania : MonoBehaviour
 {
-    float health = 5000f;
+    float health = 200f;
     Color originalColor;
     float[] maxNumberOfParticles = new float[] { 4f, 4f, 4f, 4f, 4f, 4f, 4f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
@@ -101,10 +101,6 @@ public class EnemyTileVania : MonoBehaviour
     private void ProcessHit(Collision2D collision, Vector2 contactPoint)
     {
         health -= collision.gameObject.GetComponent<Sword>().GetDamage();
-        if (health <= 0)
-        {
-            KillEnemy();
-        }
         collision.gameObject.GetComponent<Sword>().SetCanHit(false);
         float rand = UnityEngine.Random.Range(0f, 1f);
         if (rand < chanceOfCriticalHit)
@@ -117,14 +113,14 @@ public class EnemyTileVania : MonoBehaviour
         }
         BleedParticles(contactPoint);
         originalPlayerPos = player.transform.position;
-        StartCoroutine(ElevatePlayer(originalPlayerPos));
+        StartCoroutine(ElevatePlayer());
     }
 
-    IEnumerator ElevatePlayer(Vector2 currentOriginalPlayerPos)
+    IEnumerator ElevatePlayer()
     {
-        player.SetPlayerOnAir(true, currentOriginalPlayerPos);
+        player.SetPlayerOnAir(true, originalPlayerPos);
         yield return new WaitForSeconds(0.3f);
-        player.SetPlayerOnAir(false, currentOriginalPlayerPos);
+        player.SetPlayerOnAir(false, originalPlayerPos);
     }
 
     IEnumerator SFXNormalHit()
@@ -136,8 +132,15 @@ public class EnemyTileVania : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
-        FindObjectOfType<Sword>().SpeedAnimation = 1f;
+        if (FindObjectOfType<Sword>() != null)
+        {
+            FindObjectOfType<Sword>().SpeedAnimation = 1f;
+        }
         FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
+        if (health <= 0)
+        {
+            KillEnemy();
+        }
     }
 
     IEnumerator SFXCriticalHit()
@@ -156,6 +159,10 @@ public class EnemyTileVania : MonoBehaviour
             FindObjectOfType<Sword>().SpeedAnimation = 1f;
         }
         FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
+        if (health <= 0)
+        {
+            KillEnemy();
+        }
     }
 
 
@@ -201,7 +208,11 @@ public class EnemyTileVania : MonoBehaviour
     private void KillEnemy()
     {
         Destroy(gameObject);
+        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
+        if (FindObjectOfType<Sword>() != null)
+        {
+            FindObjectOfType<Sword>().SpeedAnimation = 1f;
+        }
+        player.SetPlayerOnAir(false, originalPlayerPos);
     }
-
-
 }
