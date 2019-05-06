@@ -13,6 +13,7 @@ public class Ground : MonoBehaviour
         if (collision.gameObject.name.Contains("Feet"))
         {
             feetAreTouchingGround = true;
+            FindObjectOfType<PlayerTileVania>().IsOnATree = false;
         }
         if (collision.gameObject.name.Contains("Ground Detector"))
         {
