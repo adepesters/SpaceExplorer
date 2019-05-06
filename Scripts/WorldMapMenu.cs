@@ -46,6 +46,8 @@ public class WorldMapMenu : MonoBehaviour
     bool snap = false;
     Planet planetToSnap;
 
+    bool moveWorldmap = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +73,10 @@ public class WorldMapMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("moveWorldmap: " + moveWorldmap);
+        //Debug.Log("movePointer: " + movePointer);
+        //Debug.Log("snap: " + snap);
+
         if (FindObjectOfType<PauseController>().IsGamePaused() && FindObjectOfType<PauseMenuController>().GetMenuPage() == "world map")
         {
             gameObject.GetComponent<Canvas>().enabled = true;
@@ -91,7 +97,9 @@ public class WorldMapMenu : MonoBehaviour
                 //        pointer.transform.position = pointer.GetPlanet().transform.position;
                 //    }
                 //}
-                movePointer = !movePointer;
+
+                moveWorldmap = !moveWorldmap;
+                movePointer = !moveWorldmap;
             }
 
             currentHeightCam = WorldmapCam.orthographicSize;
@@ -99,9 +107,10 @@ public class WorldMapMenu : MonoBehaviour
 
             marginPointer = WorldmapCam.orthographicSize / 3f;
 
-            if (snapToPlanet == null)
+            if (snapToPlanet == null && snap == false)
             {
                 Planet[] planets = FindObjectsOfType<Planet>();
+
                 foreach (Planet planet in planets)
                 {
                     var planetPos = new Vector2(planet.transform.position.x, planet.transform.position.y);
@@ -115,7 +124,6 @@ public class WorldMapMenu : MonoBehaviour
                     }
                 }
             }
-
         }
         else
         {
@@ -123,7 +131,7 @@ public class WorldMapMenu : MonoBehaviour
             checkVisibleClouds = null;
         }
 
-        if (snap == true && snapToPlanet == null)
+        if (snap == true && snapToPlanet == null)// && !moveWorldmap)// && !cantSnapAgain)
         {
             snapToPlanet = StartCoroutine(SnapToPlanet(planetToSnap));
         }
@@ -166,7 +174,7 @@ public class WorldMapMenu : MonoBehaviour
 
     private void Move()
     {
-        if (movePointer)
+        if (movePointer && !moveWorldmap)
         {
             snapToPlanet = null;
             if (!CheckIfPointerIsInside())
@@ -206,7 +214,7 @@ public class WorldMapMenu : MonoBehaviour
                 WorldmapCam.transform.position = new Vector3(xCam, yCam, zCam);
             }
         }
-        else if (snap == false)
+        else if (moveWorldmap)
         {
             xCam += Input.GetAxis("Horizontal") * speedCam;
             yCam += Input.GetAxis("Vertical") * speedCam;
