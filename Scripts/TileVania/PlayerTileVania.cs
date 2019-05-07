@@ -31,8 +31,10 @@ public class PlayerTileVania : MonoBehaviour
     bool canJump = false;
 
     bool isOnATree = false;
+    bool grapinJump = false;
 
     public bool IsOnATree { get => isOnATree; set => isOnATree = value; }
+    public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
 
     void Start()
     {
@@ -114,11 +116,11 @@ public class PlayerTileVania : MonoBehaviour
 
     private void Jump()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && ((FindObjectOfType<Ground>().AreFeetCloseToTheGround()) || isOnATree))
+        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && ((FindObjectOfType<Ground>().AreFeetCloseToTheGround()) || isOnATree || grapinJump))
         {
             canJump = true;
         }
-        if (canJump == true && (FindObjectOfType<Ground>().AreFeetOnTheGround() || isOnATree))
+        if (canJump == true && (FindObjectOfType<Ground>().AreFeetOnTheGround() || isOnATree || grapinJump))
         {
             rigidBody.gravityScale = 3; // in case we jump from a ladder (where gravity is 0)
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);

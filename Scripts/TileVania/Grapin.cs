@@ -16,11 +16,13 @@ public class Grapin : MonoBehaviour
 
     float speedGrapin;
 
-    Coroutine lauchGrapin;
-
     Vector2 stuckPos;
 
     float detectionThreshold = 0.5f;
+
+    float grapinLength = 4f;
+
+    Coroutine enableGrapinJump;
 
     // Start is called before the first frame update
     void Start()
@@ -44,12 +46,12 @@ public class Grapin : MonoBehaviour
         {
             grapinLaunched = true;
             returnGrapin = false;
-            target = new Vector2(transform.position.x, transform.position.y) - 3 * new Vector2(transform.up.x, transform.up.y);
+            target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
         }
 
         if (grapinLaunched)
         {
-            lauchGrapin = StartCoroutine(LaunchGrapin());
+            StartCoroutine(LaunchGrapin());
         }
 
         if (returnGrapin)
@@ -59,6 +61,7 @@ public class Grapin : MonoBehaviour
             if (Mathf.Abs(transform.position.x - target.x) < Mathf.Epsilon && Mathf.Abs(transform.position.y - target.y) < Mathf.Epsilon)
             {
                 rotateGrapin = true;
+                enableGrapinJump = null;
             }
         }
 
@@ -66,15 +69,29 @@ public class Grapin : MonoBehaviour
         {
             canGetStuck = false;
             transform.position = stuckPos;
-            player.transform.position = Vector2.MoveTowards(player.transform.position, transform.position, speedGrapin / 2);
-            player.GetComponent<Rigidbody2D>().gravityScale = 0;
+            player.transform.position = Vector2.MoveTowards(player.transform.position, transform.position, speedGrapin);
+            player.GetComponent<Rigidbody2D>().simulated = false;
             if (Vector2.Distance(transform.position, player.transform.position) < detectionThreshold)
             {
-                gotStuck = false;
                 returnGrapin = true;
-                player.GetComponent<Rigidbody2D>().gravityScale = 3;
+                player.GetComponent<Rigidbody2D>().simulated = true;
+                if (enableGrapinJump == null && gotStuck)
+                {
+                    enableGrapinJump = StartCoroutine("EnableGrapinJump");
+                }
+                gotStuck = false;
             }
         }
+
+        //Debug.Log(gotStuck);
+        //Debug.Log(enableGrapinJump);
+    }
+
+    IEnumerator EnableGrapinJump()
+    {
+        player.GrapinJump = true;
+        yield return new WaitForSeconds(0.5f);
+        player.GrapinJump = false;
     }
 
     IEnumerator LaunchGrapin()
@@ -109,6 +126,7 @@ public class Grapin : MonoBehaviour
         if (canGetStuck)
         {
             gotStuck = true;
+            grapinLaunched = false;
             stuckPos = transform.position;
         }
     }
