@@ -104,6 +104,7 @@ public class Grapin : MonoBehaviour
         if (Mathf.Abs(transform.position.x - target.x) < Mathf.Epsilon && Mathf.Abs(transform.position.y - target.y) < Mathf.Epsilon)
         {
             grapinLaunched = false;
+            canGetStuck = false;
         }
         yield return new WaitForSeconds(0.5f);
         if (!gotStuck)
