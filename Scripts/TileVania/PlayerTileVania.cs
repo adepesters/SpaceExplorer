@@ -32,9 +32,15 @@ public class PlayerTileVania : MonoBehaviour
 
     bool isOnATree = false;
     bool grapinJump = false;
+    bool isTargeting = false;
+    bool feetAreOnSomething;
+    bool feetAreCloseToSomething;
 
     public bool IsOnATree { get => isOnATree; set => isOnATree = value; }
     public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
+    public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
+    public bool FeetAreOnSomething { get => feetAreOnSomething; set => feetAreOnSomething = value; }
+    public bool FeetAreCloseToSomething { get => feetAreCloseToSomething; set => feetAreCloseToSomething = value; }
 
     void Start()
     {
@@ -98,12 +104,14 @@ public class PlayerTileVania : MonoBehaviour
 
     private void Move()
     {
-        if (playerIsImmobile || (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")) && (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon)))
+        if (playerIsImmobile || (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")) && (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon)) || isTargeting)
         {
             animator.SetBool("isRunning", false);
+            rigidBody.drag = 1000;
         }
         else
         {
+            rigidBody.drag = 0;
             animator.SetBool("isRunning", true);
             float xChange = Input.GetAxis("Horizontal") * runSpeed; // we don't put deltaTime here. See notes.
             rigidBody.velocity = new Vector2(xChange, rigidBody.velocity.y);
@@ -116,11 +124,12 @@ public class PlayerTileVania : MonoBehaviour
 
     private void Jump()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && ((FindObjectOfType<Ground>().AreFeetCloseToTheGround()) || isOnATree || grapinJump))
+        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && ((FindObjectOfType<Ground>().AreFeetCloseToTheGround()) || (isOnATree && feetAreCloseToSomething) || grapinJump))
         {
             canJump = true;
+
         }
-        if (canJump == true && (FindObjectOfType<Ground>().AreFeetOnTheGround() || isOnATree || grapinJump))
+        if (canJump == true && (feetAreOnSomething || grapinJump) && (FindObjectOfType<Ground>().AreFeetOnTheGround() || isOnATree || grapinJump))
         {
             rigidBody.gravityScale = 3; // in case we jump from a ladder (where gravity is 0)
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);

@@ -25,6 +25,7 @@ public class Tree : MonoBehaviour
         else
         {
             GetComponent<PolygonCollider2D>().isTrigger = false;
+
             FindObjectOfType<PlayerTileVania>().IsOnATree = true;
         }
     }

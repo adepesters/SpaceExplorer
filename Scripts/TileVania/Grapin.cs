@@ -46,6 +46,7 @@ public class Grapin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (rotateGrapin)
         {
             RotatePlayerToGivenDirection();
@@ -55,6 +56,10 @@ public class Grapin : MonoBehaviour
         if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
         {
             displayTarget = true;
+            if (FindObjectOfType<PlayerTileVania>().FeetAreOnSomething)
+            {
+                player.IsTargeting = true;
+            }
         }
 
         if (FindObjectOfType<PS4ControllerCheck>().IsSquareReleased())
@@ -63,7 +68,9 @@ public class Grapin : MonoBehaviour
             displayTarget = false;
             grapinLaunched = true;
             returnGrapin = false;
+            player.IsTargeting = false;
         }
+
 
         if (displayTarget)
         {
