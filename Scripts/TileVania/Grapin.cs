@@ -13,6 +13,7 @@ public class Grapin : MonoBehaviour
     Vector2 target;
 
     PlayerTileVania player;
+    GameObject grapinHandler;
 
     float speedGrapin;
 
@@ -28,8 +29,9 @@ public class Grapin : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerTileVania>();
+        grapinHandler = GameObject.Find("Grapin Handler");
         rotateGrapin = true;
-        transform.position = player.transform.position;
+        transform.position = grapinHandler.transform.position;
         speedGrapin = 20f * Time.deltaTime;
     }
 
@@ -39,7 +41,7 @@ public class Grapin : MonoBehaviour
         if (rotateGrapin)
         {
             RotatePlayerToGivenDirection();
-            transform.position = player.transform.position;
+            transform.position = grapinHandler.transform.position;
         }
 
         if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
@@ -56,7 +58,7 @@ public class Grapin : MonoBehaviour
 
         if (returnGrapin)
         {
-            target = new Vector2(player.transform.position.x, player.transform.position.y);
+            target = new Vector2(grapinHandler.transform.position.x, grapinHandler.transform.position.y);
             transform.position = Vector2.MoveTowards(transform.position, target, speedGrapin);
             if (Mathf.Abs(transform.position.x - target.x) < Mathf.Epsilon && Mathf.Abs(transform.position.y - target.y) < Mathf.Epsilon)
             {
