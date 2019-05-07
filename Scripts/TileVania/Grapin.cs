@@ -25,11 +25,19 @@ public class Grapin : MonoBehaviour
 
     Coroutine enableGrapinJump;
 
+    GameObject grapinTarget;
+
+    bool displayTarget;
+
+    Color targetColor = new Color(0.1620135f, 0.6698113f, 0.03475436f, 1f);
+
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerTileVania>();
         grapinHandler = GameObject.Find("Grapin Handler");
+        grapinTarget = GameObject.Find("Grapin Target");
+        grapinTarget.GetComponent<SpriteRenderer>().enabled = false;
         rotateGrapin = true;
         transform.position = grapinHandler.transform.position;
         speedGrapin = 20f * Time.deltaTime;
@@ -46,10 +54,26 @@ public class Grapin : MonoBehaviour
 
         if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
         {
+            displayTarget = true;
+        }
+
+        if (FindObjectOfType<PS4ControllerCheck>().IsSquareReleased())
+        {
+            target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
+            displayTarget = false;
             grapinLaunched = true;
             returnGrapin = false;
-            target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
         }
+
+        if (displayTarget)
+        {
+            DisplayTarget();
+        }
+        else
+        {
+            grapinTarget.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
 
         if (grapinLaunched)
         {
@@ -87,6 +111,32 @@ public class Grapin : MonoBehaviour
 
         //Debug.Log(gotStuck);
         //Debug.Log(enableGrapinJump);
+    }
+
+    private void DisplayTarget()
+    {
+        grapinTarget.GetComponent<SpriteRenderer>().enabled = true;
+        target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
+        grapinTarget.transform.position = target;
+        RaycastUntilTarget();
+    }
+
+    private void RaycastUntilTarget()
+    {
+        int layerMask = (1 << 8) | (1 << 22) | (1 << 23);
+        layerMask = ~layerMask;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position - (1f * transform.up), -transform.up, grapinLength - 1f, layerMask);
+        //Debug.DrawRay(transform.position - (1.5f * transform.up), -transform.up * grapinLength);
+
+        if (hits.Length > 0)
+        {
+            grapinTarget.GetComponent<SpriteRenderer>().color = targetColor;
+            grapinTarget.transform.position = hits[0].point;
+        }
+        else
+        {
+            grapinTarget.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
     }
 
     IEnumerator EnableGrapinJump()
