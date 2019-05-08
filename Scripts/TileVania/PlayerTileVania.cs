@@ -226,19 +226,25 @@ public class PlayerTileVania : MonoBehaviour
 
     private void SwingSwordRight()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+        if (FindObjectOfType<ToolSelector>().GetTool() == "sword")
         {
-            var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
-            Sword sword = Instantiate(rightSwordPrefab, swordPos, Quaternion.identity);
+            if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+            {
+                var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
+                Sword sword = Instantiate(rightSwordPrefab, swordPos, Quaternion.identity);
+            }
         }
     }
 
     private void SwingSwordLeft()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+        if (FindObjectOfType<ToolSelector>().GetTool() == "sword")
         {
-            var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
-            Sword sword = Instantiate(leftSwordPrefab, swordPos, Quaternion.identity);
+            if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+            {
+                var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
+                Sword sword = Instantiate(leftSwordPrefab, swordPos, Quaternion.identity);
+            }
         }
     }
 

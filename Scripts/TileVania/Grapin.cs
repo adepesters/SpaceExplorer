@@ -34,6 +34,7 @@ public class Grapin : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<SpriteRenderer>().enabled = false;
         player = FindObjectOfType<PlayerTileVania>();
         grapinHandler = GameObject.Find("Grapin Handler");
         grapinTarget = GameObject.Find("Grapin Target");
@@ -46,78 +47,86 @@ public class Grapin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (rotateGrapin)
+        if (FindObjectOfType<ToolSelector>().GetTool() == "grappin")
         {
-            RotatePlayerToGivenDirection();
-            transform.position = grapinHandler.transform.position;
-        }
+            GetComponent<SpriteRenderer>().enabled = true;
 
-        if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
-        {
-            displayTarget = true;
-            if (FindObjectOfType<Feet>().AreOnSomething)
+            if (rotateGrapin)
             {
-                player.IsTargeting = true;
+                RotatePlayerToGivenDirection();
+                transform.position = grapinHandler.transform.position;
             }
-        }
 
-        if (FindObjectOfType<PS4ControllerCheck>().IsSquareReleased())
-        {
-            target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
-            displayTarget = false;
-            grapinLaunched = true;
-            returnGrapin = false;
-            player.IsTargeting = false;
-        }
+            if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+            {
+                displayTarget = true;
+                if (FindObjectOfType<Feet>().AreOnSomething)
+                {
+                    player.IsTargeting = true;
+                }
+            }
+
+            if (FindObjectOfType<PS4ControllerCheck>().IsSquareReleased())
+            {
+                target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
+                displayTarget = false;
+                grapinLaunched = true;
+                returnGrapin = false;
+                player.IsTargeting = false;
+            }
 
 
-        if (displayTarget)
-        {
-            DisplayTarget();
+            if (displayTarget)
+            {
+                DisplayTarget();
+            }
+            else
+            {
+                grapinTarget.GetComponent<SpriteRenderer>().enabled = false;
+            }
+
+
+            if (grapinLaunched)
+            {
+                StartCoroutine(LaunchGrapin());
+            }
+
+            if (returnGrapin)
+            {
+                target = new Vector2(grapinHandler.transform.position.x, grapinHandler.transform.position.y);
+                transform.position = Vector2.MoveTowards(transform.position, target, speedGrapin);
+                if (Mathf.Abs(transform.position.x - target.x) < Mathf.Epsilon && Mathf.Abs(transform.position.y - target.y) < Mathf.Epsilon)
+                {
+                    rotateGrapin = true;
+                    enableGrapinJump = null;
+                }
+            }
+
+            if (gotStuck)
+            {
+                canGetStuck = false;
+                transform.position = stuckPos;
+                player.transform.position = Vector2.MoveTowards(player.transform.position, transform.position, speedGrapin);
+                player.GetComponent<Rigidbody2D>().simulated = false;
+                if (Vector2.Distance(transform.position, player.transform.position) < detectionThreshold)
+                {
+                    returnGrapin = true;
+                    player.GetComponent<Rigidbody2D>().simulated = true;
+                    if (enableGrapinJump == null && gotStuck)
+                    {
+                        enableGrapinJump = StartCoroutine("EnableGrapinJump");
+                    }
+                    gotStuck = false;
+                }
+            }
+
+            //Debug.Log(gotStuck);
+            //Debug.Log(enableGrapinJump);
         }
         else
         {
-            grapinTarget.GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<SpriteRenderer>().enabled = false;
         }
-
-
-        if (grapinLaunched)
-        {
-            StartCoroutine(LaunchGrapin());
-        }
-
-        if (returnGrapin)
-        {
-            target = new Vector2(grapinHandler.transform.position.x, grapinHandler.transform.position.y);
-            transform.position = Vector2.MoveTowards(transform.position, target, speedGrapin);
-            if (Mathf.Abs(transform.position.x - target.x) < Mathf.Epsilon && Mathf.Abs(transform.position.y - target.y) < Mathf.Epsilon)
-            {
-                rotateGrapin = true;
-                enableGrapinJump = null;
-            }
-        }
-
-        if (gotStuck)
-        {
-            canGetStuck = false;
-            transform.position = stuckPos;
-            player.transform.position = Vector2.MoveTowards(player.transform.position, transform.position, speedGrapin);
-            player.GetComponent<Rigidbody2D>().simulated = false;
-            if (Vector2.Distance(transform.position, player.transform.position) < detectionThreshold)
-            {
-                returnGrapin = true;
-                player.GetComponent<Rigidbody2D>().simulated = true;
-                if (enableGrapinJump == null && gotStuck)
-                {
-                    enableGrapinJump = StartCoroutine("EnableGrapinJump");
-                }
-                gotStuck = false;
-            }
-        }
-
-        //Debug.Log(gotStuck);
-        //Debug.Log(enableGrapinJump);
     }
 
     private void DisplayTarget()
