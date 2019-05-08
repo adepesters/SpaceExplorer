@@ -33,17 +33,11 @@ public class PlayerTileVania : MonoBehaviour
     Feet feet;
     ExtendedLegs extendedLegs;
 
-    //bool isOnATree = false;
     bool grapinJump = false;
     bool isTargeting = false;
-    //bool feetAreOnSomething;
-    //bool feetAreCloseToSomething;
 
-    //public bool IsOnATree { get => isOnATree; set => isOnATree = value; }
     public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
     public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
-    //public bool FeetAreOnSomething { get => feetAreOnSomething; set => feetAreOnSomething = value; }
-    //public bool FeetAreCloseToSomething { get => feetAreCloseToSomething; set => feetAreCloseToSomething = value; }
 
     void Start()
     {
@@ -140,12 +134,11 @@ public class PlayerTileVania : MonoBehaviour
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
             isJumping = true;
             canJump = false;
-            //isOnATree = false;
         }
-        //if (Input.GetKeyUp(KeyCode.Space))
-        //{
-        //    isJumping = false;
-        //}
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isJumping = false;
+        }
     }
 
     //private void Jump()

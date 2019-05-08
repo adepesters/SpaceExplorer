@@ -19,7 +19,6 @@ public class Feet : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         areOnSomething = false;
-        //player.FeetAreOnSomething = false;
     }
 
 }
