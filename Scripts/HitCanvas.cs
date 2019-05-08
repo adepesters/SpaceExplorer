@@ -12,11 +12,7 @@ public class HitCanvas : MonoBehaviour
         GetComponent<Canvas>().enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
 
     public IEnumerator HandleHitCanvas()
     {

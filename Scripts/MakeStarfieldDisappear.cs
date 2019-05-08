@@ -14,11 +14,7 @@ public class MakeStarfieldDisappear : MonoBehaviour
         m_Particles = new ParticleSystem.Particle[m_System.particleCount];
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
 
     public void SetTransparencyToZero(float transparency)
     {
