@@ -26,11 +26,21 @@ public class CraftingMenu : MonoBehaviour
     List<int> numberOfGoldStarsForUpgrade1 = new List<int> { 0, 0, 1 };
     bool upgrade1NotificationHasPlayed = false;
 
+    GameSession gameSession;
+    PauseMenuController pauseMenuController;
+    PauseController pauseController;
+    Player player;
+
     void Start()
     {
-        numberOfBonuses[0].text = FindObjectOfType<GameSession>().counterStarBronze.ToString();
-        numberOfBonuses[1].text = FindObjectOfType<GameSession>().counterStarSilver.ToString();
-        numberOfBonuses[2].text = FindObjectOfType<GameSession>().counterStarGold.ToString();
+        gameSession = FindObjectOfType<GameSession>();
+        pauseMenuController = FindObjectOfType<PauseMenuController>();
+        pauseController = FindObjectOfType<PauseController>();
+        player = FindObjectOfType<Player>();
+
+        numberOfBonuses[0].text = gameSession.counterStarBronze.ToString();
+        numberOfBonuses[1].text = gameSession.counterStarSilver.ToString();
+        numberOfBonuses[2].text = gameSession.counterStarGold.ToString();
 
         gameObject.GetComponent<Canvas>().enabled = false;
 
@@ -45,35 +55,34 @@ public class CraftingMenu : MonoBehaviour
 
     void Update()
     {
-        if (FindObjectOfType<PauseController>().IsGamePaused() && FindObjectOfType<PauseMenuController>().GetMenuPage() == "crafting")
+        if (pauseController.IsGamePaused() && pauseMenuController.GetMenuPage() == "crafting")
         {
             gameObject.GetComponent<Canvas>().enabled = true;
+            numberOfBonuses[0].text = gameSession.counterStarBronze.ToString();
+            numberOfBonuses[1].text = gameSession.counterStarSilver.ToString();
+            numberOfBonuses[2].text = gameSession.counterStarGold.ToString();
+
+            if (IsUpgrade1Available())
+            {
+                validUpgradeImage.GetComponent<Image>().color = new Color(0.3f, 1, 0.3f, 1);
+            }
+            else
+            {
+                validUpgradeImage.GetComponent<Image>().color = new Color(1, 0, 0, 1);
+            }
+
+            if (newUpgradeNotificationPrefab == null)
+            {
+                if (IsUpgrade1Available() && upgrade1NotificationHasPlayed == false)
+                {
+                    StartCoroutine(InstantiateUpgradeNotification());
+                    upgrade1NotificationHasPlayed = true;
+                }
+            }
         }
         else
         {
             gameObject.GetComponent<Canvas>().enabled = false;
-        }
-
-        numberOfBonuses[0].text = FindObjectOfType<GameSession>().counterStarBronze.ToString();
-        numberOfBonuses[1].text = FindObjectOfType<GameSession>().counterStarSilver.ToString();
-        numberOfBonuses[2].text = FindObjectOfType<GameSession>().counterStarGold.ToString();
-
-        if (IsUpgrade1Available())
-        {
-            validUpgradeImage.GetComponent<Image>().color = new Color(0.3f, 1, 0.3f, 1);
-        }
-        else
-        {
-            validUpgradeImage.GetComponent<Image>().color = new Color(1, 0, 0, 1);
-        }
-
-        if (newUpgradeNotificationPrefab == null)
-        {
-            if (IsUpgrade1Available() && upgrade1NotificationHasPlayed == false)
-            {
-                StartCoroutine(InstantiateUpgradeNotification());
-                upgrade1NotificationHasPlayed = true;
-            }
         }
 
     }
@@ -87,9 +96,9 @@ public class CraftingMenu : MonoBehaviour
 
     private bool IsUpgrade1Available()
     {
-        if (FindObjectOfType<GameSession>().counterStarBronze >= numberOfBronzeStarsForUpgrade1[indexUpgrade1] &&
-        FindObjectOfType<GameSession>().counterStarSilver >= numberOfSilverStarsForUpgrade1[indexUpgrade1] &&
-            FindObjectOfType<GameSession>().counterStarGold >= numberOfGoldStarsForUpgrade1[indexUpgrade1])
+        if (gameSession.counterStarBronze >= numberOfBronzeStarsForUpgrade1[indexUpgrade1] &&
+        gameSession.counterStarSilver >= numberOfSilverStarsForUpgrade1[indexUpgrade1] &&
+            gameSession.counterStarGold >= numberOfGoldStarsForUpgrade1[indexUpgrade1])
         {
             return true;
         }
@@ -105,7 +114,7 @@ public class CraftingMenu : MonoBehaviour
         {
             indexUpgrade1++;
             indexUpgrade1 = Mathf.Clamp(indexUpgrade1, 0, upgrade1Values.Count - 1);
-            FindObjectOfType<Player>().SetLaserDamage(upgrade1Values[indexUpgrade1]);
+            player.SetLaserDamage(upgrade1Values[indexUpgrade1]);
             if (indexUpgrade1 == upgrade1Values.Count - 1)
             {
                 oldUpgrade1ValueText.text = upgrade1Values[indexUpgrade1].ToString();
@@ -122,9 +131,9 @@ public class CraftingMenu : MonoBehaviour
                 costSilverUpgrade1Text.text = numberOfSilverStarsForUpgrade1[indexUpgrade1].ToString();
                 costGoldUpgrade1Text.text = numberOfGoldStarsForUpgrade1[indexUpgrade1].ToString();
             }
-            FindObjectOfType<GameSession>().counterStarBronze -= numberOfBronzeStarsForUpgrade1[indexUpgrade1 - 1];
-            FindObjectOfType<GameSession>().counterStarSilver -= numberOfSilverStarsForUpgrade1[indexUpgrade1 - 1];
-            FindObjectOfType<GameSession>().counterStarGold -= numberOfGoldStarsForUpgrade1[indexUpgrade1 - 1];
+            gameSession.counterStarBronze -= numberOfBronzeStarsForUpgrade1[indexUpgrade1 - 1];
+            gameSession.counterStarSilver -= numberOfSilverStarsForUpgrade1[indexUpgrade1 - 1];
+            gameSession.counterStarGold -= numberOfGoldStarsForUpgrade1[indexUpgrade1 - 1];
             upgrade1NotificationHasPlayed = false;
         }
     }

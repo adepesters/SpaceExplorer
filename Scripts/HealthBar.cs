@@ -7,20 +7,24 @@ public class HealthBar : MonoBehaviour
 {
     Slider slider;
 
+    Player player;
+
     // Start is called before the first frame update
     void Start()
     {
+        player = FindObjectOfType<Player>();
+
         slider = GetComponent<Slider>();
-        slider.maxValue = FindObjectOfType<Player>().GetHealthPlayer();
+        slider.maxValue = player.GetHealthPlayer();
         slider.value = slider.maxValue;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<Player>())
+        if (player)
         {
-            slider.value = FindObjectOfType<Player>().GetHealthPlayer();
+            slider.value = player.GetHealthPlayer();
         }
         else
         {

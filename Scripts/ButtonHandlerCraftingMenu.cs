@@ -12,8 +12,18 @@ public class ButtonHandlerCraftingMenu : MonoBehaviour
     ///<summary>Index reference to our currently selected button.</summary>
     public int selectedButton = 0;
 
+    PauseController pauseController;
+    PauseMenuController pauseMenuController;
+    PS4ControllerCheck PS4ControllerCheck;
+    CraftingMenu craftingMenu;
+
     void Start()
     {
+        pauseController = FindObjectOfType<PauseController>();
+        pauseMenuController = FindObjectOfType<PauseMenuController>();
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        craftingMenu = FindObjectOfType<CraftingMenu>();
+
         // Instantiate buttonList to hold the amount of buttons we are using.
         buttonList = new MyButton[1];
         // Set up the first button, finding the game object based off its name. We also 
@@ -30,17 +40,17 @@ public class ButtonHandlerCraftingMenu : MonoBehaviour
 
     void Update()
     {
-        if (FindObjectOfType<PauseController>().IsGamePaused() && FindObjectOfType<PauseMenuController>().GetMenuPage() == "crafting")
+        if (pauseController.IsGamePaused() && pauseMenuController.GetMenuPage() == "crafting")
         {
-            if (FindObjectOfType<PS4ControllerCheck>().DiscreteMoveUp())
+            if (PS4ControllerCheck.DiscreteMoveUp())
             {
                 MoveToPreviousButton();
             }
-            else if (FindObjectOfType<PS4ControllerCheck>().DiscreteMoveDown())
+            else if (PS4ControllerCheck.DiscreteMoveDown())
             {
                 MoveToNextButton();
             }
-            if (FindObjectOfType<PS4ControllerCheck>().IsXPressed())
+            if (PS4ControllerCheck.IsXPressed())
             {
                 buttonList[selectedButton].action();
             }
@@ -71,7 +81,7 @@ public class ButtonHandlerCraftingMenu : MonoBehaviour
     ///<summary>This is the method that will call when selecting "Play".</summary>
     void PlayButtonAction()
     {
-        FindObjectOfType<CraftingMenu>().Upgrade1();
+        craftingMenu.Upgrade1();
     }
 
     ///<summary>This is the method that will call when selecting "Options".</summary>

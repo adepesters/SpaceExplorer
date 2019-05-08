@@ -11,9 +11,15 @@ public class DialogActivator : MonoBehaviour
     bool canActivate;
     bool exitedTheScene = false;
 
+    DialogManager dialogManager;
+    ActionBoxManager actionBoxManager;
+
     // Start is called before the first frame update
     void Start()
     {
+        dialogManager = FindObjectOfType<DialogManager>();
+        actionBoxManager = FindObjectOfType<ActionBoxManager>();
+
         //lines[0] = "Je suis une princesse... une fée ... on ne sait pas trop...";
         //lines[1] = "Je vais te dire un secret...";
         //lines[2] = "Il y a une planète merveilleuse au nord d'ici...";
@@ -24,15 +30,15 @@ public class DialogActivator : MonoBehaviour
     void Update()
     {
         //Debug.Log(FindObjectOfType<DialogManager>().transform.GetChild(0).gameObject);
-        if (canActivate && !FindObjectOfType<DialogManager>().transform.GetChild(0).gameObject.activeInHierarchy)
+        if (canActivate && !dialogManager.transform.GetChild(0).gameObject.activeInHierarchy)
         {
             if (GetComponent<MultipleChoiceDialog>() != null)
             {
-                FindObjectOfType<DialogManager>().ShowDialog(lines, isQuestion, GetComponent<MultipleChoiceDialog>().GetChoices(), transform.gameObject);
+                dialogManager.ShowDialog(lines, isQuestion, GetComponent<MultipleChoiceDialog>().GetChoices(), transform.gameObject);
             }
             else
             {
-                FindObjectOfType<DialogManager>().ShowDialog(lines, isQuestion, null, transform.gameObject);
+                dialogManager.ShowDialog(lines, isQuestion, null, transform.gameObject);
             }
         }
     }
@@ -49,9 +55,9 @@ public class DialogActivator : MonoBehaviour
 
     private void EnableActionBox()
     {
-        FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = true;
-        FindObjectOfType<ActionBoxManager>().SetPos(transform.position);
-        FindObjectOfType<ActionBoxManager>().SetText(actionText);
+        actionBoxManager.gameObject.GetComponent<Canvas>().enabled = true;
+        actionBoxManager.SetPos(transform.position);
+        actionBoxManager.SetText(actionText);
     }
 
     private void OnTriggerExit2D(Collider2D collision)

@@ -68,7 +68,7 @@ public class YellowRadar : MonoBehaviour
     private void RotateTowardsTarget()
     {
         Transform targetTransform = target.transform;
-        Vector2 direction = targetTransform.position - FindObjectOfType<Player>().gameObject.transform.position;
+        Vector2 direction = targetTransform.position - player.gameObject.transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 135;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, facingSpeed * Time.deltaTime);

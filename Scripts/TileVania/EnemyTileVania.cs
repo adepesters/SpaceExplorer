@@ -24,6 +24,9 @@ public class EnemyTileVania : MonoBehaviour
 
     PlayerTileVania player;
     Vector2 originalPlayerPos;
+    ListOfBonuses ListOfBonuses;
+    ColorClassifier colorClassifier;
+    GameSession gameSession;
 
     float chanceOfCriticalHit = 0.2f;
 
@@ -44,6 +47,9 @@ public class EnemyTileVania : MonoBehaviour
 
         animator = GetComponent<Animator>();
         player = FindObjectOfType<PlayerTileVania>();
+        ListOfBonuses = FindObjectOfType<ListOfBonuses>();
+        gameSession = FindObjectOfType<GameSession>();
+        colorClassifier = FindObjectOfType<ColorClassifier>();
     }
 
     private void AnalyzeColorsInSprite()
@@ -128,7 +134,7 @@ public class EnemyTileVania : MonoBehaviour
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         animator.speed = 0f;
         FindObjectOfType<Sword>().SpeedAnimation = 0f;
-        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(true, FindObjectOfType<PlayerTileVania>().transform.position);
+        player.SetFrozenPlayer(true, player.transform.position);
         yield return new WaitForSeconds(0.05f);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
@@ -136,7 +142,7 @@ public class EnemyTileVania : MonoBehaviour
         {
             FindObjectOfType<Sword>().SpeedAnimation = 1f;
         }
-        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
+        player.SetFrozenPlayer(false, player.transform.position);
         if (health <= 0)
         {
             KillEnemy();
@@ -148,7 +154,7 @@ public class EnemyTileVania : MonoBehaviour
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         animator.speed = 0f;
         FindObjectOfType<Sword>().SpeedAnimation = 0f;
-        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(true, FindObjectOfType<PlayerTileVania>().transform.position);
+        player.SetFrozenPlayer(true, player.transform.position);
         yield return new WaitForSeconds(0.3f);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
@@ -158,7 +164,7 @@ public class EnemyTileVania : MonoBehaviour
         {
             FindObjectOfType<Sword>().SpeedAnimation = 1f;
         }
-        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
+        player.SetFrozenPlayer(false, player.transform.position);
         if (health <= 0)
         {
             KillEnemy();
@@ -168,7 +174,7 @@ public class EnemyTileVania : MonoBehaviour
 
     private void BleedParticles(Vector2 contactPoint)
     {
-        List<GameObject> listOfBonuses = FindObjectOfType<ListOfBonuses>().listOfBonuses;
+        List<GameObject> listOfBonuses = ListOfBonuses.listOfBonuses;
         int numBonuses = listOfBonuses.Count;
         RandomizeOrder(listOfBonuses);
         System.Random randomizer = new System.Random();
@@ -185,9 +191,9 @@ public class EnemyTileVania : MonoBehaviour
                     Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, transform.position.z);
                     GameObject bloodPixel = Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
                     bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
-                    if (FindObjectOfType<GameSession>() != null)
+                    if (gameSession != null)
                     {
-                        FindObjectOfType<GameSession>().CounterPixelBlood[FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor)]++;
+                        gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
                     }
                 }
             }
@@ -208,7 +214,7 @@ public class EnemyTileVania : MonoBehaviour
     private void KillEnemy()
     {
         Destroy(gameObject);
-        FindObjectOfType<PlayerTileVania>().SetFrozenPlayer(false, FindObjectOfType<PlayerTileVania>().transform.position);
+        player.SetFrozenPlayer(false, player.transform.position);
         if (FindObjectOfType<Sword>() != null)
         {
             FindObjectOfType<Sword>().SpeedAnimation = 1f;

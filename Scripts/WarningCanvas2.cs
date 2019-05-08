@@ -22,8 +22,12 @@ public class WarningCanvas2 : MonoBehaviour
 
     float a = 0f;
 
+    PS4ControllerCheck PS4ControllerCheck;
+
     void Start()
     {
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+
         redOpaqueCircle = GameObject.Find("redOpaqueCircleUI");
         redTransparentCircle = GameObject.Find("redTransparentCircleUI");
         greenCircle = GameObject.Find("greenCircleUI");
@@ -39,7 +43,7 @@ public class WarningCanvas2 : MonoBehaviour
     {
         if (FindObjectOfType<ProximityDetector>().GetCollider() != null && currentWarning && pressed == false)
         {
-            if (FindObjectOfType<PS4ControllerCheck>().IsL1Pressed() || FindObjectOfType<PS4ControllerCheck>().IsR1Pressed())
+            if (PS4ControllerCheck.IsL1Pressed() || PS4ControllerCheck.IsR1Pressed())
             {
                 pressed = true;
                 FindObjectOfType<ProximityDetector>().GetCollider().gameObject.GetComponent<Laser>().goesBackToEnemy = true;

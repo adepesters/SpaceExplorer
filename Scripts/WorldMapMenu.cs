@@ -48,9 +48,17 @@ public class WorldMapMenu : MonoBehaviour
 
     bool moveWorldmap = true;
 
+    PauseController pauseController;
+    PauseMenuController pauseMenuController;
+    PS4ControllerCheck PS4ControllerCheck;
+
     // Start is called before the first frame update
     void Start()
     {
+        pauseController = FindObjectOfType<PauseController>();
+        pauseMenuController = FindObjectOfType<PauseMenuController>();
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+
         WorldmapCam = GameObject.Find("Worldmap Camera without Perspective").GetComponent<Camera>();
 
         WorldmapCam.orthographicSize = originalZoom;
@@ -77,7 +85,7 @@ public class WorldMapMenu : MonoBehaviour
         //Debug.Log("movePointer: " + movePointer);
         //Debug.Log("snap: " + snap);
 
-        if (FindObjectOfType<PauseController>().IsGamePaused() && FindObjectOfType<PauseMenuController>().GetMenuPage() == "world map")
+        if (pauseController.IsGamePaused() && pauseMenuController.GetMenuPage() == "world map")
         {
             gameObject.GetComponent<Canvas>().enabled = true;
             ZoomOut();
@@ -88,7 +96,7 @@ public class WorldMapMenu : MonoBehaviour
                 checkVisibleClouds = StartCoroutine(CheckVisibleClouds());
             }
 
-            if (FindObjectOfType<PS4ControllerCheck>().IsXPressed())
+            if (PS4ControllerCheck.IsXPressed())
             {
                 //if (movePointer)
                 //{
@@ -228,7 +236,7 @@ public class WorldMapMenu : MonoBehaviour
 
     private void ZoomIn()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().ContinuousR2Press())
+        if (PS4ControllerCheck.ContinuousR2Press())
         {
             //var xScale = pointer.transform.localScale.x;
             //var yScale = pointer.transform.localScale.y;
@@ -250,7 +258,7 @@ public class WorldMapMenu : MonoBehaviour
 
     private void ZoomOut()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().ContinuousL2Press())
+        if (PS4ControllerCheck.ContinuousL2Press())
         {
             WorldmapCam.orthographicSize += speedZoom * Time.fixedDeltaTime;
             WorldmapCam.orthographicSize = Mathf.Clamp(WorldmapCam.orthographicSize, minWorldmapCamSize, maxWorldmapCamSize);

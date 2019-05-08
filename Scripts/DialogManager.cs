@@ -29,10 +29,16 @@ public class DialogManager : MonoBehaviour
 
     GameObject parent;
 
+    PS4ControllerCheck PS4ControllerCheck;
+    Player player;
+    ActionBoxManager actionBoxManager;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        player = FindObjectOfType<Player>();
+        actionBoxManager = FindObjectOfType<ActionBoxManager>();
     }
 
     // Update is called once per frame
@@ -44,9 +50,9 @@ public class DialogManager : MonoBehaviour
         //Debug.Log(selectedChoice);
         if (canShow)
         {
-            if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && makeLineAppear == null)
+            if (PS4ControllerCheck.IsXPressed() && makeLineAppear == null)
             {
-                FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = false;
+                actionBoxManager.gameObject.GetComponent<Canvas>().enabled = false;
                 currentLineIndex++;
                 if (currentLineIndex >= dialogLines.Length)
                 {
@@ -89,7 +95,7 @@ public class DialogManager : MonoBehaviour
 
             if (makeQuestionAppear == null && questionWasAsked == true)
             {
-                if (FindObjectOfType<PS4ControllerCheck>().DiscreteMoveDown())
+                if (PS4ControllerCheck.DiscreteMoveDown())
                 {
                     selectedChoice++;
                     selectedChoice = Mathf.Clamp(selectedChoice, 0, choices.Count - 1);
@@ -109,7 +115,7 @@ public class DialogManager : MonoBehaviour
                     }
                 }
 
-                if (FindObjectOfType<PS4ControllerCheck>().DiscreteMoveUp())
+                if (PS4ControllerCheck.DiscreteMoveUp())
                 {
                     selectedChoice--;
                     selectedChoice = Mathf.Clamp(selectedChoice, 0, choices.Count - 1);
@@ -129,7 +135,7 @@ public class DialogManager : MonoBehaviour
                     }
                 }
 
-                if (FindObjectOfType<PS4ControllerCheck>().IsXPressed())
+                if (PS4ControllerCheck.IsXPressed())
                 {
                     parent.BroadcastMessage("SetSelectedChoice", new Vector2(1, selectedChoice));
                     questionWasAsked = false;
@@ -137,7 +143,7 @@ public class DialogManager : MonoBehaviour
             }
         }
 
-        if (FindObjectOfType<PS4ControllerCheck>().ContinuousXPress())
+        if (PS4ControllerCheck.ContinuousXPress())
         {
             textDisplaySpeed = 0.000001f;
             blipSoundVolume = 0.5f;
@@ -194,7 +200,7 @@ public class DialogManager : MonoBehaviour
 
     private void MakeGameObjectsImmobile()
     {
-        FindObjectOfType<Player>().SetImmobile(true);
+        player.SetImmobile(true);
 
         Laser[] lasers = FindObjectsOfType<Laser>();
         foreach (Laser laser in lasers)
@@ -223,7 +229,7 @@ public class DialogManager : MonoBehaviour
 
     private void MakeGameObjectsMobile()
     {
-        FindObjectOfType<Player>().SetImmobile(false);
+        player.SetImmobile(false);
 
         Laser[] lasers = FindObjectsOfType<Laser>();
         foreach (Laser laser in lasers)

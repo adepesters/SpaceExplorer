@@ -10,9 +10,13 @@ public class PauseMenuController : MonoBehaviour
 
     int indexMenuPage;
 
+    PS4ControllerCheck PS4ControllerCheck;
+
     // Start is called before the first frame update
     void Start()
     {
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+
         foreach (string menuPage in defaultMenuPages)
         {
             menuPages.Add(menuPage);
@@ -24,12 +28,12 @@ public class PauseMenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsL1Pressed())
+        if (PS4ControllerCheck.IsL1Pressed())
         {
             ChangeToLeftMenuPage();
         }
 
-        if (FindObjectOfType<PS4ControllerCheck>().IsR1Pressed())
+        if (PS4ControllerCheck.IsR1Pressed())
         {
             ChangeToRightMenuPage();
         }

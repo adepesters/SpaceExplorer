@@ -41,9 +41,15 @@ public class Boss : MonoBehaviour
     [SerializeField] float probabilityOfPowerUp2;
     [SerializeField] float jitter = 0.5f;
 
+    GameSession gameSession;
+    ListOfBonuses listOfBonuses;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameSession = FindObjectOfType<GameSession>();
+        listOfBonuses = FindObjectOfType<ListOfBonuses>();
+
         shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
         hitColorChange.r = 255f;
         hitColorChange.g = 0f;
@@ -123,7 +129,7 @@ public class Boss : MonoBehaviour
     {
         GameObject vFXParticles = Instantiate(destroyVFXParticles, transform.position, Quaternion.identity) as GameObject;
         Destroy(gameObject);
-        FindObjectOfType<GameSession>().score += pointsForDestruction;
+        gameSession.score += pointsForDestruction;
         VFXEnemyDeath(vFXParticles);
     }
 
@@ -137,7 +143,7 @@ public class Boss : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[2], positionStar, Quaternion.identity);
+                Instantiate(listOfBonuses.listOfBonuses[2], positionStar, Quaternion.identity);
             }
         }
 
@@ -149,7 +155,7 @@ public class Boss : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[1], positionStar, Quaternion.identity);
+                Instantiate(listOfBonuses.listOfBonuses[1], positionStar, Quaternion.identity);
             }
         }
 
@@ -161,7 +167,7 @@ public class Boss : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[0], positionStar, Quaternion.identity);
+                Instantiate(listOfBonuses.listOfBonuses[0], positionStar, Quaternion.identity);
             }
         }
 
@@ -173,7 +179,7 @@ public class Boss : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[3], positionStar, Quaternion.identity);
+                Instantiate(listOfBonuses.listOfBonuses[3], positionStar, Quaternion.identity);
             }
         }
 
@@ -185,7 +191,7 @@ public class Boss : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[4], positionStar, Quaternion.identity);
+                Instantiate(listOfBonuses.listOfBonuses[4], positionStar, Quaternion.identity);
             }
         }
 

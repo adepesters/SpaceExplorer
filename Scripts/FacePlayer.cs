@@ -8,8 +8,11 @@ public class FacePlayer : MonoBehaviour
 
     bool isImmobile;
 
+    Player player;
+
     void Start()
     {
+        player = FindObjectOfType<Player>();
         facingSpeed = UnityEngine.Random.Range(1, 10); // the fastest always aim perfectly for the player
         // the slowest are sloppy and miss the player
     }
@@ -19,7 +22,7 @@ public class FacePlayer : MonoBehaviour
     {
         if (!isImmobile)
         {
-            Transform target = FindObjectOfType<Player>().gameObject.transform;
+            Transform target = player.gameObject.transform;
             Vector2 direction = target.position - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
             Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);

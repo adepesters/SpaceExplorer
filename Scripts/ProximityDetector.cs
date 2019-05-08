@@ -12,9 +12,12 @@ public class ProximityDetector : MonoBehaviour
 
     Player player;
 
+    WarningCanvas2 warningCanvas2;
+
     // Start is called before the first frame update
     void Start()
     {
+        warningCanvas2 = FindObjectOfType<WarningCanvas2>();
         player = FindObjectOfType<Player>();
     }
 
@@ -43,10 +46,10 @@ public class ProximityDetector : MonoBehaviour
     IEnumerator Warning()
     {
         //warning = true;
-        FindObjectOfType<WarningCanvas2>().SetWarning(true);
+        warningCanvas2.SetWarning(true);
         yield return new WaitForSeconds(durationWarning);
         //warning = false;
-        FindObjectOfType<WarningCanvas2>().SetWarning(false);
+        warningCanvas2.SetWarning(false);
     }
 
     public GameObject GetCollider()

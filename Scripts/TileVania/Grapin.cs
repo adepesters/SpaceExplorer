@@ -31,9 +31,17 @@ public class Grapin : MonoBehaviour
 
     Color targetColor = new Color(0.1620135f, 0.6698113f, 0.03475436f, 1f);
 
+    ToolSelector toolSelector;
+    PS4ControllerCheck PS4ControllerCheck;
+    Feet feet;
+
     // Start is called before the first frame update
     void Start()
     {
+        toolSelector = FindObjectOfType<ToolSelector>();
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        feet = FindObjectOfType<Feet>();
+
         GetComponent<SpriteRenderer>().enabled = false;
         player = FindObjectOfType<PlayerTileVania>();
         grapinHandler = GameObject.Find("Grapin Handler");
@@ -47,7 +55,7 @@ public class Grapin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<ToolSelector>().GetTool() == "grappin")
+        if (toolSelector.GetTool() == "grappin")
         {
             GetComponent<SpriteRenderer>().enabled = true;
 
@@ -57,16 +65,16 @@ public class Grapin : MonoBehaviour
                 transform.position = grapinHandler.transform.position;
             }
 
-            if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+            if (PS4ControllerCheck.IsSquarePressed())
             {
                 displayTarget = true;
-                if (FindObjectOfType<Feet>().AreOnSomething)
+                if (feet.AreOnSomething)
                 {
                     player.IsTargeting = true;
                 }
             }
 
-            if (FindObjectOfType<PS4ControllerCheck>().IsSquareReleased())
+            if (PS4ControllerCheck.IsSquareReleased())
             {
                 target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
                 displayTarget = false;

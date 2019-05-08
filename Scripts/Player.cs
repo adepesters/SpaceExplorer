@@ -77,6 +77,9 @@ public class Player : MonoBehaviour
     const string PLAYER_LASERS = "Player Lasers Parent";
     GameObject playerLasersParent;
 
+    AttackStyle attackStyle;
+    HitCanvas hitCanvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,6 +98,8 @@ public class Player : MonoBehaviour
 
         ps4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
         rigidBody = GetComponent<Rigidbody2D>();
+        attackStyle = FindObjectOfType<AttackStyle>();
+        hitCanvas = FindObjectOfType<HitCanvas>();
 
         playerLasersParent = GameObject.Find(PLAYER_LASERS);
         if (!playerLasersParent)
@@ -215,12 +220,12 @@ public class Player : MonoBehaviour
                 RotatePlayerToGivenDirection(xVelocity, yVelocity);
                 hasBeganRotating = true;
             }
-            if (FindObjectOfType<AttackStyle>().GetAttackStyle() == "lasers")
+            if (attackStyle.GetAttackStyle() == "lasers")
             {
                 InstantiateLaser(xVelocity, yVelocity);
                 yield return new WaitForSeconds(laserFiringPeriod);
             }
-            else if (FindObjectOfType<AttackStyle>().GetAttackStyle() == "bombs")
+            else if (attackStyle.GetAttackStyle() == "bombs")
             {
                 InstantiateBomb(xVelocity, yVelocity);
                 yield return new WaitForSeconds(bombFiringPeriod);
@@ -274,7 +279,7 @@ public class Player : MonoBehaviour
 
             //Debug.Log(rigidBody.velocity);
 
-            bool accelerate = FindObjectOfType<PS4ControllerCheck>().ContinuousL1Press();
+            bool accelerate = ps4ControllerCheck.ContinuousL1Press();
 
             if ((Mathf.Abs(Input.GetAxis("Horizontal")) > 0.01 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.01))
             {
@@ -328,7 +333,7 @@ public class Player : MonoBehaviour
         if (!isInvincible)
         {
             health -= damageDealer.GetDamage();
-            StartCoroutine(FindObjectOfType<HitCanvas>().HandleHitCanvas());
+            StartCoroutine(hitCanvas.HandleHitCanvas());
         }
 
         if (layer_collider != 9)

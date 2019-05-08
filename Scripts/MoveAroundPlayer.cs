@@ -10,10 +10,12 @@ public class MoveAroundPlayer : MonoBehaviour
 
     bool isImmobile;
 
+    Player player;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -23,7 +25,7 @@ public class MoveAroundPlayer : MonoBehaviour
         {
             if (moveAround == null)
             {
-                target = FindObjectOfType<Player>().transform.position;
+                target = player.transform.position;
                 moveAround = StartCoroutine(MoveAround());
             }
 
@@ -37,7 +39,7 @@ public class MoveAroundPlayer : MonoBehaviour
         {
             enemySpeed += UnityEngine.Random.Range(-4f, 4f);
             enemySpeed = Mathf.Clamp(enemySpeed, 0.5f, 10f);
-            Vector2 playerPos = FindObjectOfType<Player>().transform.position;
+            Vector2 playerPos = player.transform.position;
             Vector2 randomJitter = new Vector2(UnityEngine.Random.Range(-15f, 15f), UnityEngine.Random.Range(-15f, 15f));
             target = playerPos + randomJitter;
             yield return new WaitForSeconds(UnityEngine.Random.Range(1f, 4f));

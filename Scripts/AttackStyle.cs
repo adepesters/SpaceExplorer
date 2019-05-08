@@ -11,9 +11,13 @@ public class AttackStyle : MonoBehaviour
 
     int indexAttackStyle;
 
+    PS4ControllerCheck PS4ControllerCheck;
+
     // Start is called before the first frame update
     void Start()
     {
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+
         foreach (string attackStyle in defaultAttackStyles)
         {
             attackStyles.Add(attackStyle);
@@ -25,12 +29,12 @@ public class AttackStyle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsL2Pressed())
+        if (PS4ControllerCheck.IsL2Pressed())
         {
             ChangeToLeftAttackStyle();
         }
 
-        if (FindObjectOfType<PS4ControllerCheck>().IsR2Pressed())
+        if (PS4ControllerCheck.IsR2Pressed())
         {
             ChangeToRightAttackStyle();
         }

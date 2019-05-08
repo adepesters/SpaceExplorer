@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class MinimapCamera : MonoBehaviour
 {
+    Player player;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(FindObjectOfType<Player>().transform.position.x, FindObjectOfType<Player>().transform.position.y, -5);
+        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -5);
     }
 }

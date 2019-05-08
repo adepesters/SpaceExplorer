@@ -46,10 +46,15 @@ public class Bonus : MonoBehaviour
     float enemySize;
     Vector2 initialPos;
 
+    GameSession gameSession;
+    Shield shield;
+    AttackStyle attackStyle;
+
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<Player>();
+
         originalLaserFiringSpeed = player.GetComponent<Player>().originalLaserSpeed;
         originalLaserFiringPeriod = player.GetComponent<Player>().originalLaserFiringPeriod;
         originalBombFiringSpeed = player.GetComponent<Player>().originalBombSpeed;
@@ -219,16 +224,17 @@ public class Bonus : MonoBehaviour
 
     private IEnumerator PowerUp3Routine()
     {
-        FindObjectOfType<Player>().SetInvincible(true);
-        FindObjectOfType<Shield>().gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
-        FindObjectOfType<Shield>().gameObject.GetComponentInChildren<CircleCollider2D>().enabled = true;
+        shield = FindObjectOfType<Shield>();
+        player.SetInvincible(true);
+        shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
+        shield.gameObject.GetComponentInChildren<CircleCollider2D>().enabled = true;
         //enemyLasersParent.GetComponentInChildren<CapsuleCollider2D>().isTrigger = false;
 
         //        GameObject.Find("Laser Enemy").GetComponent<CapsuleCollider2D>().isTrigger = false;
         yield return new WaitForSeconds(durationPowerUp3);
-        FindObjectOfType<Player>().SetInvincible(false);
-        FindObjectOfType<Shield>().gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0, 0, 0, 0);
-        FindObjectOfType<Shield>().gameObject.GetComponentInChildren<CircleCollider2D>().enabled = false;
+        player.SetInvincible(false);
+        shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        shield.gameObject.GetComponentInChildren<CircleCollider2D>().enabled = false;
         //GameObject.Find("Laser Enemy").GetComponent<CapsuleCollider2D>().isTrigger = true;
         Destroy(gameObject);
     }
@@ -259,6 +265,7 @@ public class Bonus : MonoBehaviour
 
     private IEnumerator FireContinuously()
     {
+        attackStyle = FindObjectOfType<AttackStyle>();
         while (true)
         {
             float laserFiringPeriod = player.GetComponent<Player>().laserFiringPeriod;
@@ -272,7 +279,7 @@ public class Bonus : MonoBehaviour
                 float xVelocity = Input.GetAxis("Mouse X") / (Mathf.Abs(Input.GetAxis("Mouse X")) + Mathf.Abs(Input.GetAxis("Mouse Y")));
                 float yVelocity = Input.GetAxis("Mouse Y") / (Mathf.Abs(Input.GetAxis("Mouse X")) + Mathf.Abs(Input.GetAxis("Mouse Y")));
 
-                if (FindObjectOfType<AttackStyle>().GetAttackStyle() == "lasers")
+                if (attackStyle.GetAttackStyle() == "lasers")
                 {
                     Vector2 originalLaserRotation = new Vector2(xVelocity, yVelocity);
                     Vector2 rotatedVectorLaser1 = Quaternion.Euler(0, 0, -20) * originalLaserRotation * originalLaserFiringSpeed;
@@ -286,7 +293,7 @@ public class Bonus : MonoBehaviour
                     laser2.GetComponent<Rigidbody2D>().velocity = rotatedVectorLaser2;
                     firingPeriod = laserFiringPeriod;
                 }
-                else if (FindObjectOfType<AttackStyle>().GetAttackStyle() == "bombs")
+                else if (attackStyle.GetAttackStyle() == "bombs")
                 {
                     Vector2 originalLaserRotation = new Vector2(xVelocity, yVelocity);
                     Vector2 rotatedVectorLaser1 = Quaternion.Euler(0, 0, -20) * originalLaserRotation * originalBombFiringSpeed;

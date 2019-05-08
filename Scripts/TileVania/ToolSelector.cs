@@ -10,9 +10,13 @@ public class ToolSelector : MonoBehaviour
 
     int indexTool;
 
+    PS4ControllerCheck PS4ControllerCheck;
+
     // Start is called before the first frame update
     void Start()
     {
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+
         foreach (string tool in defaultTools)
         {
             tools.Add(tool);
@@ -24,12 +28,12 @@ public class ToolSelector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsL2Pressed())
+        if (PS4ControllerCheck.IsL2Pressed())
         {
             ChangeToLeftTool();
         }
 
-        if (FindObjectOfType<PS4ControllerCheck>().IsR2Pressed())
+        if (PS4ControllerCheck.IsR2Pressed())
         {
             ChangeToRightTool();
         }

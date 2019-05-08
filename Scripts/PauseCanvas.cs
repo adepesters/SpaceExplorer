@@ -7,21 +7,29 @@ public class PauseCanvas : MonoBehaviour
 {
     [SerializeField] Text[] numberOfBonuses;
 
+    GameSession gameSession;
+    PauseController pauseController;
+    PauseMenuController pauseMenuController;
+
     void Start()
     {
+        gameSession = FindObjectOfType<GameSession>();
+        pauseController = FindObjectOfType<PauseController>();
+        pauseMenuController = FindObjectOfType<PauseMenuController>();
+
         gameObject.GetComponent<Canvas>().enabled = false;
-        numberOfBonuses[0].text = FindObjectOfType<GameSession>().counterStarBronze.ToString();
-        numberOfBonuses[1].text = FindObjectOfType<GameSession>().counterStarSilver.ToString();
-        numberOfBonuses[2].text = FindObjectOfType<GameSession>().counterStarGold.ToString();
+        numberOfBonuses[0].text = gameSession.counterStarBronze.ToString();
+        numberOfBonuses[1].text = gameSession.counterStarSilver.ToString();
+        numberOfBonuses[2].text = gameSession.counterStarGold.ToString();
     }
 
     void Update()
     {
-        numberOfBonuses[0].text = FindObjectOfType<GameSession>().counterStarBronze.ToString();
-        numberOfBonuses[1].text = FindObjectOfType<GameSession>().counterStarSilver.ToString();
-        numberOfBonuses[2].text = FindObjectOfType<GameSession>().counterStarGold.ToString();
+        numberOfBonuses[0].text = gameSession.counterStarBronze.ToString();
+        numberOfBonuses[1].text = gameSession.counterStarSilver.ToString();
+        numberOfBonuses[2].text = gameSession.counterStarGold.ToString();
 
-        if (FindObjectOfType<PauseController>().IsGamePaused() && FindObjectOfType<PauseMenuController>().GetMenuPage() == "pause")
+        if (pauseController.IsGamePaused() && pauseMenuController.GetMenuPage() == "pause")
         {
             gameObject.GetComponent<Canvas>().enabled = true;
         }

@@ -6,9 +6,15 @@ public class Tree : MonoBehaviour
 {
     bool treeIsTrigger = true;
 
+    PlayerTileVania player;
+    Feet feet;
+
     // Start is called before the first frame update
     void Start()
     {
+        player = FindObjectOfType<PlayerTileVania>();
+        feet = FindObjectOfType<Feet>();
+
         if (treeIsTrigger)
         {
             GetComponent<PolygonCollider2D>().isTrigger = true;
@@ -32,9 +38,9 @@ public class Tree : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("Feet"))
         {
-            if (!FindObjectOfType<Feet>().CurrentSurface.name.Contains("Ground"))
+            if (!feet.CurrentSurface.name.Contains("Ground"))
             {
-                if (!(FindObjectOfType<PlayerTileVania>().GetComponent<Rigidbody2D>().velocity.y > 0f))
+                if (!(player.GetComponent<Rigidbody2D>().velocity.y > 0f))
                 {
                     treeIsTrigger = false;
                 }

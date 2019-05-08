@@ -18,6 +18,8 @@ public class GameSession : MonoBehaviour
 
     int[] counterPixelBlood = new int[8];
 
+    Player player;
+
     public int[] CounterPixelBlood { get => counterPixelBlood; set => counterPixelBlood = value; }
 
     // cached variables
@@ -38,8 +40,10 @@ public class GameSession : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = FindObjectOfType<Player>();
+
         scoreText.text = score.ToString("D6");
-        healthText.text = FindObjectOfType<Player>().GetHealthPlayer().ToString();
+        healthText.text = player.GetHealthPlayer().ToString();
 
         for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
         {
@@ -51,10 +55,10 @@ public class GameSession : MonoBehaviour
     void Update()
     {
         scoreText.text = score.ToString("D6");
-        if (FindObjectOfType<Player>() != null) // because when the player dies its game object gets destructed, which returns 
-                                                // a bug when we try to access a FindObjectOfType<Player>
+        if (player != null) // because when the player dies its game object gets destructed, which returns 
+                            // a bug when we try to access a FindObjectOfType<Player>
         {
-            healthText.text = FindObjectOfType<Player>().GetHealthPlayer().ToString();
+            healthText.text = player.GetHealthPlayer().ToString();
         }
         else
         {

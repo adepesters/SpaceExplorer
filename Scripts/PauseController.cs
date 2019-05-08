@@ -6,13 +6,20 @@ public class PauseController : MonoBehaviour
 {
     bool isPaused = false;
 
+    PauseMenuController pauseMenuController;
+
+    void Start()
+    {
+        pauseMenuController = FindObjectOfType<PauseMenuController>();
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.JoystickButton13))
         {
             isPaused = !isPaused;
-            FindObjectOfType<PauseMenuController>().SetIndexMenuPage(0);
+            pauseMenuController.SetIndexMenuPage(0);
         }
 
         if (isPaused)

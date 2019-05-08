@@ -62,6 +62,10 @@ public class Enemy : MonoBehaviour
     Color originalColor;
     List<Color> colorSet;
 
+    GameSession gameSession;
+    ListOfBonuses listOfBonuses;
+    ColorClassifier colorClassifier;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,6 +94,10 @@ public class Enemy : MonoBehaviour
 
         originalColor = GetComponent<SpriteRenderer>().color;
         AnalyzeColorsInSprite();
+
+        gameSession = FindObjectOfType<GameSession>();
+        listOfBonuses = FindObjectOfType<ListOfBonuses>();
+        colorClassifier = FindObjectOfType<ColorClassifier>();
     }
 
     private void AnalyzeColorsInSprite()
@@ -185,7 +193,7 @@ public class Enemy : MonoBehaviour
     {
         GameObject vFXParticles = Instantiate(destroyVFXParticles, transform.position, Quaternion.identity) as GameObject;
         Destroy(gameObject);
-        FindObjectOfType<GameSession>().score += pointsForDestruction;
+        gameSession.score += pointsForDestruction;
         VFXEnemyDeath(vFXParticles);
     }
 
@@ -203,11 +211,11 @@ public class Enemy : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                GameObject bloodPixel = Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[2], positionStar, Quaternion.identity, bonusesParent.transform);
+                GameObject bloodPixel = Instantiate(listOfBonuses.listOfBonuses[2], positionStar, Quaternion.identity, bonusesParent.transform);
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                FindObjectOfType<GameSession>().CounterPixelBlood[FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor)]++;
+                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
 
@@ -221,11 +229,11 @@ public class Enemy : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                GameObject bloodPixel = Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[1], positionStar, Quaternion.identity, bonusesParent.transform);
+                GameObject bloodPixel = Instantiate(listOfBonuses.listOfBonuses[1], positionStar, Quaternion.identity, bonusesParent.transform);
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                FindObjectOfType<GameSession>().CounterPixelBlood[FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor)]++;
+                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
 
@@ -239,11 +247,11 @@ public class Enemy : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                GameObject bloodPixel = Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[0], positionStar, Quaternion.identity, bonusesParent.transform);
+                GameObject bloodPixel = Instantiate(listOfBonuses.listOfBonuses[0], positionStar, Quaternion.identity, bonusesParent.transform);
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                FindObjectOfType<GameSession>().CounterPixelBlood[FindObjectOfType<ColorClassifier>().WhatColorIsThat(randomColor)]++;
+                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
 
@@ -255,7 +263,7 @@ public class Enemy : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[3], positionStar, Quaternion.identity, bonusesParent.transform);
+                Instantiate(listOfBonuses.listOfBonuses[3], positionStar, Quaternion.identity, bonusesParent.transform);
             }
         }
 
@@ -267,7 +275,7 @@ public class Enemy : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[4], positionStar, Quaternion.identity, bonusesParent.transform);
+                Instantiate(listOfBonuses.listOfBonuses[4], positionStar, Quaternion.identity, bonusesParent.transform);
             }
         }
 
@@ -279,7 +287,7 @@ public class Enemy : MonoBehaviour
                 Vector3 positionStar = new Vector3(UnityEngine.Random.Range(transform.position.x - jitter, transform.position.x + jitter),
                 UnityEngine.Random.Range(transform.position.y - jitter, transform.position.y + jitter),
                 transform.position.z);
-                Instantiate(FindObjectOfType<ListOfBonuses>().listOfBonuses[5], positionStar, Quaternion.identity, bonusesParent.transform);
+                Instantiate(listOfBonuses.listOfBonuses[5], positionStar, Quaternion.identity, bonusesParent.transform);
             }
         }
 

@@ -20,8 +20,14 @@ public class WarningCanvas : MonoBehaviour
     float durationAvoidFeedback = 0.1f;
     float refractoryPeriod = 3f;
 
+    PS4ControllerCheck PS4ControllerCheck;
+    ProximityDetector proximityDetector;
+
     void Start()
     {
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        proximityDetector = FindObjectOfType<ProximityDetector>();
+
         redCircle = GameObject.Find("avoid red").GetComponent<SpriteRenderer>();
         transparentRedCircle = GameObject.Find("avoid red transparent").GetComponent<SpriteRenderer>();
         greenCircle = GameObject.Find("avoid green").GetComponent<SpriteRenderer>();
@@ -35,12 +41,12 @@ public class WarningCanvas : MonoBehaviour
 
     void Update()
     {
-        if (FindObjectOfType<ProximityDetector>().GetCollider() != null && currentWarning && pressed == false)
+        if (proximityDetector.GetCollider() != null && currentWarning && pressed == false)
         {
-            if (FindObjectOfType<PS4ControllerCheck>().IsL1Pressed() || FindObjectOfType<PS4ControllerCheck>().IsR1Pressed())
+            if (PS4ControllerCheck.IsL1Pressed() || PS4ControllerCheck.IsR1Pressed())
             {
                 pressed = true;
-                FindObjectOfType<ProximityDetector>().GetCollider().gameObject.GetComponent<Laser>().goesBackToEnemy = true;
+                proximityDetector.GetCollider().gameObject.GetComponent<Laser>().goesBackToEnemy = true;
                 StartCoroutine(SuccessfulAvoidRoutine());
             }
         }

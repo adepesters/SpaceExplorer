@@ -32,6 +32,8 @@ public class PlayerTileVania : MonoBehaviour
 
     Feet feet;
     ExtendedLegs extendedLegs;
+    PS4ControllerCheck PS4ControllerCheck;
+    ToolSelector toolSelector;
 
     bool grapinJump = false;
     bool isTargeting = false;
@@ -46,6 +48,8 @@ public class PlayerTileVania : MonoBehaviour
         originalScale = transform.localScale;
         feet = FindObjectOfType<Feet>();
         extendedLegs = FindObjectOfType<ExtendedLegs>();
+        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        toolSelector = FindObjectOfType<ToolSelector>();
     }
 
     void Update()
@@ -123,7 +127,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void Jump()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump))
+        if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump))
         {
             canJump = true;
 
@@ -226,9 +230,9 @@ public class PlayerTileVania : MonoBehaviour
 
     private void SwingSwordRight()
     {
-        if (FindObjectOfType<ToolSelector>().GetTool() == "sword")
+        if (toolSelector.GetTool() == "sword")
         {
-            if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+            if (PS4ControllerCheck.IsSquarePressed())
             {
                 var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
                 Sword sword = Instantiate(rightSwordPrefab, swordPos, Quaternion.identity);
@@ -238,9 +242,9 @@ public class PlayerTileVania : MonoBehaviour
 
     private void SwingSwordLeft()
     {
-        if (FindObjectOfType<ToolSelector>().GetTool() == "sword")
+        if (toolSelector.GetTool() == "sword")
         {
-            if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
+            if (PS4ControllerCheck.IsSquarePressed())
             {
                 var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
                 Sword sword = Instantiate(leftSwordPrefab, swordPos, Quaternion.identity);
