@@ -56,7 +56,7 @@ public class Grapin : MonoBehaviour
         if (FindObjectOfType<PS4ControllerCheck>().IsSquarePressed())
         {
             displayTarget = true;
-            if (FindObjectOfType<PlayerTileVania>().FeetAreOnSomething)
+            if (FindObjectOfType<Feet>().AreOnSomething)
             {
                 player.IsTargeting = true;
             }

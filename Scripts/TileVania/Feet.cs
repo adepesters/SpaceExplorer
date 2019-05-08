@@ -4,27 +4,22 @@ using UnityEngine;
 
 public class Feet : MonoBehaviour
 {
-    PlayerTileVania player;
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = FindObjectOfType<PlayerTileVania>();
-    }
+    GameObject currentSurface;
+    bool areOnSomething;
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    public GameObject CurrentSurface { get => currentSurface; set => currentSurface = value; }
+    public bool AreOnSomething { get => areOnSomething; set => areOnSomething = value; }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        player.FeetAreOnSomething = true;
-
+        areOnSomething = true;
+        CurrentSurface = collision.gameObject;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        player.FeetAreOnSomething = false;
+        areOnSomething = false;
+        //player.FeetAreOnSomething = false;
     }
+
 }

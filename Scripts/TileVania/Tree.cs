@@ -25,8 +25,6 @@ public class Tree : MonoBehaviour
         else
         {
             GetComponent<PolygonCollider2D>().isTrigger = false;
-
-            FindObjectOfType<PlayerTileVania>().IsOnATree = true;
         }
     }
 
@@ -34,7 +32,7 @@ public class Tree : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("Feet"))
         {
-            if (!FindObjectOfType<Ground>().AreFeetOnTheGround())
+            if (!FindObjectOfType<Feet>().CurrentSurface.name.Contains("Ground"))
             {
                 if (!(FindObjectOfType<PlayerTileVania>().GetComponent<Rigidbody2D>().velocity.y > 0f))
                 {

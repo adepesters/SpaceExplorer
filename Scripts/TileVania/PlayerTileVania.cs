@@ -30,23 +30,28 @@ public class PlayerTileVania : MonoBehaviour
 
     bool canJump = false;
 
-    bool isOnATree = false;
+    Feet feet;
+    ExtendedLegs extendedLegs;
+
+    //bool isOnATree = false;
     bool grapinJump = false;
     bool isTargeting = false;
-    bool feetAreOnSomething;
-    bool feetAreCloseToSomething;
+    //bool feetAreOnSomething;
+    //bool feetAreCloseToSomething;
 
-    public bool IsOnATree { get => isOnATree; set => isOnATree = value; }
+    //public bool IsOnATree { get => isOnATree; set => isOnATree = value; }
     public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
     public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
-    public bool FeetAreOnSomething { get => feetAreOnSomething; set => feetAreOnSomething = value; }
-    public bool FeetAreCloseToSomething { get => feetAreCloseToSomething; set => feetAreCloseToSomething = value; }
+    //public bool FeetAreOnSomething { get => feetAreOnSomething; set => feetAreOnSomething = value; }
+    //public bool FeetAreCloseToSomething { get => feetAreCloseToSomething; set => feetAreCloseToSomething = value; }
 
     void Start()
     {
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
         originalScale = transform.localScale;
+        feet = FindObjectOfType<Feet>();
+        extendedLegs = FindObjectOfType<ExtendedLegs>();
     }
 
     void Update()
@@ -124,23 +129,23 @@ public class PlayerTileVania : MonoBehaviour
 
     private void Jump()
     {
-        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && ((FindObjectOfType<Ground>().AreFeetCloseToTheGround()) || (isOnATree && feetAreCloseToSomething) || grapinJump))
+        if (FindObjectOfType<PS4ControllerCheck>().IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump))
         {
             canJump = true;
 
         }
-        if (canJump == true && (feetAreOnSomething || grapinJump) && (FindObjectOfType<Ground>().AreFeetOnTheGround() || isOnATree || grapinJump))
+        if (canJump == true && (feet.AreOnSomething || grapinJump))
         {
             rigidBody.gravityScale = 3; // in case we jump from a ladder (where gravity is 0)
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
             isJumping = true;
             canJump = false;
-            isOnATree = false;
+            //isOnATree = false;
         }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            isJumping = false;
-        }
+        //if (Input.GetKeyUp(KeyCode.Space))
+        //{
+        //    isJumping = false;
+        //}
     }
 
     //private void Jump()
