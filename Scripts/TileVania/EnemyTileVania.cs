@@ -157,13 +157,11 @@ public class EnemyTileVania : MonoBehaviour
 
     IEnumerator SFXCriticalHit()
     {
-        Debug.Log("Gets called");
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         animator.speed = 0f;
         FindObjectOfType<Sword>().SpeedAnimation = 0f;
         player.SetFrozenPlayer(true, player.transform.position);
         yield return new WaitForSeconds(0.3f);
-        Debug.Log("ok");
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
         beingHit = true;
