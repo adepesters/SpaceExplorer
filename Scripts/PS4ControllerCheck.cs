@@ -246,9 +246,9 @@ public class PS4ControllerCheck : MonoBehaviour
 
     public bool noButtonPressed()
     {
-        return !(IsSquarePressed() || IsSquareReleased() || ContinuousR1Press() || ContinuousL1Press() || IsR2Pressed() || IsR2Released() ||
+        return !(IsSquarePressed() || IsSquareReleased() || continuousR1Press || continuousL1Press || IsR2Pressed() || IsR2Released() ||
         IsR1Pressed() || IsR1Released() || IsL1Pressed() || IsL1Released() || IsL2Pressed() || IsL2Released() ||
-            ContinuousR2Press() || ContinuousL2Press() || ContinuousXPress() || IsXPressed() || IsXReleased() ||
-        (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.01 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.01));
+            continuousR2Press || continuousL2Press || continuousXPress || IsXPressed() || IsXReleased() ||
+        (Mathf.Abs(Input.GetAxis("Horizontal")) > Mathf.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon));
     }
 }

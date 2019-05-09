@@ -41,6 +41,9 @@ public class PlayerTileVania : MonoBehaviour
     public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
     public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
 
+    float currentPos;
+    float previousPos;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -94,7 +97,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void CheckIfIsImmobile()
     {
-        if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Epsilon && Mathf.Abs(rigidBody.velocity.y) < Mathf.Epsilon)
+        if (PS4ControllerCheck.noButtonPressed() && feet.AreOnSomething)
         {
             rigidBody.velocity = new Vector2(0f, 0f);
             playerIsImmobile = true;
