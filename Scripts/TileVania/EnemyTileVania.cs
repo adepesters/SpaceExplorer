@@ -32,6 +32,8 @@ public class EnemyTileVania : MonoBehaviour
 
     Vector2 targetPos;
 
+    bool shouldBeKilled;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +54,30 @@ public class EnemyTileVania : MonoBehaviour
         colorClassifier = FindObjectOfType<ColorClassifier>();
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        if (!beingHit)
+        {
+            transform.position = new Vector2(originalPos.x, transform.position.y);
+        }
+        if (beingHit)
+        {
+            float step = 10f * Time.deltaTime;
+            transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
+            if (Vector2.Distance(transform.position, targetPos) < 1f)//Mathf.Epsilon)
+            {
+                beingHit = false;
+                if (shouldBeKilled)
+                {
+                    KillEnemy();
+                }
+            }
+            originalPos = targetPos;
+        }
+        //Debug.Log(beingHit);
+    }
+
     private void AnalyzeColorsInSprite()
     {
         Sprite enemySprite = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite;
@@ -69,26 +95,6 @@ public class EnemyTileVania : MonoBehaviour
                 }
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!beingHit)
-        {
-            transform.position = new Vector2(originalPos.x, transform.position.y);
-        }
-        if (beingHit)
-        {
-            float step = 10f * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
-            if (Vector2.Distance(transform.position, targetPos) < Mathf.Epsilon)
-            {
-                beingHit = false;
-            }
-            originalPos = targetPos;
-        }
-        //Debug.Log(beingHit);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -151,11 +157,13 @@ public class EnemyTileVania : MonoBehaviour
 
     IEnumerator SFXCriticalHit()
     {
+        Debug.Log("Gets called");
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         animator.speed = 0f;
         FindObjectOfType<Sword>().SpeedAnimation = 0f;
         player.SetFrozenPlayer(true, player.transform.position);
         yield return new WaitForSeconds(0.3f);
+        Debug.Log("ok");
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
         beingHit = true;
@@ -167,7 +175,7 @@ public class EnemyTileVania : MonoBehaviour
         player.SetFrozenPlayer(false, player.transform.position);
         if (health <= 0)
         {
-            KillEnemy();
+            shouldBeKilled = true;
         }
     }
 
