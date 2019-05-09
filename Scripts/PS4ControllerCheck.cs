@@ -17,6 +17,7 @@ public class PS4ControllerCheck : MonoBehaviour
     bool continuousL1Press = false;
     bool continuousL2Press = false;
     bool continuousR2Press = false;
+    bool continuousR1Press = false;
 
     float currentPosVerticalStick = 0;
     float previousPosVerticalStick = 0;
@@ -35,6 +36,12 @@ public class PS4ControllerCheck : MonoBehaviour
 
         LongL1Press();
         LongR1Press();
+
+        ContinuousL2Press();
+        ContinuousL1Press();
+        ContinuousXPress();
+        ContinuousR1Press();
+        ContinuousR2Press();
     }
 
     public bool IsXPressed()
@@ -94,6 +101,19 @@ public class PS4ControllerCheck : MonoBehaviour
             continuousL2Press = false;
         }
         return continuousL2Press;
+    }
+
+    public bool ContinuousR1Press()
+    {
+        if (IsR1Pressed())
+        {
+            continuousR1Press = true;
+        }
+        if (IsR1Released())
+        {
+            continuousR1Press = false;
+        }
+        return continuousR1Press;
     }
 
     public bool ContinuousR2Press()
@@ -222,5 +242,13 @@ public class PS4ControllerCheck : MonoBehaviour
     public bool IsSquareReleased()
     {
         return Input.GetKeyUp(KeyCode.JoystickButton0);
+    }
+
+    public bool noButtonPressed()
+    {
+        return !(IsSquarePressed() || IsSquareReleased() || ContinuousR1Press() || ContinuousL1Press() || IsR2Pressed() || IsR2Released() ||
+        IsR1Pressed() || IsR1Released() || IsL1Pressed() || IsL1Released() || IsL2Pressed() || IsL2Released() ||
+            ContinuousR2Press() || ContinuousL2Press() || ContinuousXPress() || IsXPressed() || IsXReleased() ||
+        (Mathf.Abs(Input.GetAxis("Horizontal")) > 0.01 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.01));
     }
 }
