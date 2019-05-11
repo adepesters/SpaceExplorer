@@ -12,7 +12,7 @@ public class PlayerTileVania : MonoBehaviour
 
     // cached variables
     Animator animator;
-    Vector2 originalScale;
+    Vector3 originalScale;
     Rigidbody2D rigidBody;
 
     bool isDead = false;
@@ -123,7 +123,7 @@ public class PlayerTileVania : MonoBehaviour
             rigidBody.velocity = new Vector2(xChange, rigidBody.velocity.y);
             if (xChange != 0)
             {
-                transform.localScale = new Vector2(Mathf.Sign(xChange) * originalScale.x, originalScale.y);
+                transform.localScale = new Vector3(Mathf.Sign(xChange) * originalScale.x, originalScale.y, originalScale.z);
             }
         }
     }
