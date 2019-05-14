@@ -10,14 +10,14 @@ public class Grapin : MonoBehaviour
     bool gotStuck;
     bool canGetStuck;
 
-    Vector2 target;
+    Vector3 target;
 
     PlayerTileVania player;
     GameObject grapinHandler;
 
     float speedGrapin;
 
-    Vector2 stuckPos;
+    Vector3 stuckPos;
 
     float detectionThreshold = 0.5f;
 
@@ -76,7 +76,7 @@ public class Grapin : MonoBehaviour
 
             if (PS4ControllerCheck.IsSquareReleased())
             {
-                target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
+                target = new Vector3(transform.position.x, transform.position.y, transform.position.z) - grapinLength * new Vector3(transform.up.x, transform.up.y, transform.up.z);
                 displayTarget = false;
                 grapinLaunched = true;
                 returnGrapin = false;
@@ -101,8 +101,8 @@ public class Grapin : MonoBehaviour
 
             if (returnGrapin)
             {
-                target = new Vector2(grapinHandler.transform.position.x, grapinHandler.transform.position.y);
-                transform.position = Vector2.MoveTowards(transform.position, target, speedGrapin);
+                target = new Vector3(grapinHandler.transform.position.x, grapinHandler.transform.position.y, grapinHandler.transform.position.z);
+                transform.position = Vector3.MoveTowards(transform.position, target, speedGrapin);
                 if (Mathf.Abs(transform.position.x - target.x) < Mathf.Epsilon && Mathf.Abs(transform.position.y - target.y) < Mathf.Epsilon)
                 {
                     rotateGrapin = true;
@@ -114,9 +114,9 @@ public class Grapin : MonoBehaviour
             {
                 canGetStuck = false;
                 transform.position = stuckPos;
-                player.transform.position = Vector2.MoveTowards(player.transform.position, transform.position, speedGrapin);
+                player.transform.position = Vector3.MoveTowards(player.transform.position, transform.position, speedGrapin);
                 player.GetComponent<Rigidbody2D>().simulated = false;
-                if (Vector2.Distance(transform.position, player.transform.position) < detectionThreshold)
+                if (Vector3.Distance(transform.position, player.transform.position) < detectionThreshold)
                 {
                     returnGrapin = true;
                     player.GetComponent<Rigidbody2D>().simulated = true;
@@ -140,7 +140,7 @@ public class Grapin : MonoBehaviour
     private void DisplayTarget()
     {
         grapinTarget.GetComponent<SpriteRenderer>().enabled = true;
-        target = new Vector2(transform.position.x, transform.position.y) - grapinLength * new Vector2(transform.up.x, transform.up.y);
+        target = new Vector3(transform.position.x, transform.position.y, transform.position.z) - grapinLength * new Vector3(transform.up.x, transform.up.y, transform.up.z);
         grapinTarget.transform.position = target;
         RaycastUntilTarget();
     }
@@ -174,7 +174,7 @@ public class Grapin : MonoBehaviour
     {
         rotateGrapin = false;
         canGetStuck = true;
-        transform.position = Vector2.MoveTowards(transform.position, target, speedGrapin);
+        transform.position = Vector3.MoveTowards(transform.position, target, speedGrapin);
         if (Mathf.Abs(transform.position.x - target.x) < Mathf.Epsilon && Mathf.Abs(transform.position.y - target.y) < Mathf.Epsilon)
         {
             grapinLaunched = false;

@@ -24,9 +24,9 @@ public class PlayerTileVania : MonoBehaviour
     [SerializeField] Sword leftSwordPrefab;
 
     bool playerIsFrozen;
-    Vector2 frozenPosition;
+    Vector3 frozenPosition;
     bool playerOnAir;
-    Vector2 onAirPos;
+    Vector3 onAirPos;
 
     bool canJump = false;
 
@@ -255,13 +255,13 @@ public class PlayerTileVania : MonoBehaviour
         }
     }
 
-    public void SetFrozenPlayer(bool currentPlayerIsFrozen, Vector2 currentFrozenPosition)
+    public void SetFrozenPlayer(bool currentPlayerIsFrozen, Vector3 currentFrozenPosition)
     {
         playerIsFrozen = currentPlayerIsFrozen;
         frozenPosition = currentFrozenPosition;
     }
 
-    public void SetPlayerOnAir(bool currentPlayerOnAir, Vector2 currentPlayerPos)
+    public void SetPlayerOnAir(bool currentPlayerOnAir, Vector3 currentPlayerPos)
     {
         playerOnAir = currentPlayerOnAir;
         onAirPos = currentPlayerPos;

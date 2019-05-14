@@ -6,7 +6,7 @@ using System;
 
 public class EnemyTileVania : MonoBehaviour
 {
-    float health = 200f;
+    float health = 400f;
     Color originalColor;
     float[] maxNumberOfParticles = new float[] { 4f, 4f, 4f, 4f, 4f, 4f, 4f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
@@ -23,14 +23,14 @@ public class EnemyTileVania : MonoBehaviour
     bool playerOnAir = false;
 
     PlayerTileVania player;
-    Vector2 originalPlayerPos;
+    Vector3 originalPlayerPos;
     ListOfBonuses ListOfBonuses;
     ColorClassifier colorClassifier;
     GameSession gameSession;
 
     float chanceOfCriticalHit = 0.2f;
 
-    Vector2 targetPos;
+    Vector3 targetPos;
 
     bool shouldBeKilled;
 
@@ -59,13 +59,13 @@ public class EnemyTileVania : MonoBehaviour
     {
         if (!beingHit)
         {
-            transform.position = new Vector2(originalPos.x, transform.position.y);
+            transform.position = new Vector3(originalPos.x, transform.position.y, transform.position.z);
         }
         if (beingHit)
         {
             float step = 10f * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
-            if (Vector2.Distance(transform.position, targetPos) < 1f)//Mathf.Epsilon)
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, step);
+            if (Vector3.Distance(transform.position, targetPos) < 1f)//Mathf.Epsilon)
             {
                 beingHit = false;
                 if (shouldBeKilled)
@@ -167,7 +167,7 @@ public class EnemyTileVania : MonoBehaviour
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
         beingHit = true;
-        targetPos = new Vector2(transform.position.x - 3f, transform.position.y + 0.75f);
+        targetPos = new Vector3(transform.position.x - 3f, transform.position.y + 0.75f, transform.position.z);
         if (FindObjectOfType<Sword>() != null)
         {
             FindObjectOfType<Sword>().SpeedAnimation = 1f;
@@ -196,7 +196,7 @@ public class EnemyTileVania : MonoBehaviour
                 {
                     Color randomColor = colorSet[randomizer.Next(colorSet.Count)];
 
-                    Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, transform.position.z);
+                    Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, 0.01f);
                     GameObject bloodPixel = Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
                     bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                     if (gameSession != null)
