@@ -163,14 +163,21 @@ public class EnemyTileVania : MonoBehaviour
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         animator.speed = 0f;
         FindObjectOfType<Sword>().SpeedAnimation = 0f;
-        //player.GetComponent<Animator>().SetBool("criticalHit", true);
+        player.GetComponent<Animator>().SetBool("criticalHit", true);
         player.SetFrozenPlayer(true, player.transform.position);
-        yield return new WaitForSeconds(0.3f);
-        //player.GetComponent<Animator>().SetBool("criticalHit", false);
+        yield return new WaitForSeconds(0.15f);
+        player.GetComponent<Animator>().SetBool("criticalHit", false);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
         beingHit = true;
-        targetPos = new Vector3(transform.position.x - 3f, transform.position.y + 0.75f, transform.position.z);
+        if (player.SwordHitDirection == "left")
+        {
+            targetPos = new Vector3(transform.position.x - 3f, transform.position.y + 0.75f, transform.position.z);
+        }
+        else if (player.SwordHitDirection == "right")
+        {
+            targetPos = new Vector3(transform.position.x + 3f, transform.position.y + 0.75f, transform.position.z);
+        }
         if (FindObjectOfType<Sword>() != null)
         {
             FindObjectOfType<Sword>().SpeedAnimation = 1f;

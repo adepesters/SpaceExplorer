@@ -40,9 +40,12 @@ public class PlayerTileVania : MonoBehaviour
 
     public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
     public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
+    public string SwordHitDirection { get => swordHitDirection; set => swordHitDirection = value; }
 
     float currentPos;
     float previousPos;
+
+    string swordHitDirection;
 
     void Start()
     {
@@ -239,6 +242,7 @@ public class PlayerTileVania : MonoBehaviour
             {
                 var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
                 Sword sword = Instantiate(rightSwordPrefab, swordPos, Quaternion.identity);
+                SwordHitDirection = "right";
             }
         }
     }
@@ -251,6 +255,7 @@ public class PlayerTileVania : MonoBehaviour
             {
                 var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
                 Sword sword = Instantiate(leftSwordPrefab, swordPos, Quaternion.identity);
+                SwordHitDirection = "left";
             }
         }
     }
