@@ -68,6 +68,11 @@ public class EnemyTileVania : MonoBehaviour
         {
             float step = 10f * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, targetPos, step);
+            if (shouldBeKilled)
+            {
+                StartCoroutine(KillEnemyAfterDelay()); // to be sure the game object is destroyed after x seconds (eg in case it can't reach its 
+                                                       // targetPos because it gets blocked by something on the way)
+            }
             if (Vector3.Distance(transform.position, targetPos) < 1f)//Mathf.Epsilon)
             {
                 beingHit = false;
@@ -79,6 +84,12 @@ public class EnemyTileVania : MonoBehaviour
             originalPos = targetPos;
         }
         //Debug.Log(beingHit);
+    }
+
+    IEnumerator KillEnemyAfterDelay()
+    {
+        yield return new WaitForSeconds(0.8f);
+        KillEnemy();
     }
 
     private void AnalyzeColorsInSprite()
