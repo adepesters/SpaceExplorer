@@ -112,19 +112,25 @@ public class EnemyTileVania : MonoBehaviour
         }
     }
 
-
     private void ProcessHit(Collision2D collision, Vector2 contactPoint)
     {
         health -= collision.gameObject.GetComponent<Sword>().GetDamage();
         collision.gameObject.GetComponent<Sword>().SetCanHit(false);
-        float rand = UnityEngine.Random.Range(0f, 1f);
-        if (rand < chanceOfCriticalHit)
+        if (health <= 0)
         {
             StartCoroutine(SFXCriticalHit());
         }
         else
         {
-            StartCoroutine(SFXNormalHit());
+            float rand = UnityEngine.Random.Range(0f, 1f);
+            if (rand < chanceOfCriticalHit)
+            {
+                StartCoroutine(SFXCriticalHit());
+            }
+            else
+            {
+                StartCoroutine(SFXNormalHit());
+            }
         }
         BleedParticles(contactPoint);
         originalPlayerPos = player.transform.position;
