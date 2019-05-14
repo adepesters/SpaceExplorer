@@ -52,6 +52,9 @@ public class EnemyTileVania : MonoBehaviour
         ListOfBonuses = FindObjectOfType<ListOfBonuses>();
         gameSession = FindObjectOfType<GameSession>();
         colorClassifier = FindObjectOfType<ColorClassifier>();
+
+        //assigning a slightly different z position to each object, to avoid clipping when camera is rotated
+        transform.position = new Vector3(transform.position.x, transform.position.y, UnityEngine.Random.Range(0.051f, 0.059f));
     }
 
     // Update is called once per frame
