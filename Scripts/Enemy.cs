@@ -93,6 +93,10 @@ public class Enemy : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(0, 360));
 
         originalColor = GetComponent<SpriteRenderer>().color;
+        //originalColor.r += UnityEngine.Random.Range(-0.2f, 0.2f);
+        //originalColor.g += UnityEngine.Random.Range(-0.2f, 0.2f);
+        //originalColor.b += UnityEngine.Random.Range(-0.2f, 0.2f);
+        //GetComponent<SpriteRenderer>().color = originalColor;
         AnalyzeColorsInSprite();
 
         gameSession = FindObjectOfType<GameSession>();
@@ -186,7 +190,7 @@ public class Enemy : MonoBehaviour
     {
         gameObject.GetComponent<Renderer>().material.color = hitColorChange;
         yield return new WaitForSeconds(changeColorTime);
-        gameObject.GetComponent<Renderer>().material.color = Color.white;
+        gameObject.GetComponent<Renderer>().material.color = originalColor;
     }
 
     private void ExplodeEnemy()
