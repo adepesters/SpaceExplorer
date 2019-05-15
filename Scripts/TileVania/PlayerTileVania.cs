@@ -47,6 +47,11 @@ public class PlayerTileVania : MonoBehaviour
 
     string swordHitDirection;
 
+    bool inFrontOfBridge;
+
+    Layer2 layer2;
+    Layer1 layer1;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -56,6 +61,8 @@ public class PlayerTileVania : MonoBehaviour
         extendedLegs = FindObjectOfType<ExtendedLegs>();
         PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
         toolSelector = FindObjectOfType<ToolSelector>();
+        layer2 = FindObjectOfType<Layer2>();
+        layer1 = FindObjectOfType<Layer1>();
     }
 
     void Update()
@@ -80,6 +87,7 @@ public class PlayerTileVania : MonoBehaviour
             CheckIfIsImmobile();
             Jump();
             Move();
+            MoveAcrossLayers();
             if (Mathf.Sign(transform.localScale.x) > 0)
             {
                 SwingSwordRight();
@@ -127,6 +135,33 @@ public class PlayerTileVania : MonoBehaviour
             if (xChange != 0)
             {
                 transform.localScale = new Vector3(Mathf.Sign(xChange) * originalScale.x, originalScale.y, originalScale.z);
+            }
+        }
+    }
+
+    private void MoveAcrossLayers()
+    {
+        if (Input.GetAxis("Vertical") > 0.09)
+        {
+            if (inFrontOfBridge)
+            {
+                layer1.GetComponent<PolygonCollider2D>().enabled = false;
+                layer2.GetComponent<PolygonCollider2D>().enabled = true;
+                float newZ = layer2.gameObject.transform.position.z + 0.003f;
+                transform.position = new Vector3(transform.position.x, transform.position.y, newZ);
+            }
+            //float zChange = Input.GetAxis("Vertical") * runSpeed;
+            //transform.position = new Vector3(transform.position.x, transform.position.y, zChange);
+        }
+
+        if (Input.GetAxis("Vertical") < -0.09)
+        {
+            if (inFrontOfBridge)
+            {
+                layer1.GetComponent<PolygonCollider2D>().enabled = true;
+                layer2.GetComponent<PolygonCollider2D>().enabled = false;
+                float newZ = layer1.gameObject.transform.position.z + 0.003f;
+                transform.position = new Vector3(transform.position.x, transform.position.y, newZ);
             }
         }
     }
@@ -270,5 +305,21 @@ public class PlayerTileVania : MonoBehaviour
     {
         playerOnAir = currentPlayerOnAir;
         onAirPos = currentPlayerPos;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains("Bridge"))
+        {
+            inFrontOfBridge = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains("Bridge"))
+        {
+            inFrontOfBridge = false;
+        }
     }
 }
