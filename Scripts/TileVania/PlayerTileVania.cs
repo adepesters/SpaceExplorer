@@ -152,6 +152,7 @@ public class PlayerTileVania : MonoBehaviour
                 CurrentLayer = 2;
                 IgnorePhysicsLayer1();
                 DontIgnorePhysicsLayer2();
+                ReduceTransparencyLayer1();
 
                 transform.position = new Vector3(transform.position.x, transform.position.y, layer2zdepth + 0.003f);
             }
@@ -164,8 +165,40 @@ public class PlayerTileVania : MonoBehaviour
                 CurrentLayer = 1;
                 IgnorePhysicsLayer2();
                 DontIgnorePhysicsLayer1();
+                RestoreOpaquenessLayer1();
 
                 transform.position = new Vector3(transform.position.x, transform.position.y, layer1zdepth + 0.003f);
+            }
+        }
+    }
+
+    private void RestoreOpaquenessLayer1()
+    {
+        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
+        foreach (GameObject eachGameObject in gameObjectsLayer1)
+        {
+            if (eachGameObject.GetComponent<SpriteRenderer>() != null)
+            {
+                Color color = eachGameObject.GetComponent<SpriteRenderer>().color;
+                eachGameObject.GetComponent<SpriteRenderer>().color =
+                new Color(color.r, color.g, color.b, 1f);
+            }
+        }
+    }
+
+    private void ReduceTransparencyLayer1()
+    {
+        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
+        foreach (GameObject eachGameObject in gameObjectsLayer1)
+        {
+            if (eachGameObject.GetComponent<SpriteRenderer>() != null)
+            {
+                if (eachGameObject.GetComponent<SpriteRenderer>().color.a == 1f)
+                {
+                    Color color = eachGameObject.GetComponent<SpriteRenderer>().color;
+                    eachGameObject.GetComponent<SpriteRenderer>().color =
+                    new Color(color.r, color.g, color.b, 0.74f);
+                }
             }
         }
     }
