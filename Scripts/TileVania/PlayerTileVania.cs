@@ -141,7 +141,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void MoveAcrossLayers()
     {
-        if (Input.GetAxis("Vertical") > 0.09)
+        if (Input.GetAxis("Vertical") > 0.99)
         {
             if (inFrontOfBridge)
             {
@@ -154,7 +154,7 @@ public class PlayerTileVania : MonoBehaviour
             //transform.position = new Vector3(transform.position.x, transform.position.y, zChange);
         }
 
-        if (Input.GetAxis("Vertical") < -0.09)
+        if (Input.GetAxis("Vertical") < -0.99)
         {
             if (inFrontOfBridge)
             {
