@@ -22,21 +22,24 @@ public class PixelBlood : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(player.transform.position, transform.position) < attractionDistance)
+        if (gameObject.tag == player.tag)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, (accelerationAttraction) * Time.deltaTime);
-            accelerationAttraction += accelerationAttraction;
-            if (transform.position == player.transform.position)
+            if (Vector2.Distance(player.transform.position, transform.position) < attractionDistance)
             {
-                Destroy(gameObject);
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, (accelerationAttraction) * Time.deltaTime);
+                accelerationAttraction += accelerationAttraction;
+                if (transform.position == player.transform.position)
+                {
+                    Destroy(gameObject);
 
-                //if (this.name.Contains("pink"))
-                //{
-                //    FindObjectOfType<GameSession>().counterStarBronze++;
-                //    Destroy(gameObject);
-                //    AudioSource.PlayClipAtPoint(coinSound, player.transform.position, volumeSound);
-                //}
+                    //if (this.name.Contains("pink"))
+                    //{
+                    //    FindObjectOfType<GameSession>().counterStarBronze++;
+                    //    Destroy(gameObject);
+                    //    AudioSource.PlayClipAtPoint(coinSound, player.transform.position, volumeSound);
+                    //}
 
+                }
             }
         }
     }
