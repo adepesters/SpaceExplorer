@@ -113,13 +113,15 @@ public class EnemyTileVania : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name.Contains("Sword"))
+        if (player.tag == gameObject.tag) // check if on same layer than player
         {
-            ContactPoint2D[] contact = new ContactPoint2D[1];
-            collision.GetContacts(contact);
+            if (collision.gameObject.name.Contains("Sword"))
+            {
+                ContactPoint2D[] contact = new ContactPoint2D[1];
+                collision.GetContacts(contact);
 
-            ProcessHit(collision, contact[0].point);
-
+                ProcessHit(collision, contact[0].point);
+            }
         }
     }
 

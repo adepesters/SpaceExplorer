@@ -149,7 +149,8 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                CurrentLayer = 2;
+                currentLayer = 2;
+                gameObject.tag = "Layer2";
                 IgnorePhysicsLayer1();
                 DontIgnorePhysicsLayer2();
                 ReduceTransparencyLayer1();
@@ -162,7 +163,8 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                CurrentLayer = 1;
+                currentLayer = 1;
+                gameObject.tag = "Layer1";
                 IgnorePhysicsLayer2();
                 DontIgnorePhysicsLayer1();
                 RestoreOpaquenessLayer1();
