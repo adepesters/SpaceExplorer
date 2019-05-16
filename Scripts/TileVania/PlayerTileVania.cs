@@ -34,6 +34,7 @@ public class PlayerTileVania : MonoBehaviour
     ExtendedLegs extendedLegs;
     PS4ControllerCheck PS4ControllerCheck;
     ToolSelector toolSelector;
+    Grapin grapin;
 
     bool grapinJump = false;
     bool isTargeting = false;
@@ -57,6 +58,7 @@ public class PlayerTileVania : MonoBehaviour
 
     void Start()
     {
+        grapin = FindObjectOfType<Grapin>();
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody2D>();
         originalScale = transform.localScale;
@@ -64,6 +66,7 @@ public class PlayerTileVania : MonoBehaviour
         extendedLegs = FindObjectOfType<ExtendedLegs>();
         PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
         toolSelector = FindObjectOfType<ToolSelector>();
+
         layer1zdepth = GameObject.Find("Layer 1").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         IgnorePhysicsLayer2();
@@ -215,6 +218,7 @@ public class PlayerTileVania : MonoBehaviour
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), true);
             }
         }
     }
@@ -229,6 +233,7 @@ public class PlayerTileVania : MonoBehaviour
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
             }
         }
     }
@@ -243,6 +248,7 @@ public class PlayerTileVania : MonoBehaviour
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), true);
             }
         }
     }
@@ -257,6 +263,7 @@ public class PlayerTileVania : MonoBehaviour
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
             }
         }
     }

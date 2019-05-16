@@ -154,8 +154,19 @@ public class Grapin : MonoBehaviour
 
         if (hits.Length > 0)
         {
-            grapinTarget.GetComponent<SpriteRenderer>().color = targetColor;
-            grapinTarget.transform.position = hits[0].point;
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (player.tag == hit.collider.gameObject.tag)
+                {
+                    grapinTarget.GetComponent<SpriteRenderer>().color = targetColor;
+                    grapinTarget.transform.position = hit.point;
+                    break;
+                }
+                else
+                {
+                    grapinTarget.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                }
+            }
         }
         else
         {
