@@ -41,4 +41,16 @@ public class PixelBlood : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (gameObject.tag == "Layer1" && collision.gameObject.tag == "Layer2")
+        {
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+        else if (gameObject.tag == "Layer2" && collision.gameObject.tag == "Layer1")
+        {
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+    }
+
 }

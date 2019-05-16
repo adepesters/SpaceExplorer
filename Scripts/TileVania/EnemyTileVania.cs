@@ -231,6 +231,7 @@ public class EnemyTileVania : MonoBehaviour
                     {
                         gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
                     }
+                    bloodPixel.tag = gameObject.tag;
                 }
             }
         }
