@@ -73,6 +73,8 @@ public class PlayerTileVania : MonoBehaviour
             if (eachGameObject.GetComponent<Collider2D>() != null)
             {
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
             }
         }
     }
@@ -165,6 +167,8 @@ public class PlayerTileVania : MonoBehaviour
                     if (eachGameObject.GetComponent<Collider2D>() != null)
                     {
                         Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
                     }
                 }
 
@@ -174,6 +178,8 @@ public class PlayerTileVania : MonoBehaviour
                     if (eachGameObject.GetComponent<Collider2D>() != null)
                     {
                         Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
                     }
                 }
 
@@ -193,6 +199,8 @@ public class PlayerTileVania : MonoBehaviour
                     if (eachGameObject.GetComponent<Collider2D>() != null)
                     {
                         Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
                     }
                 }
 
@@ -202,6 +210,8 @@ public class PlayerTileVania : MonoBehaviour
                     if (eachGameObject.GetComponent<Collider2D>() != null)
                     {
                         Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
                     }
                 }
 
