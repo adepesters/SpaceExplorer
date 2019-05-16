@@ -41,6 +41,7 @@ public class PlayerTileVania : MonoBehaviour
     public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
     public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
     public string SwordHitDirection { get => swordHitDirection; set => swordHitDirection = value; }
+    public int CurrentLayer { get => currentLayer; set => currentLayer = value; }
 
     float currentPos;
     float previousPos;
@@ -49,8 +50,10 @@ public class PlayerTileVania : MonoBehaviour
 
     bool inFrontOfBridge;
 
-    Layer2 layer2;
-    Layer1 layer1;
+    float layer1zdepth;
+    float layer2zdepth;
+
+    int currentLayer = 1;
 
     void Start()
     {
@@ -61,8 +64,17 @@ public class PlayerTileVania : MonoBehaviour
         extendedLegs = FindObjectOfType<ExtendedLegs>();
         PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
         toolSelector = FindObjectOfType<ToolSelector>();
-        layer2 = FindObjectOfType<Layer2>();
-        layer1 = FindObjectOfType<Layer1>();
+        layer1zdepth = GameObject.Find("Layer 1").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
+        layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
+
+        GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
+        foreach (GameObject eachGameObject in gameObjectsLayer2)
+        {
+            if (eachGameObject.GetComponent<Collider2D>() != null)
+            {
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+            }
+        }
     }
 
     void Update()
@@ -145,23 +157,55 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                layer1.GetComponent<PolygonCollider2D>().enabled = false;
-                layer2.GetComponent<PolygonCollider2D>().enabled = true;
-                float newZ = layer2.gameObject.transform.position.z + 0.003f;
-                transform.position = new Vector3(transform.position.x, transform.position.y, newZ);
+                CurrentLayer = 2;
+
+                GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
+                foreach (GameObject eachGameObject in gameObjectsLayer1)
+                {
+                    if (eachGameObject.GetComponent<Collider2D>() != null)
+                    {
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+                    }
+                }
+
+                GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
+                foreach (GameObject eachGameObject in gameObjectsLayer2)
+                {
+                    if (eachGameObject.GetComponent<Collider2D>() != null)
+                    {
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+                    }
+                }
+
+                transform.position = new Vector3(transform.position.x, transform.position.y, layer2zdepth + 0.003f);
             }
-            //float zChange = Input.GetAxis("Vertical") * runSpeed;
-            //transform.position = new Vector3(transform.position.x, transform.position.y, zChange);
         }
 
         if (Input.GetAxis("Vertical") < -0.99)
         {
             if (inFrontOfBridge)
             {
-                layer1.GetComponent<PolygonCollider2D>().enabled = true;
-                layer2.GetComponent<PolygonCollider2D>().enabled = false;
-                float newZ = layer1.gameObject.transform.position.z + 0.003f;
-                transform.position = new Vector3(transform.position.x, transform.position.y, newZ);
+                CurrentLayer = 1;
+
+                GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
+                foreach (GameObject eachGameObject in gameObjectsLayer1)
+                {
+                    if (eachGameObject.GetComponent<Collider2D>() != null)
+                    {
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+                    }
+                }
+
+                GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
+                foreach (GameObject eachGameObject in gameObjectsLayer2)
+                {
+                    if (eachGameObject.GetComponent<Collider2D>() != null)
+                    {
+                        Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+                    }
+                }
+
+                transform.position = new Vector3(transform.position.x, transform.position.y, layer1zdepth + 0.003f);
             }
         }
     }
@@ -322,4 +366,37 @@ public class PlayerTileVania : MonoBehaviour
             inFrontOfBridge = false;
         }
     }
+
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.tag == "Layer1")
+    //    {
+    //        if (CurrentLayer == 2)
+    //        {
+    //            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), true);
+    //            Debug.Log(collision.gameObject.name + " on layer 1 ignored");
+    //        }
+    //        if (CurrentLayer == 1)
+    //        {
+    //            // Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), false);
+    //            Debug.Log(collision.gameObject.name + " on layer 1 collided");
+    //        }
+    //    }
+
+    //    if (collision.gameObject.tag == "Layer2")
+    //    {
+    //        Debug.Log("entered");
+    //        if (CurrentLayer == 1)
+    //        {
+    //            //Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), true);
+    //            Debug.Log(collision.gameObject.name + " on layer 2 ignored");
+    //        }
+    //        if (CurrentLayer == 2)
+    //        {
+    //            Debug.Log("ok");
+    //            // Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), false);
+    //            Debug.Log(collision.gameObject.name + " on layer 2 collided");
+    //        }
+    //    }
+    //}
 }
