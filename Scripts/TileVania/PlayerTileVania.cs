@@ -258,7 +258,7 @@ public class PlayerTileVania : MonoBehaviour
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
             }
         }
     }
