@@ -159,7 +159,7 @@ public class Grapin : MonoBehaviour
                 if (player.tag == hit.collider.gameObject.tag)
                 {
                     grapinTarget.GetComponent<SpriteRenderer>().color = targetColor;
-                    grapinTarget.transform.position = hit.point;
+                    grapinTarget.transform.position = new Vector3(hit.point.x, hit.point.y, player.transform.position.z - 0.1f);
                     break;
                 }
                 else

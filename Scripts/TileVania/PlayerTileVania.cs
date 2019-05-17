@@ -42,7 +42,6 @@ public class PlayerTileVania : MonoBehaviour
     public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
     public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
     public string SwordHitDirection { get => swordHitDirection; set => swordHitDirection = value; }
-    public int CurrentLayer { get => currentLayer; set => currentLayer = value; }
 
     float currentPos;
     float previousPos;
@@ -53,8 +52,6 @@ public class PlayerTileVania : MonoBehaviour
 
     float layer1zdepth;
     float layer2zdepth;
-
-    int currentLayer = 1;
 
     void Start()
     {
@@ -152,7 +149,6 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                currentLayer = 2;
                 gameObject.tag = "Layer2";
                 IgnorePhysicsLayer1();
                 DontIgnorePhysicsLayer2();
@@ -166,7 +162,6 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                currentLayer = 1;
                 gameObject.tag = "Layer1";
                 IgnorePhysicsLayer2();
                 DontIgnorePhysicsLayer1();
@@ -263,7 +258,7 @@ public class PlayerTileVania : MonoBehaviour
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
                 Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
+                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
             }
         }
     }
