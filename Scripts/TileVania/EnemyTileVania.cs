@@ -226,7 +226,7 @@ public class EnemyTileVania : MonoBehaviour
                 {
                     Color randomColor = colorSet[randomizer.Next(colorSet.Count)];
 
-                    Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, 0.01f);
+                    Vector3 bonusPos = new Vector3(contactPoint.x, contactPoint.y, transform.position.z - 0.01f);
                     GameObject bloodPixel = Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, pixelBloodParent.transform);
                     bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                     if (gameSession != null)
