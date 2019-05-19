@@ -51,6 +51,8 @@ public class PlayerTileVania : MonoBehaviour
     bool inFrontOfBridge;
     Transform entryFrontLayer;
     Transform entryBackLayer;
+    bool moveToBackLayer;
+    bool moveToFrontLayer;
 
     float layer1zdepth;
     float layer2zdepth;
@@ -94,6 +96,17 @@ public class PlayerTileVania : MonoBehaviour
             Jump();
             Move();
             MoveAcrossLayers();
+
+            if (moveToBackLayer)
+            {
+                MoveToBackLayer();
+            }
+
+            if (moveToFrontLayer)
+            {
+                MoveToFrontLayer();
+            }
+
             if (Mathf.Sign(transform.localScale.x) > 0)
             {
                 SwingSwordRight();
@@ -109,6 +122,42 @@ public class PlayerTileVania : MonoBehaviour
         {
             animator.speed = 0f;
             transform.position = frozenPosition;
+        }
+    }
+
+    private void MoveToFrontLayer()
+    {
+        gameObject.tag = "Layer1";
+        IgnorePhysicsLayer2();
+        DontIgnorePhysicsLayer1();
+        RestoreOpaquenessLayer1();
+
+        rigidBody.simulated = false;
+        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
+        float speedBridge = 20f * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge);
+        if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
+        {
+            moveToFrontLayer = false;
+            rigidBody.simulated = true;
+        }
+    }
+
+    private void MoveToBackLayer()
+    {
+        gameObject.tag = "Layer2";
+        IgnorePhysicsLayer1();
+        DontIgnorePhysicsLayer2();
+        ReduceTransparencyLayer1();
+
+        rigidBody.simulated = false;
+        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
+        float speedBridge = 20f * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge);
+        if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
+        {
+            moveToBackLayer = false;
+            rigidBody.simulated = true;
         }
     }
 
@@ -151,12 +200,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                gameObject.tag = "Layer2";
-                IgnorePhysicsLayer1();
-                DontIgnorePhysicsLayer2();
-                ReduceTransparencyLayer1();
-
-                transform.position = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
+                moveToBackLayer = true;
             }
         }
 
@@ -164,12 +208,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                gameObject.tag = "Layer1";
-                IgnorePhysicsLayer2();
-                DontIgnorePhysicsLayer1();
-                RestoreOpaquenessLayer1();
-
-                transform.position = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
+                moveToFrontLayer = true;
             }
         }
     }
