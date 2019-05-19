@@ -63,6 +63,9 @@ public class PlayerTileVania : MonoBehaviour
 
     AudioSource audiosource;
 
+    [SerializeField] AudioClip[] swordSlashSound;
+    [SerializeField] [Range(0, 1)] float volumeSoundswordSlash = 0.5f;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -443,6 +446,7 @@ public class PlayerTileVania : MonoBehaviour
                 var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
                 Sword sword = Instantiate(rightSwordPrefab, swordPos, Quaternion.identity);
                 SwordHitDirection = "right";
+                audiosource.PlayOneShot(swordSlashSound[UnityEngine.Random.Range(0, swordSlashSound.Length - 1)], volumeSoundswordSlash);
             }
         }
     }
@@ -456,6 +460,7 @@ public class PlayerTileVania : MonoBehaviour
                 var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
                 Sword sword = Instantiate(leftSwordPrefab, swordPos, Quaternion.identity);
                 SwordHitDirection = "left";
+                audiosource.PlayOneShot(swordSlashSound[UnityEngine.Random.Range(0, swordSlashSound.Length - 1)], volumeSoundswordSlash);
             }
         }
     }
