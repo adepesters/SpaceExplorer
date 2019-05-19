@@ -34,6 +34,9 @@ public class EnemyTileVania : MonoBehaviour
 
     bool shouldBeKilled;
 
+    [SerializeField] AudioClip[] swordSlashSound;
+    [SerializeField] [Range(0, 1)] float volumeSoundswordSlash = 0.3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -128,6 +131,7 @@ public class EnemyTileVania : MonoBehaviour
     private void ProcessHit(Collision2D collision, Vector2 contactPoint)
     {
         health -= collision.gameObject.GetComponent<Sword>().GetDamage();
+        AudioSource.PlayClipAtPoint(swordSlashSound[UnityEngine.Random.Range(0, swordSlashSound.Length - 1)], player.transform.position, volumeSoundswordSlash);
         collision.gameObject.GetComponent<Sword>().SetCanHit(false);
         if (health <= 0)
         {
