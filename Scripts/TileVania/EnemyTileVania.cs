@@ -54,7 +54,7 @@ public class EnemyTileVania : MonoBehaviour
         colorClassifier = FindObjectOfType<ColorClassifier>();
 
         //assigning a slightly different z position to each object, to avoid clipping when camera is rotated
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + UnityEngine.Random.Range(0.051f, 0.059f));
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + UnityEngine.Random.Range(0.001f, 0.009f));
     }
 
     // Update is called once per frame
