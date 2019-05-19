@@ -57,6 +57,12 @@ public class PlayerTileVania : MonoBehaviour
     float layer1zdepth;
     float layer2zdepth;
 
+    [SerializeField] AudioClip[] footstepsDryLeavesSound;
+    [SerializeField] [Range(0, 1)] float volumeSoundFootSteps = 0.5f;
+    float counterFootSteps;
+
+    AudioSource audiosource;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -67,6 +73,7 @@ public class PlayerTileVania : MonoBehaviour
         extendedLegs = FindObjectOfType<ExtendedLegs>();
         PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
         toolSelector = FindObjectOfType<ToolSelector>();
+        audiosource = GetComponent<AudioSource>();
 
         layer1zdepth = GameObject.Find("Layer 1").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
@@ -116,6 +123,9 @@ public class PlayerTileVania : MonoBehaviour
                 SwingSwordLeft();
             }
             //Climb();
+            counterFootSteps += Time.deltaTime;
+
+            //StartCoroutine(WalkDryLeavesSFX());
         }
 
         if (!isDead && playerIsFrozen)
@@ -191,7 +201,24 @@ public class PlayerTileVania : MonoBehaviour
             {
                 transform.localScale = new Vector3(Mathf.Sign(xChange) * originalScale.x, originalScale.y, originalScale.z);
             }
+            WalkOnDryLeavesSFX(xChange);
         }
+    }
+
+    private void WalkOnDryLeavesSFX(float xChange)
+    {
+        xChange = MapValue(0f, 6f, 0.1f, 1.5f, Mathf.Abs(xChange));
+        float frequencySteps = 1f / Mathf.Exp(xChange);
+        if (counterFootSteps > frequencySteps)
+        {
+            audiosource.PlayOneShot(footstepsDryLeavesSound[UnityEngine.Random.Range(0, footstepsDryLeavesSound.Length - 1)], volumeSoundFootSteps);
+            counterFootSteps = 0;
+        }
+    }
+
+    private float MapValue(float a0, float a1, float b0, float b1, float a)
+    {
+        return b0 + (b1 - b0) * ((a - a0) / (a1 - a0));
     }
 
     private void MoveAcrossLayers()
