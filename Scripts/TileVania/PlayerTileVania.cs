@@ -49,6 +49,8 @@ public class PlayerTileVania : MonoBehaviour
     string swordHitDirection;
 
     bool inFrontOfBridge;
+    Transform entryFrontLayer;
+    Transform entryBackLayer;
 
     float layer1zdepth;
     float layer2zdepth;
@@ -154,7 +156,7 @@ public class PlayerTileVania : MonoBehaviour
                 DontIgnorePhysicsLayer2();
                 ReduceTransparencyLayer1();
 
-                transform.position = new Vector3(transform.position.x, transform.position.y, layer2zdepth + 0.003f);
+                transform.position = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
             }
         }
 
@@ -167,7 +169,7 @@ public class PlayerTileVania : MonoBehaviour
                 DontIgnorePhysicsLayer1();
                 RestoreOpaquenessLayer1();
 
-                transform.position = new Vector3(transform.position.x, transform.position.y, layer1zdepth + 0.003f);
+                transform.position = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
             }
         }
     }
@@ -409,6 +411,8 @@ public class PlayerTileVania : MonoBehaviour
         if (collision.gameObject.name.Contains("Bridge"))
         {
             inFrontOfBridge = true;
+            entryFrontLayer = collision.gameObject.transform.Find("Entry Front Layer").gameObject.transform;
+            entryBackLayer = collision.gameObject.transform.Find("Entry Back Layer").gameObject.transform;
         }
     }
 
@@ -420,36 +424,4 @@ public class PlayerTileVania : MonoBehaviour
         }
     }
 
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.tag == "Layer1")
-    //    {
-    //        if (CurrentLayer == 2)
-    //        {
-    //            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), true);
-    //            Debug.Log(collision.gameObject.name + " on layer 1 ignored");
-    //        }
-    //        if (CurrentLayer == 1)
-    //        {
-    //            // Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), false);
-    //            Debug.Log(collision.gameObject.name + " on layer 1 collided");
-    //        }
-    //    }
-
-    //    if (collision.gameObject.tag == "Layer2")
-    //    {
-    //        Debug.Log("entered");
-    //        if (CurrentLayer == 1)
-    //        {
-    //            //Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), true);
-    //            Debug.Log(collision.gameObject.name + " on layer 2 ignored");
-    //        }
-    //        if (CurrentLayer == 2)
-    //        {
-    //            Debug.Log("ok");
-    //            // Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.gameObject.GetComponent<Collider2D>(), false);
-    //            Debug.Log(collision.gameObject.name + " on layer 2 collided");
-    //        }
-    //    }
-    //}
 }
