@@ -10,7 +10,7 @@ public class PixelBlood : MonoBehaviour
     PlayerTileVania player;
 
     [SerializeField] AudioClip blipSound;
-    float volumeSoundBlip = 0.2f;
+    float volumeSoundBlip = 0.05f;
 
     Coroutine playSFX;
 

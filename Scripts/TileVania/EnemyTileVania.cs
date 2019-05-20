@@ -35,7 +35,7 @@ public class EnemyTileVania : MonoBehaviour
     bool shouldBeKilled;
 
     [SerializeField] AudioClip[] swordSlashSound;
-    float volumeSoundswordSlash = 1f;
+    float volumeSoundswordSlash = 0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -131,7 +131,6 @@ public class EnemyTileVania : MonoBehaviour
     private void ProcessHit(Collision2D collision, Vector2 contactPoint)
     {
         health -= collision.gameObject.GetComponent<Sword>().GetDamage();
-        AudioSource.PlayClipAtPoint(swordSlashSound[UnityEngine.Random.Range(0, swordSlashSound.Length - 1)], player.transform.position, volumeSoundswordSlash);
         collision.gameObject.GetComponent<Sword>().SetCanHit(false);
         if (health <= 0)
         {
@@ -163,6 +162,7 @@ public class EnemyTileVania : MonoBehaviour
 
     IEnumerator SFXNormalHit()
     {
+        AudioSource.PlayClipAtPoint(swordSlashSound[UnityEngine.Random.Range(0, swordSlashSound.Length - 1)], player.transform.position, volumeSoundswordSlash);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         animator.speed = 0f;
         FindObjectOfType<Sword>().SpeedAnimation = 0f;
@@ -183,13 +183,14 @@ public class EnemyTileVania : MonoBehaviour
 
     IEnumerator SFXCriticalHit()
     {
+        AudioSource.PlayClipAtPoint(swordSlashSound[UnityEngine.Random.Range(0, swordSlashSound.Length - 1)], player.transform.position, volumeSoundswordSlash * 5);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         animator.speed = 0f;
         FindObjectOfType<Sword>().SpeedAnimation = 0f;
         //player.GetComponent<Animator>().SetBool("criticalHit", true);
         FindObjectOfType<Sword>().GetComponent<CameraShaker>().enabled = true;
         player.SetFrozenPlayer(true, player.transform.position);
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.2f);
         //player.GetComponent<Animator>().SetBool("criticalHit", false);
         transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = originalColor;
         animator.speed = 1f;
