@@ -80,6 +80,11 @@ public class Player : MonoBehaviour
     AttackStyle attackStyle;
     HitCanvas hitCanvas;
 
+    float maxFuel = 1000f;
+    float currentFuel;
+    GameObject currentBase;
+    Vector2 oldPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -108,6 +113,11 @@ public class Player : MonoBehaviour
         }
 
         originalMoveSpeed = moveSpeed;
+
+        currentFuel = maxFuel;
+        currentBase = GameObject.Find("Home Planet").gameObject;
+        transform.position = currentBase.transform.position;
+        oldPos = currentBase.transform.position;
     }
 
     // Update is called once per frame
@@ -121,6 +131,10 @@ public class Player : MonoBehaviour
         {
             damagePlayerVisualInstance.gameObject.transform.position = transform.position;
         }
+
+        currentFuel -= Vector2.Distance(transform.position, oldPos);
+        oldPos = transform.position;
+        Debug.Log(currentFuel);
     }
 
     private void AvoidAndFire()
