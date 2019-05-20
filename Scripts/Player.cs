@@ -80,10 +80,13 @@ public class Player : MonoBehaviour
     AttackStyle attackStyle;
     HitCanvas hitCanvas;
 
-    float maxFuel = 1000f;
-    float currentFuel;
+    float maxFuel = 2000f;
+    float currentFuel = 2000f;
     GameObject currentBase;
     Vector2 oldPos;
+
+    public float MaxFuel { get => maxFuel; set => maxFuel = value; }
+    public float CurrentFuel { get => currentFuel; set => currentFuel = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -114,7 +117,7 @@ public class Player : MonoBehaviour
 
         originalMoveSpeed = moveSpeed;
 
-        currentFuel = maxFuel;
+        CurrentFuel = MaxFuel;
         currentBase = GameObject.Find("Home Planet").gameObject;
         transform.position = currentBase.transform.position;
         oldPos = currentBase.transform.position;
@@ -132,9 +135,8 @@ public class Player : MonoBehaviour
             damagePlayerVisualInstance.gameObject.transform.position = transform.position;
         }
 
-        currentFuel -= Vector2.Distance(transform.position, oldPos);
+        CurrentFuel -= Vector2.Distance(transform.position, oldPos);
         oldPos = transform.position;
-        Debug.Log(currentFuel);
     }
 
     private void AvoidAndFire()
