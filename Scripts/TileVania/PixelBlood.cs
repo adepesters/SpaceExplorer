@@ -9,6 +9,11 @@ public class PixelBlood : MonoBehaviour
 
     PlayerTileVania player;
 
+    [SerializeField] AudioClip blipSound;
+    float volumeSoundBlip = 0.2f;
+
+    Coroutine playSFX;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +35,12 @@ public class PixelBlood : MonoBehaviour
                 accelerationAttraction += accelerationAttraction;
                 if (transform.position == player.transform.position)
                 {
-                    Destroy(gameObject);
+                    if (playSFX == null)
+                    {
+                        playSFX = StartCoroutine(PlaySFX());
+                        Destroy(gameObject, 0.1f);
+                    }
+                    //Destroy(gameObject);
 
                     //if (this.name.Contains("pink"))
                     //{
@@ -42,6 +52,12 @@ public class PixelBlood : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator PlaySFX()
+    {
+        GetComponent<AudioSource>().PlayOneShot(blipSound, volumeSoundBlip);
+        yield return null;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
