@@ -8,7 +8,7 @@ public class EnemyTileVania : MonoBehaviour
 {
     float health = 400f;
     Color originalColor;
-    float[] maxNumberOfParticles = new float[] { 4f, 4f, 4f, 4f, 4f, 4f, 4f };
+    float[] maxNumberOfParticles = new float[] { 10f, 4f, 4f, 4f, 4f, 4f, 4f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
     Vector3 originalPos;
 
@@ -35,7 +35,7 @@ public class EnemyTileVania : MonoBehaviour
     bool shouldBeKilled;
 
     [SerializeField] AudioClip[] swordSlashSound;
-    [SerializeField] [Range(0, 1)] float volumeSoundswordSlash = 0.3f;
+    float volumeSoundswordSlash = 1f;
 
     // Start is called before the first frame update
     void Start()
