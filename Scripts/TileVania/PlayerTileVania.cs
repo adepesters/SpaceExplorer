@@ -204,9 +204,12 @@ public class PlayerTileVania : MonoBehaviour
             {
                 transform.localScale = new Vector3(Mathf.Sign(xChange) * originalScale.x, originalScale.y, originalScale.z);
             }
-            if (feet.CurrentSurface.name.Contains("Ground"))
+            if (feet.CurrentSurface != null)
             {
-                WalkOnDryLeavesSFX(xChange);
+                if (feet.AreOnSomething && feet.CurrentSurface.name.Contains("Ground"))
+                {
+                    WalkOnDryLeavesSFX(xChange);
+                }
             }
         }
     }
