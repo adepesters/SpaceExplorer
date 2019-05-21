@@ -231,7 +231,9 @@ public class Bonus : MonoBehaviour
         //enemyLasersParent.GetComponentInChildren<CapsuleCollider2D>().isTrigger = false;
 
         //        GameObject.Find("Laser Enemy").GetComponent<CapsuleCollider2D>().isTrigger = false;
+        player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         yield return new WaitForSeconds(durationPowerUp3);
+        player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         player.SetInvincible(false);
         shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         shield.gameObject.GetComponentInChildren<CircleCollider2D>().enabled = false;
