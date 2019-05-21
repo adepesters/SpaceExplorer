@@ -53,7 +53,7 @@ public class Bonus : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         originalLaserFiringSpeed = player.GetComponent<Player>().originalLaserSpeed;
         originalLaserFiringPeriod = player.GetComponent<Player>().originalLaserFiringPeriod;

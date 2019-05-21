@@ -19,7 +19,7 @@ public class ItemActivator : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.Find("Player");
+        player = GameObject.FindWithTag("Player");
         activatorItems = new List<ActivatorItem>();
 
         StartCoroutine("CheckActivation");

@@ -18,7 +18,7 @@ public class ProximityDetector : MonoBehaviour
     void Start()
     {
         warningCanvas2 = FindObjectOfType<WarningCanvas2>();
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame

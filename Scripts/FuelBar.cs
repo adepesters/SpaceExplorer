@@ -12,7 +12,7 @@ public class FuelBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         slider = GetComponent<Slider>();
         slider.maxValue = player.CurrentFuel;

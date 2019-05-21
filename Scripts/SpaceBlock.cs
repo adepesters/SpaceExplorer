@@ -20,7 +20,7 @@ public class SpaceBlock : MonoBehaviour
         initPos = transform.position;
         myRenderer = GetComponent<SpriteRenderer>();
         myRenderer.color = color;
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         myRigidBody = GetComponent<Rigidbody2D>();
     }
 

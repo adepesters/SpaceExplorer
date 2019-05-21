@@ -11,7 +11,7 @@ public class Level : MonoBehaviour
 
     void Start()
     {
-        gameSession = FindObjectOfType<GameSession>();
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
     }
 
     public void LoadStartMenu()

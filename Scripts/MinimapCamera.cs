@@ -9,7 +9,7 @@ public class MinimapCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame

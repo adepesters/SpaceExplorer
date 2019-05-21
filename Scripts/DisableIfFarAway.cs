@@ -14,7 +14,7 @@ public class DisableIfFarAway : MonoBehaviour
 
     void Start()
     {
-        itemActivatorObject = GameObject.Find("ItemActivatorObject");
+        itemActivatorObject = GameObject.FindWithTag("ItemActivatorObject");
         activationScript = itemActivatorObject.GetComponent<ItemActivator>();
 
         StartCoroutine("AddToList");

@@ -15,7 +15,7 @@ public class StarfieldSpeed : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         //currentPos = player.transform.position;
         currentPos = Camera.main.transform.position;
     }

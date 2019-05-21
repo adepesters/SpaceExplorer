@@ -16,7 +16,7 @@ public class AttackStyle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        PS4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
 
         foreach (string attackStyle in defaultAttackStyles)
         {

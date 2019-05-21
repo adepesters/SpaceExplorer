@@ -33,10 +33,10 @@ public class CraftingMenu : MonoBehaviour
 
     void Start()
     {
-        gameSession = FindObjectOfType<GameSession>();
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         pauseMenuController = FindObjectOfType<PauseMenuController>();
         pauseController = FindObjectOfType<PauseController>();
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         numberOfBonuses[0].text = gameSession.counterStarBronze.ToString();
         numberOfBonuses[1].text = gameSession.counterStarSilver.ToString();

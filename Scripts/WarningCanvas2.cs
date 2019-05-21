@@ -26,7 +26,7 @@ public class WarningCanvas2 : MonoBehaviour
 
     void Start()
     {
-        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        PS4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
 
         redOpaqueCircle = GameObject.Find("redOpaqueCircleUI");
         redTransparentCircle = GameObject.Find("redTransparentCircleUI");

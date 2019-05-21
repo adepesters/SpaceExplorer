@@ -15,7 +15,7 @@ public class RedRadar : MonoBehaviour
     {
         //targetZone = GameObject.Find("Dialog Fairy");
 
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         targetZone = GameObject.Find("Pointer");
     }

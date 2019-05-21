@@ -20,7 +20,7 @@ public class EnemyRadarManager : MonoBehaviour
     void Start()
     {
         targets = FindObjectsOfType<EnemyRadarActivator>();
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         transform.position = FindObjectOfType<RedRadar>().transform.position;
     }
 

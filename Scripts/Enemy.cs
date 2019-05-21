@@ -75,7 +75,7 @@ public class Enemy : MonoBehaviour
         hitColorChange.b = 0f;
         hitColorChange.a = 255f;
 
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         // create parents
         enemyLasersParent = GameObject.Find(ENEMY_LASERS);
@@ -99,9 +99,9 @@ public class Enemy : MonoBehaviour
         //GetComponent<SpriteRenderer>().color = originalColor;
         AnalyzeColorsInSprite();
 
-        gameSession = FindObjectOfType<GameSession>();
-        listOfBonuses = FindObjectOfType<ListOfBonuses>();
-        colorClassifier = FindObjectOfType<ColorClassifier>();
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+        listOfBonuses = GameObject.FindWithTag("ListOfBonuses").GetComponent<ListOfBonuses>();
+        colorClassifier = GameObject.FindWithTag("ColorClassifier").GetComponent<ColorClassifier>();
     }
 
     private void AnalyzeColorsInSprite()

@@ -57,7 +57,7 @@ public class WorldMapMenu : MonoBehaviour
     {
         pauseController = FindObjectOfType<PauseController>();
         pauseMenuController = FindObjectOfType<PauseMenuController>();
-        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        PS4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
 
         WorldmapCam = GameObject.Find("Worldmap Camera without Perspective").GetComponent<Camera>();
 

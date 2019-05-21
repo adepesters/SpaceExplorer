@@ -36,8 +36,8 @@ public class DialogManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PS4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
-        player = FindObjectOfType<Player>();
+        PS4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         actionBoxManager = FindObjectOfType<ActionBoxManager>();
     }
 

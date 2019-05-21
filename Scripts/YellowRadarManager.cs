@@ -19,7 +19,7 @@ public class YellowRadarManager : MonoBehaviour
     void Start()
     {
         targets = FindObjectsOfType<YellowRadarActivator>();
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         transform.position = FindObjectOfType<RedRadar>().transform.position;
     }
 

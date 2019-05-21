@@ -40,7 +40,7 @@ public class StarfieldGenerator : MonoBehaviour
         thresholdDistX = 120; //width - buffer;
         thresholdDistY = 80;  //height - buffer;
 
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         playerPos = player.transform.position;
         oldValX = playerPos[0];
         oldValY = playerPos[1];

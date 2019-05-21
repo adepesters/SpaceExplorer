@@ -16,7 +16,7 @@ public class ParticleSpeed : MonoBehaviour
         m_System = GetComponent<ParticleSystem>();
         m_Particles = new ParticleSystem.Particle[m_System.particleCount];
 
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame

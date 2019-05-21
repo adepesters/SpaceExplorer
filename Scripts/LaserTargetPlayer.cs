@@ -11,7 +11,7 @@ public class LaserTargetPlayer : MonoBehaviour
     void Start()
     {
         currentPos = transform.position;
-        playerPos = FindObjectOfType<Player>().transform.position;
+        playerPos = GameObject.FindWithTag("Player").GetComponent<Player>().transform.position;
         targetPos = playerPos + 100000 * (playerPos - currentPos);
     }
 

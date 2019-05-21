@@ -17,7 +17,7 @@ public class EnemyRadarActivator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         HasBeenDiscovered = false;
     }

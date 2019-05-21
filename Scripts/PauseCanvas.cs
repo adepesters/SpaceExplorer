@@ -13,7 +13,7 @@ public class PauseCanvas : MonoBehaviour
 
     void Start()
     {
-        gameSession = FindObjectOfType<GameSession>();
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         pauseController = FindObjectOfType<PauseController>();
         pauseMenuController = FindObjectOfType<PauseMenuController>();
 

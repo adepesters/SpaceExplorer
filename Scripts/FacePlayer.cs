@@ -12,7 +12,7 @@ public class FacePlayer : MonoBehaviour
 
     void Start()
     {
-        player = FindObjectOfType<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         facingSpeed = UnityEngine.Random.Range(1, 10); // the fastest always aim perfectly for the player
         // the slowest are sloppy and miss the player
     }
