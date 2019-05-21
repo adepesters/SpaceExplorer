@@ -95,6 +95,7 @@ public class AreaManager : MonoBehaviour
                 areaCleanedRoutine = StartCoroutine(LaunchAreaClearedText());
                 areaCleanedRoutine = null;
             }
+            GameObject.Find("Zone 3").gameObject.GetComponent<EnemyRadarActivator>().HasBeenCleared = true;
         }
 
         if (zone3Cleaned)
@@ -150,6 +151,7 @@ public class AreaManager : MonoBehaviour
             {
                 zoneEntered = GameObject.Find("Zone 3");
                 enteredZone3 = true;
+                GameObject.Find("Zone 3").gameObject.GetComponent<EnemyRadarActivator>().HasBeenDiscovered = true;
                 if (spawnZone3 == null)
                 {
                     spawnZone3 = StartCoroutine(SpawnZone3());
@@ -198,6 +200,7 @@ public class AreaManager : MonoBehaviour
             if (collision.gameObject.name.Contains("Zone 3"))
             {
                 enteredZone3 = false;
+                GameObject.Find("Zone 3").gameObject.GetComponent<EnemyRadarActivator>().HasBeenDiscovered = false;
                 spawnZone3 = null;
                 // indexEnemiesZone2 = 0;
 
