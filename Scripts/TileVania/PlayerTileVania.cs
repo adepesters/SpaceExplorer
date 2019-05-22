@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class PlayerTileVania : MonoBehaviour
 {
-    float health = 1000f;
+    float health = 10000f;
 
     float runSpeed = 6f;
     [SerializeField] float jumpSpeed = 14f;
@@ -89,6 +89,7 @@ public class PlayerTileVania : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(health);
         counterHit += Time.deltaTime;
 
         if (!isDead && playerOnAir && !playerIsFrozen)
@@ -511,9 +512,12 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("VirtualRock"))
         {
-            float damage = 100f;
-            Destroy(collision.gameObject);
-            ProcessHit(damage);
+            if (collision.gameObject.tag == gameObject.tag)
+            {
+                float damage = 100f;
+                Destroy(collision.gameObject);
+                ProcessHit(damage);
+            }
         }
     }
 

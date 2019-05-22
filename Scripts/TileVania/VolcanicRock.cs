@@ -5,8 +5,10 @@ using UnityEngine;
 public class VolcanicRock : MonoBehaviour
 {
     Vector3 target;
+    bool isTargetingPlayerLayer = false;
 
     public Vector3 Target { get => target; set => target = value; }
+    public bool IsTargetingPlayerLayer { get => isTargetingPlayerLayer; set => isTargetingPlayerLayer = value; }
 
     // Start is called before the first frame update
     void Start()

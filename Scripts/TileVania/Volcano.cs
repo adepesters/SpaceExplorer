@@ -41,6 +41,8 @@ public class Volcano : MonoBehaviour
             {
                 newRock = Instantiate(rock, transform.position, Quaternion.identity, volcanoRocksParent.transform);
                 newRock.GetComponent<VolcanicRock>().Target = target;
+                newRock.GetComponent<VolcanicRock>().IsTargetingPlayerLayer = true;
+                newRock.tag = player.tag;
             }
             if (rdnChoice > 0 && rdnChoice < 5)
             {
@@ -49,6 +51,8 @@ public class Volcano : MonoBehaviour
                 target.y, target.z);
                 newRock = Instantiate(rock, transform.position, Quaternion.identity, volcanoRocksParent.transform);
                 newRock.GetComponent<VolcanicRock>().Target = rdnTarget;
+                newRock.GetComponent<VolcanicRock>().IsTargetingPlayerLayer = true;
+                newRock.tag = player.tag;
             }
             else if (rdnChoice > 4)
             {

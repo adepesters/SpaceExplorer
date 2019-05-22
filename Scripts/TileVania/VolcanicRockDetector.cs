@@ -8,8 +8,15 @@ public class VolcanicRockDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject newVirtualRock = Instantiate(virtualRock, other.gameObject.transform.position, Quaternion.identity);
-        Destroy(other.gameObject, 0.01f);
-        Destroy(newVirtualRock, 0.01f);
+        if (other.gameObject.GetComponent<VolcanicRock>().IsTargetingPlayerLayer)
+        {
+            if (gameObject.tag == other.gameObject.tag)
+            {
+                GameObject newVirtualRock = Instantiate(virtualRock, other.gameObject.transform.position, Quaternion.identity);
+                newVirtualRock.tag = other.gameObject.tag;
+                Destroy(other.gameObject, 0.01f);
+                Destroy(newVirtualRock, 0.01f);
+            }
+        }
     }
 }
