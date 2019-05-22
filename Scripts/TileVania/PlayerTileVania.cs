@@ -6,6 +6,8 @@ using UnityEngine.Tilemaps;
 
 public class PlayerTileVania : MonoBehaviour
 {
+    float health = 1000f;
+
     float runSpeed = 6f;
     [SerializeField] float jumpSpeed = 14f;
     [SerializeField] float climbSpeed = 6f;
@@ -66,6 +68,8 @@ public class PlayerTileVania : MonoBehaviour
     [SerializeField] AudioClip[] swordSlashSound;
     float volumeSoundswordSlash = 1f;
 
+    float counterHit;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -85,6 +89,8 @@ public class PlayerTileVania : MonoBehaviour
 
     void Update()
     {
+        counterHit += Time.deltaTime;
+
         if (!isDead && playerOnAir && !playerIsFrozen)
         {
             animator.speed = 0.2f;
@@ -499,6 +505,40 @@ public class PlayerTileVania : MonoBehaviour
         {
             inFrontOfBridge = false;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains("VirtualRock"))
+        {
+            float damage = 100f;
+            Destroy(collision.gameObject);
+            ProcessHit(damage);
+        }
+    }
+
+    void ProcessHit(float damage)
+    {
+        if (counterHit > 0.2f)
+        {
+            if (health <= 0)
+            {
+                //Die(); not yet implemented
+            }
+            else
+            {
+                counterHit = 0f;
+                health -= damage;
+                StartCoroutine(ChangeColorAfterHit());
+            }
+        }
+    }
+
+    IEnumerator ChangeColorAfterHit()
+    {
+        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
 }
