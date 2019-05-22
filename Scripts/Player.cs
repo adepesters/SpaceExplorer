@@ -104,10 +104,10 @@ public class Player : MonoBehaviour
         originalBombSpeed = bombSpeed;
         originalBombFiringPeriod = bombFiringPeriod;
 
-        ps4ControllerCheck = FindObjectOfType<PS4ControllerCheck>();
+        ps4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
         rigidBody = GetComponent<Rigidbody2D>();
-        attackStyle = FindObjectOfType<AttackStyle>();
-        hitCanvas = FindObjectOfType<HitCanvas>();
+        attackStyle = GameObject.FindWithTag("AttackStyle").GetComponent<AttackStyle>();
+        hitCanvas = GameObject.FindWithTag("HitCanvas").GetComponent<HitCanvas>();
 
         playerLasersParent = GameObject.Find(PLAYER_LASERS);
         if (!playerLasersParent)
@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
 
         CurrentFuel = MaxFuel;
         currentBase = GameObject.Find("Home Planet").gameObject;
-        transform.position = currentBase.transform.position;
+        //transform.position = currentBase.transform.position;
         oldPos = currentBase.transform.position;
     }
 
