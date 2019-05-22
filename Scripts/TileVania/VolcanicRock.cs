@@ -11,7 +11,12 @@ public class VolcanicRock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody>().velocity = BallisticVel();
+        transform.position = new Vector3(transform.position.x + Random.Range(-5f, 5f),
+        transform.position.y + Random.Range(-5f, 5f), transform.position.z);
+        if (!float.IsNaN(BallisticVel().x))
+        {
+            GetComponent<Rigidbody>().velocity = BallisticVel();
+        }
     }
 
     private Vector3 BallisticVel()
@@ -20,7 +25,6 @@ public class VolcanicRock : MonoBehaviour
         var h = dir.y;  // get height difference
         dir.y = 0;  // retain only the horizontal direction
         var dist = dir.magnitude;  // get horizontal distance
-        Debug.Log(dist);
         dir.y = dist;  // set elevation to 45 degrees
         dist += h;  // correct for different heights
         var vel = Mathf.Sqrt(dist * Physics.gravity.magnitude);
