@@ -6,7 +6,6 @@ public class Volcano : MonoBehaviour
 {
     [SerializeField] GameObject rock;
     PlayerTileVania player;
-    int numRocks = 30;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +23,7 @@ public class Volcano : MonoBehaviour
             Vector3 rdnTarget;
             GameObject newRock;
 
-            if (rdnChoice == 0)
+            if (rdnChoice < 1)
             {
                 GameObject rockTargetingPlayer = Instantiate(rock, transform.position, Quaternion.identity);
                 rockTargetingPlayer.GetComponent<VolcanicRock>().Target = player.transform.position;
@@ -32,15 +31,15 @@ public class Volcano : MonoBehaviour
             if (rdnChoice > 0 && rdnChoice < 5)
             {
 
-                rdnTarget = new Vector3(player.transform.position.x + Random.Range(-80f, 80f),
+                rdnTarget = new Vector3(player.transform.position.x + Random.Range(-30f, 30f),
                 player.transform.position.y, player.transform.position.z);
                 newRock = Instantiate(rock, transform.position, Quaternion.identity);
                 newRock.GetComponent<VolcanicRock>().Target = rdnTarget;
             }
-            else
+            else if (rdnChoice > 4)
             {
                 rdnTarget = new Vector3(player.transform.position.x + Random.Range(-200f, 200f),
-                        player.transform.position.y, player.transform.position.z + Random.Range(-200f, 200f));
+                        player.transform.position.y, player.transform.position.z + Random.Range(0, 160f));
                 newRock = Instantiate(rock, transform.position, Quaternion.identity);
                 newRock.GetComponent<VolcanicRock>().Target = rdnTarget;
             }
