@@ -70,6 +70,8 @@ public class PlayerTileVania : MonoBehaviour
 
     float counterHit;
 
+    float originalGravity;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -85,11 +87,13 @@ public class PlayerTileVania : MonoBehaviour
         layer1zdepth = GameObject.Find("Layer 1").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         IgnorePhysicsLayer2();
+
+        originalGravity = rigidBody.gravityScale;
     }
 
     void Update()
     {
-        Debug.Log(health);
+        //Debug.Log(health);
         counterHit += Time.deltaTime;
 
         if (!isDead && playerOnAir && !playerIsFrozen)
@@ -356,7 +360,7 @@ public class PlayerTileVania : MonoBehaviour
         }
         if (canJump == true && (feet.AreOnSomething || grapinJump))
         {
-            rigidBody.gravityScale = 3; // in case we jump from a ladder (where gravity is 0)
+            //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
             rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
             isJumping = true;
             canJump = false;
