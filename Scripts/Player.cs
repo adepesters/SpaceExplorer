@@ -87,6 +87,7 @@ public class Player : MonoBehaviour
 
     public float MaxFuel { get => maxFuel; set => maxFuel = value; }
     public float CurrentFuel { get => currentFuel; set => currentFuel = value; }
+    public int Health { get => health; set => health = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -120,7 +121,8 @@ public class Player : MonoBehaviour
         CurrentFuel = MaxFuel;
         currentBase = GameObject.Find("Home Planet").gameObject;
         //transform.position = currentBase.transform.position;
-        oldPos = currentBase.transform.position;
+        //oldPos = currentBase.transform.position;
+        oldPos = transform.position;
     }
 
     // Update is called once per frame
@@ -348,7 +350,7 @@ public class Player : MonoBehaviour
     {
         if (!isInvincible)
         {
-            health -= damageDealer.GetDamage();
+            Health -= damageDealer.GetDamage();
             StartCoroutine(hitCanvas.HandleHitCanvas());
         }
 
@@ -356,7 +358,7 @@ public class Player : MonoBehaviour
         {
             damageDealer.Hit();
         }
-        if (health <= 0)
+        if (Health <= 0)
         {
             DeathVFX();
             FindObjectOfType<Level>().LoadGameOver();
@@ -406,7 +408,7 @@ public class Player : MonoBehaviour
 
     public int GetHealthPlayer()
     {
-        return health;
+        return Health;
     }
 
     public int GetDamageLaserPlayer()
