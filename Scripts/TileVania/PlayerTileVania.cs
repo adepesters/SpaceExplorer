@@ -71,6 +71,7 @@ public class PlayerTileVania : MonoBehaviour
     float counterHit;
 
     float originalGravity;
+    FeetLowGravity feetLowGravity;
 
     void Start()
     {
@@ -89,6 +90,7 @@ public class PlayerTileVania : MonoBehaviour
         IgnorePhysicsLayer2();
 
         originalGravity = rigidBody.gravityScale;
+        feetLowGravity = FindObjectOfType<FeetLowGravity>();
     }
 
     void Update()
@@ -353,21 +355,45 @@ public class PlayerTileVania : MonoBehaviour
 
     private void Jump()
     {
-        if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump))
+        if (originalGravity < 1)
         {
-            canJump = true;
+            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump))
+            {
+                canJump = true;
+                rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
 
+            }
+            if (canJump == true && (feetLowGravity.AreOnSomething || grapinJump))
+            {
+                //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
+                rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+                isJumping = true;
+                canJump = false;
+            }
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                isJumping = false;
+            }
         }
-        if (canJump == true && (feet.AreOnSomething || grapinJump))
+        else
         {
-            //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
-            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
-            isJumping = true;
-            canJump = false;
-        }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            isJumping = false;
+            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump))
+            {
+                canJump = true;
+                rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
+
+            }
+            if (canJump == true && (feet.AreOnSomething || grapinJump))
+            {
+                //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
+                rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+                isJumping = true;
+                canJump = false;
+            }
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                isJumping = false;
+            }
         }
     }
 
