@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class YellowRadarActivator : MonoBehaviour
 {
-    private bool hasBeenDiscovered;
+    bool hasBeenDiscovered;
 
     public bool HasBeenDiscovered { get => hasBeenDiscovered; set => hasBeenDiscovered = value; }
 
