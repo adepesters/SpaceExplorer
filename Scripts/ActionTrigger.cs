@@ -11,10 +11,13 @@ public class ActionTrigger : MonoBehaviour
 
     [SerializeField] string actionText;
 
+    bool canAppear = true;
+
     public delegate void MyDelegate();
     MyDelegate myDelegate;
 
     public MyDelegate MyDelegate1 { get => myDelegate; set => myDelegate = value; }
+    public bool CanAppear { get => canAppear; set => canAppear = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -34,10 +37,13 @@ public class ActionTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 8) // player
+        if (canAppear)
         {
-            canActivate = true;
-            EnableActionBox();
+            if (collision.gameObject.layer == 8) // player
+            {
+                canActivate = true;
+                EnableActionBox();
+            }
         }
     }
 
@@ -50,14 +56,14 @@ public class ActionTrigger : MonoBehaviour
         }
     }
 
-    private void EnableActionBox()
+    public void EnableActionBox()
     {
         actionBoxManager.gameObject.GetComponent<Canvas>().enabled = true;
         actionBoxManager.SetPos(transform.position);
         actionBoxManager.SetText(actionText);
     }
 
-    private static void DisableActionBox()
+    public void DisableActionBox()
     {
         FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = false;
     }
