@@ -12,6 +12,8 @@ public class Chest : MonoBehaviour
 
     void ChangeColor()
     {
-        GetComponent<SpriteRenderer>().color = Color.red;
+        GetComponentInParent<SpriteRenderer>().color = Color.red;
+        GetComponent<ActionTrigger>().CanAppear = false;
+        GetComponent<ActionTrigger>().DisableActionBox();
     }
 }
