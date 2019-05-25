@@ -40,29 +40,35 @@ public class GameSession : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-
-        scoreText.text = score.ToString("D6");
-        healthText.text = player.GetHealthPlayer().ToString();
-
-        for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
+        if (GameObject.FindWithTag("Player") != null)
         {
-            CounterPixelBlood[i] = 0;
+            player = GameObject.FindWithTag("Player").GetComponent<Player>();
+
+            scoreText.text = score.ToString("D6");
+            healthText.text = player.GetHealthPlayer().ToString();
+
+            for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
+            {
+                CounterPixelBlood[i] = 0;
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        scoreText.text = score.ToString("D6");
-        if (player != null) // because when the player dies its game object gets destructed, which returns 
-                            // a bug when we try to access a FindObjectOfType<Player>
+        if (player)
         {
-            healthText.text = player.GetHealthPlayer().ToString();
-        }
-        else
-        {
-            FindObjectOfType<GameSession>().healthText.text = "000";
+            scoreText.text = score.ToString("D6");
+            if (player != null) // because when the player dies its game object gets destructed, which returns 
+                                // a bug when we try to access a FindObjectOfType<Player>
+            {
+                healthText.text = player.GetHealthPlayer().ToString();
+            }
+            else
+            {
+                FindObjectOfType<GameSession>().healthText.text = "000";
+            }
         }
 
         //for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
