@@ -9,6 +9,7 @@ public class ActionBoxManager : MonoBehaviour
 
     [SerializeField] GameObject panel;
     [SerializeField] Text text;
+    [SerializeField] Vector3 offset;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,7 @@ public class ActionBoxManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        panel.GetComponent<RectTransform>().transform.position = Camera.main.WorldToScreenPoint(pos + new Vector3(0, 5, 0));
+        panel.GetComponent<RectTransform>().transform.position = Camera.main.WorldToScreenPoint(pos + offset);
 
     }
 
