@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
+    [SerializeField] int chestID;
+
     // Start is called before the first frame update
     void Start()
     {
