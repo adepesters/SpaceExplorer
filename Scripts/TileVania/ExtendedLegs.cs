@@ -12,8 +12,16 @@ public class ExtendedLegs : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        areOnSomething = true;
-        CurrentSurface = collision.gameObject;
+        if (collision.gameObject.GetComponent<Collider2D>().isTrigger == false) // to make sure the collider is actually a collider and not just a trigger
+        {
+            areOnSomething = true;
+            CurrentSurface = collision.gameObject;
+        }
+        else if (collision.gameObject.name.Contains("Tree"))
+        {
+            areOnSomething = true;
+            CurrentSurface = collision.gameObject;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
