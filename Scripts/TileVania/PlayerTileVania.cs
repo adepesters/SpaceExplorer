@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 public class PlayerTileVania : MonoBehaviour
 {
@@ -548,6 +549,11 @@ public class PlayerTileVania : MonoBehaviour
                 Destroy(collision.gameObject);
                 ProcessHit(damage);
             }
+        }
+
+        if (collision.gameObject.name.Contains("Exit To Space"))
+        {
+            SceneManager.LoadScene("Space");
         }
     }
 
