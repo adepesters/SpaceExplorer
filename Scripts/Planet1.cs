@@ -6,8 +6,10 @@ public class Planet1 : MonoBehaviour
 {
     bool hasBeenDiscovered = false;
     bool hasBeenCompleted = false;
-    bool[] openChests;
+    [SerializeField] bool[] openChests;
     YellowRadarActivator yellowRadarActivator;
+
+    GameSession gameSession;
 
     public bool HasBeenDiscovered { get => hasBeenDiscovered; set => hasBeenDiscovered = value; }
     public bool HasBeenCompleted { get => hasBeenCompleted; set => hasBeenCompleted = value; }
@@ -16,10 +18,12 @@ public class Planet1 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+
         OpenChests = new bool[2];
         for (int i = 0; i < OpenChests.Length; i++)
         {
-            OpenChests[i] = false;
+            OpenChests[i] = gameSession.OpenChests[0, i];
         }
 
         yellowRadarActivator = GetComponent<YellowRadarActivator>();

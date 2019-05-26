@@ -8,10 +8,12 @@ public class ChoicesConsequencesPlanet1 : MonoBehaviour
     int selectedChoice;
     int hasAnswered;
 
+    GameSession gameSession;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
     }
 
     // Update is called once per frame
@@ -32,6 +34,7 @@ public class ChoicesConsequencesPlanet1 : MonoBehaviour
         // Debug.Log("yes");
         SceneManager.LoadScene("Planet 1");
         hasAnswered = 0;
+        gameSession.SceneType = "planet";
     }
 
     private void No()

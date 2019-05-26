@@ -21,8 +21,12 @@ public class GameSession : MonoBehaviour
     Player player;
 
     public int[] CounterPixelBlood { get => counterPixelBlood; set => counterPixelBlood = value; }
+    public string SceneType { get => sceneType; set => sceneType = value; }
+    public bool[,] OpenChests { get => openChests; set => openChests = value; }
 
-    // cached variables
+    string sceneType = "space"; // "space" or "planet"
+
+    bool[,] openChests = new bool[1, 2];
 
     private void Awake()
     {
@@ -35,16 +39,27 @@ public class GameSession : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
         }
+
+        if (sceneType == "space")
+        {
+            for (int planet = 0; planet < OpenChests.GetLength(0); planet++)
+            {
+                for (int chest = 0; chest < OpenChests.GetLength(0); chest++)
+                {
+                    OpenChests[planet, chest] = false;
+                }
+            }
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        if (GameObject.FindWithTag("Player") != null)
+        if (sceneType == "space")
         {
             player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
-            scoreText.text = score.ToString("D6");
+            //scoreText.text = score.ToString("D6");
             healthText.text = player.GetHealthPlayer().ToString();
 
             for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
@@ -57,9 +72,9 @@ public class GameSession : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player)
+        if (sceneType == "space")
         {
-            scoreText.text = score.ToString("D6");
+            //scoreText.text = score.ToString("D6");
             if (player != null) // because when the player dies its game object gets destructed, which returns 
                                 // a bug when we try to access a FindObjectOfType<Player>
             {
