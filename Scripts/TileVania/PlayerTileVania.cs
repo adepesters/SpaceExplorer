@@ -558,6 +558,11 @@ public class PlayerTileVania : MonoBehaviour
             SceneManager.LoadScene("Space");
             gameSession.SceneType = "Space";
         }
+
+        if (collision.gameObject.name.Contains("Complete Planet"))
+        {
+            gameSession.HasBeenCompleted[gameSession.CurrentPlanetID] = true;
+        }
     }
 
     void ProcessHit(float damage)
