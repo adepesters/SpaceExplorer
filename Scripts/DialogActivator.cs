@@ -48,7 +48,6 @@ public class DialogActivator : MonoBehaviour
         if (collision.gameObject.layer == 8) // player
         {
             canActivate = true;
-            FindObjectOfType<RedRadar>().SetCurrentTargetRedRadar(GameObject.Find("Planet 1"));
             EnableActionBox();
         }
     }

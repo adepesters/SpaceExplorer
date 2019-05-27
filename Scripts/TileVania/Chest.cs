@@ -6,6 +6,7 @@ public class Chest : MonoBehaviour
 {
     [SerializeField] int chestID;
     [SerializeField] bool isOpen = false;
+    [SerializeField] int planetID;
 
     GameSession gameSession;
 
@@ -16,6 +17,25 @@ public class Chest : MonoBehaviour
     {
         GetComponent<ActionTrigger>().MyDelegate1 = OpenChest;
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+        isOpen = gameSession.OpenChests[planetID, chestID];
+        if (isOpen)
+        {
+            GetComponentInParent<SpriteRenderer>().color = Color.red;
+            GetComponent<ActionTrigger>().CanAppear = false;
+            GetComponent<ActionTrigger>().DisableActionBox();
+        }
+    }
+
+    void Update()
+    {
+        isOpen = gameSession.OpenChests[planetID, chestID];
+
+        if (isOpen)
+        {
+            GetComponentInParent<SpriteRenderer>().color = Color.red;
+            GetComponent<ActionTrigger>().CanAppear = false;
+            GetComponent<ActionTrigger>().DisableActionBox();
+        }
     }
 
     void OpenChest()
@@ -24,6 +44,6 @@ public class Chest : MonoBehaviour
         GetComponentInParent<SpriteRenderer>().color = Color.red;
         GetComponent<ActionTrigger>().CanAppear = false;
         GetComponent<ActionTrigger>().DisableActionBox();
-        gameSession.OpenChests[0, chestID] = true;
+        gameSession.OpenChests[1, chestID] = true;
     }
 }

@@ -12,12 +12,20 @@ public class YellowRadarActivator : MonoBehaviour
 
     float discoveryThresholdDist = 15f;
 
+    [SerializeField] int planetID;
+
+    GameSession gameSession;
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
-        HasBeenDiscovered = false;
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+
+        HasBeenDiscovered = gameSession.HasBeenDiscovered[planetID];
+
+        //HasBeenDiscovered = false;
     }
 
     // Update is called once per frame

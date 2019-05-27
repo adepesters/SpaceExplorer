@@ -6,12 +6,15 @@ public class Planet1Data
 {
     public bool hasBeenDiscovered;
     public bool hasBeenCompleted;
-    public bool[] openChests;
+    public bool[] openChests = new bool[2];
 
-    public Planet1Data(Planet1 planet)
+    public Planet1Data(GameSession gameSession)
     {
-        hasBeenDiscovered = planet.HasBeenDiscovered;
-        hasBeenCompleted = planet.HasBeenCompleted;
-        openChests = planet.OpenChests;
+        hasBeenDiscovered = gameSession.HasBeenDiscovered[1];
+        hasBeenCompleted = gameSession.HasBeenCompleted[1];
+        for (int chest = 0; chest < openChests.Length; chest++)
+        {
+            openChests[chest] = gameSession.OpenChests[1, chest];
+        }
     }
 }

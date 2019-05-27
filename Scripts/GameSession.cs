@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameSession : MonoBehaviour
 {
@@ -23,10 +24,15 @@ public class GameSession : MonoBehaviour
     public int[] CounterPixelBlood { get => counterPixelBlood; set => counterPixelBlood = value; }
     public string SceneType { get => sceneType; set => sceneType = value; }
     public bool[,] OpenChests { get => openChests; set => openChests = value; }
+    public bool[] HasBeenDiscovered { get => hasBeenDiscovered; set => hasBeenDiscovered = value; }
+    public bool[] HasBeenCompleted { get => hasBeenCompleted; set => hasBeenCompleted = value; }
 
-    string sceneType = "space"; // "space" or "planet"
+    [SerializeField] string sceneType = "space"; // "space" or "planet"
 
-    bool[,] openChests = new bool[1, 2];
+    // planet related info to access
+    bool[,] openChests = new bool[2, 2];
+    bool[] hasBeenDiscovered = new bool[2];
+    bool[] hasBeenCompleted = new bool[2];
 
     private void Awake()
     {
@@ -40,11 +46,23 @@ public class GameSession : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
+        if (SceneManager.GetActiveScene().name == "Space")
+        {
+            sceneType = "space";
+        }
+        else if (SceneManager.GetActiveScene().name.Contains("Planet"))
+        {
+            sceneType = "planet";
+        }
+
         if (sceneType == "space")
         {
             for (int planet = 0; planet < OpenChests.GetLength(0); planet++)
             {
-                for (int chest = 0; chest < OpenChests.GetLength(0); chest++)
+                HasBeenDiscovered[planet] = false;
+                HasBeenCompleted[planet] = false;
+
+                for (int chest = 0; chest < OpenChests.GetLength(1); chest++)
                 {
                     OpenChests[planet, chest] = false;
                 }

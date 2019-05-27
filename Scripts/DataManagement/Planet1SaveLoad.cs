@@ -10,8 +10,8 @@ public class Planet1SaveLoad
 
         using (FileStream fileStream = File.Open(path, FileMode.OpenOrCreate))
         {
-            Planet1 planet1 = GameObject.FindWithTag("Planet1").gameObject.GetComponent<Planet1>();
-            Planet1Data data = new Planet1Data(planet1);
+            GameSession gameSession = GameObject.FindWithTag("GameSession").gameObject.GetComponent<GameSession>();
+            Planet1Data data = new Planet1Data(gameSession);
             binaryFormatter.Serialize(fileStream, data);
         }
     }
@@ -23,11 +23,13 @@ public class Planet1SaveLoad
         using (FileStream fileStream = File.Open(path, FileMode.Open))
         {
             Planet1Data data = (Planet1Data)binaryFormatter.Deserialize(fileStream);
-            Planet1 planet1 = GameObject.FindWithTag("Planet1").gameObject.GetComponent<Planet1>();
-            planet1.GetComponent<YellowRadarActivator>().HasBeenDiscovered = data.hasBeenDiscovered;
-            planet1.GetComponentInChildren<WorldMapIcon>().HasBeenDiscovered = data.hasBeenDiscovered;
-            planet1.HasBeenCompleted = data.hasBeenCompleted;
-            planet1.OpenChests = data.openChests;
+            GameSession gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+            gameSession.HasBeenCompleted[1] = data.hasBeenCompleted;
+            gameSession.HasBeenDiscovered[1] = data.hasBeenDiscovered;
+            for (int chest = 0; chest < data.openChests.Length; chest++)
+            {
+                gameSession.OpenChests[1, chest] = data.openChests[chest];
+            }
         }
     }
 }

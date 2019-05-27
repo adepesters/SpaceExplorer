@@ -23,8 +23,10 @@ public class Planet1 : MonoBehaviour
         OpenChests = new bool[2];
         for (int i = 0; i < OpenChests.Length; i++)
         {
-            OpenChests[i] = gameSession.OpenChests[0, i];
+            OpenChests[i] = gameSession.OpenChests[1, i];
         }
+
+        hasBeenCompleted = gameSession.HasBeenCompleted[1];
 
         yellowRadarActivator = GetComponent<YellowRadarActivator>();
         HasBeenDiscovered = yellowRadarActivator.HasBeenDiscovered;
