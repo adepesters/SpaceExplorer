@@ -17,7 +17,7 @@ public class Level : MonoBehaviour
     public void LoadStartMenu()
     {
         SceneManager.LoadScene(0);
-        gameSession.score = 0;
+        //        gameSession.score = 0;
     }
 
     public void LoadGameOver()
@@ -33,7 +33,7 @@ public class Level : MonoBehaviour
 
     public void LoadGameScene()
     {
-        gameSession.score = 0;
+        //        gameSession.score = 0;
         SceneManager.LoadScene(1);
     }
 

@@ -197,7 +197,7 @@ public class Enemy : MonoBehaviour
     {
         GameObject vFXParticles = Instantiate(destroyVFXParticles, transform.position, Quaternion.identity) as GameObject;
         Destroy(gameObject);
-        gameSession.score += pointsForDestruction;
+        //        gameSession.score += pointsForDestruction;
         VFXEnemyDeath(vFXParticles);
     }
 
