@@ -16,37 +16,43 @@ public class EnemyRadarManager : MonoBehaviour
 
     float detectionDistance = 400f;
 
+    GameSession gameSession;
+
     // Start is called before the first frame update
     void Start()
     {
         targets = FindObjectsOfType<EnemyRadarActivator>();
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         transform.position = FindObjectOfType<RedRadar>().transform.position;
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (EnemyRadarActivator target in targets)
+        if (gameSession.SceneType == "space")
         {
-            if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
+            foreach (EnemyRadarActivator target in targets)
             {
-                if (target.HasBeenDiscovered)
+                if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
+                {
+                    if (target.HasBeenDiscovered)
+                    {
+                        targetsFound.Remove(target.gameObject);
+                    }
+                    if (!targetsFound.Contains(target.gameObject))
+                    {
+                        if (!target.HasBeenDiscovered && !target.HasBeenCleared)
+                        {
+                            targetsFound.Add(target.gameObject);
+                            StartCoroutine(DisplayEnemyRadar(target));
+                        }
+                    }
+                }
+                else
                 {
                     targetsFound.Remove(target.gameObject);
                 }
-                if (!targetsFound.Contains(target.gameObject))
-                {
-                    if (!target.HasBeenDiscovered && !target.HasBeenCleared)
-                    {
-                        targetsFound.Add(target.gameObject);
-                        StartCoroutine(DisplayEnemyRadar(target));
-                    }
-                }
-            }
-            else
-            {
-                targetsFound.Remove(target.gameObject);
             }
         }
     }

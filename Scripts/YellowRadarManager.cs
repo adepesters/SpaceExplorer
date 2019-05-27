@@ -15,33 +15,39 @@ public class YellowRadarManager : MonoBehaviour
 
     float detectionDistance = 400f;
 
+    GameSession gameSession;
+
     // Start is called before the first frame update
     void Start()
     {
         targets = FindObjectsOfType<YellowRadarActivator>();
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         transform.position = FindObjectOfType<RedRadar>().transform.position;
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (YellowRadarActivator target in targets)
+        if (gameSession.SceneType == "space")
         {
-            if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
+            foreach (YellowRadarActivator target in targets)
             {
-                if (!targetsFound.Contains(target.gameObject))
+                if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
                 {
-                    if (!target.HasBeenDiscovered)
+                    if (!targetsFound.Contains(target.gameObject))
                     {
-                        targetsFound.Add(target.gameObject);
-                        StartCoroutine(DisplayYellowRadar(target));
+                        if (!target.HasBeenDiscovered)
+                        {
+                            targetsFound.Add(target.gameObject);
+                            StartCoroutine(DisplayYellowRadar(target));
+                        }
                     }
                 }
-            }
-            else
-            {
-                targetsFound.Remove(target.gameObject);
+                else
+                {
+                    targetsFound.Remove(target.gameObject);
+                }
             }
         }
     }

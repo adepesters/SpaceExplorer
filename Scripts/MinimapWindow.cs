@@ -3,30 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FuelBar : MonoBehaviour
+public class MinimapWindow : MonoBehaviour
 {
-    Slider slider;
-
-    Player player;
-
     GameSession gameSession;
-
+    Image image;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-
-        slider = GetComponent<Slider>();
-        slider.maxValue = player.CurrentFuel;
-        slider.value = player.MaxFuel;
+        image = GetComponent<Image>();
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         if (gameSession.SceneType == "space")
         {
-            slider.enabled = true;
+            image.enabled = true;
         }
         else if (gameSession.SceneType == "planet")
         {
-            slider.enabled = false;
+            image.enabled = false;
         }
     }
 
@@ -35,19 +27,11 @@ public class FuelBar : MonoBehaviour
     {
         if (gameSession.SceneType == "space")
         {
-            slider.enabled = true;
-            if (player)
-            {
-                slider.value = player.CurrentFuel;
-            }
-            else
-            {
-                slider.value = 0;
-            }
+            image.enabled = true;
         }
         else if (gameSession.SceneType == "planet")
         {
-            slider.enabled = false;
+            image.enabled = false;
         }
     }
 }
