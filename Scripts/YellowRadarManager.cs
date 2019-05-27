@@ -29,25 +29,22 @@ public class YellowRadarManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameSession.SceneType == "space")
+        foreach (YellowRadarActivator target in targets)
         {
-            foreach (YellowRadarActivator target in targets)
+            if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
             {
-                if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
+                if (!targetsFound.Contains(target.gameObject))
                 {
-                    if (!targetsFound.Contains(target.gameObject))
+                    if (!gameSession.HasBeenDiscovered[target.gameObject.GetComponent<Planet>().PlanetID])
                     {
-                        if (!gameSession.HasBeenDiscovered[target.gameObject.GetComponent<Planet>().PlanetID])
-                        {
-                            targetsFound.Add(target.gameObject);
-                            StartCoroutine(DisplayYellowRadar(target));
-                        }
+                        targetsFound.Add(target.gameObject);
+                        StartCoroutine(DisplayYellowRadar(target));
                     }
                 }
-                else
-                {
-                    targetsFound.Remove(target.gameObject);
-                }
+            }
+            else
+            {
+                targetsFound.Remove(target.gameObject);
             }
         }
     }

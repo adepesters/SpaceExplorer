@@ -20,34 +20,18 @@ public class HealthBar : MonoBehaviour
         slider.maxValue = player.GetHealthPlayer();
         slider.value = slider.maxValue;
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
-        if (gameSession.SceneType == "space")
-        {
-            slider.enabled = true;
-        }
-        else if (gameSession.SceneType == "planet")
-        {
-            slider.enabled = false;
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameSession.SceneType == "space")
+        if (player)
         {
-            slider.enabled = true;
-            if (player)
-            {
-                slider.value = player.GetHealthPlayer();
-            }
-            else
-            {
-                slider.value = 0;
-            }
+            slider.value = player.GetHealthPlayer();
         }
-        else if (gameSession.SceneType == "planet")
+        else
         {
-            slider.enabled = false;
+            slider.value = 0;
         }
     }
 }

@@ -6,9 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameSession : MonoBehaviour
 {
-    public int score;
-    [SerializeField] Text scoreText;
-    [SerializeField] public Text healthText;
     [SerializeField] public int numberOfBronzeStars;
     [SerializeField] public int numberOfSilverStars;
     [SerializeField] public int numberOfGoldStars;
@@ -80,9 +77,6 @@ public class GameSession : MonoBehaviour
         {
             player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
-            //scoreText.text = score.ToString("D6");
-            healthText.text = player.GetHealthPlayer().ToString();
-
             for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
             {
                 CounterPixelBlood[i] = 0;
@@ -90,27 +84,4 @@ public class GameSession : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (sceneType == "space")
-        {
-            //scoreText.text = score.ToString("D6");
-            if (player != null) // because when the player dies its game object gets destructed, which returns 
-                                // a bug when we try to access a FindObjectOfType<Player>
-            {
-                healthText.text = player.GetHealthPlayer().ToString();
-            }
-            else
-            {
-                FindObjectOfType<GameSession>().healthText.text = "000";
-            }
-        }
-
-        //for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
-        //{
-        //    Debug.Log(i + ": " + CounterPixelBlood[i]);
-        //}
-
-    }
 }

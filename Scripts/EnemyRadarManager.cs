@@ -30,29 +30,26 @@ public class EnemyRadarManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameSession.SceneType == "space")
+        foreach (EnemyRadarActivator target in targets)
         {
-            foreach (EnemyRadarActivator target in targets)
+            if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
             {
-                if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
-                {
-                    if (target.HasBeenDiscovered)
-                    {
-                        targetsFound.Remove(target.gameObject);
-                    }
-                    if (!targetsFound.Contains(target.gameObject))
-                    {
-                        if (!target.HasBeenDiscovered && !target.HasBeenCleared)
-                        {
-                            targetsFound.Add(target.gameObject);
-                            StartCoroutine(DisplayEnemyRadar(target));
-                        }
-                    }
-                }
-                else
+                if (target.HasBeenDiscovered)
                 {
                     targetsFound.Remove(target.gameObject);
                 }
+                if (!targetsFound.Contains(target.gameObject))
+                {
+                    if (!target.HasBeenDiscovered && !target.HasBeenCleared)
+                    {
+                        targetsFound.Add(target.gameObject);
+                        StartCoroutine(DisplayEnemyRadar(target));
+                    }
+                }
+            }
+            else
+            {
+                targetsFound.Remove(target.gameObject);
             }
         }
     }
