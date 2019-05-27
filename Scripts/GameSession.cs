@@ -26,13 +26,16 @@ public class GameSession : MonoBehaviour
     public bool[,] OpenChests { get => openChests; set => openChests = value; }
     public bool[] HasBeenDiscovered { get => hasBeenDiscovered; set => hasBeenDiscovered = value; }
     public bool[] HasBeenCompleted { get => hasBeenCompleted; set => hasBeenCompleted = value; }
+    public int CurrentPlanetID { get => currentPlanetID; set => currentPlanetID = value; }
 
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
     // planet related info to access
-    bool[,] openChests = new bool[2, 2];
-    bool[] hasBeenDiscovered = new bool[2];
-    bool[] hasBeenCompleted = new bool[2];
+    bool[,] openChests = new bool[50, 2];
+    [SerializeField] bool[] hasBeenDiscovered = new bool[50];
+    [SerializeField] bool[] hasBeenCompleted = new bool[50];
+
+    [SerializeField] int currentPlanetID;
 
     private void Awake()
     {

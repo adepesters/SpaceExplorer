@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class YellowRadarActivator : MonoBehaviour
 {
-    bool hasBeenDiscovered;
-
-    public bool HasBeenDiscovered { get => hasBeenDiscovered; set => hasBeenDiscovered = value; }
-
     Player player;
 
     float discoveryThresholdDist = 15f;
 
-    [SerializeField] int planetID;
+    int planetID;
 
     GameSession gameSession;
 
@@ -20,22 +16,20 @@ public class YellowRadarActivator : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
-
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
-
-        HasBeenDiscovered = gameSession.HasBeenDiscovered[planetID];
-
-        //HasBeenDiscovered = false;
+        planetID = GetComponent<Planet>().PlanetID;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(player.transform.position, transform.position) < discoveryThresholdDist)
+        if (!gameSession.HasBeenDiscovered[planetID])
         {
-            hasBeenDiscovered = true;
+            if (Vector2.Distance(player.transform.position, transform.position) < discoveryThresholdDist)
+            {
+                gameSession.HasBeenDiscovered[planetID] = true;
+            }
         }
     }
-
 
 }

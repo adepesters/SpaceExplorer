@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
         originalMoveSpeed = moveSpeed;
 
         CurrentFuel = MaxFuel;
-        currentBase = GameObject.Find("Home Planet").gameObject;
+        currentBase = GameObject.Find("Home Planet 0").gameObject;
         //transform.position = currentBase.transform.position;
         //oldPos = currentBase.transform.position;
         oldPos = transform.position;

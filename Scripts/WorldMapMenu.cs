@@ -51,6 +51,7 @@ public class WorldMapMenu : MonoBehaviour
     PauseController pauseController;
     PauseMenuController pauseMenuController;
     PS4ControllerCheck PS4ControllerCheck;
+    GameSession gameSession;
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +59,7 @@ public class WorldMapMenu : MonoBehaviour
         pauseController = FindObjectOfType<PauseController>();
         pauseMenuController = FindObjectOfType<PauseMenuController>();
         PS4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
 
         WorldmapCam = GameObject.Find("Worldmap Camera without Perspective").GetComponent<Camera>();
 
@@ -124,7 +126,7 @@ public class WorldMapMenu : MonoBehaviour
                     var planetPos = new Vector2(planet.transform.position.x, planet.transform.position.y);
                     var pointerPos = new Vector2(pointer.transform.position.x, pointer.transform.position.y);
 
-                    if (Vector2.Distance(planetPos, pointerPos) < 400 && planet.transform.GetChild(1).GetComponent<WorldMapIcon>().HasBeenDiscovered == true)
+                    if (Vector2.Distance(planetPos, pointerPos) < 400 && gameSession.HasBeenDiscovered[planet.PlanetID] == true)
                     {
                         snap = true;
                         planetToSnap = planet;

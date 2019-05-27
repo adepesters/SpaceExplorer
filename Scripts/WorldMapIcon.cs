@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class WorldMapIcon : MonoBehaviour
 {
-    bool hasBeenDisovered = false;
+    [SerializeField] bool hasBeenDisovered = false;
 
     Player player;
 
-    [SerializeField] int planetID;
+    int planetID;
 
     float discoveryThresholdDist = 25f;
-
-    public bool HasBeenDiscovered { get => hasBeenDisovered; set => hasBeenDisovered = value; }
 
     GameSession gameSession;
 
@@ -22,13 +20,21 @@ public class WorldMapIcon : MonoBehaviour
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         GetComponent<SpriteRenderer>().enabled = false;
-        hasBeenDisovered = gameSession.HasBeenDiscovered[planetID];
+        planetID = GetComponentInParent<Planet>().PlanetID;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(player.transform.position, transform.parent.transform.position) < discoveryThresholdDist)
+        if (!gameSession.HasBeenDiscovered[planetID])
+        {
+            if (Vector2.Distance(player.transform.position, transform.parent.transform.position) < discoveryThresholdDist)
+            {
+                hasBeenDisovered = true;
+                gameSession.HasBeenDiscovered[planetID] = true;
+            }
+        }
+        else
         {
             hasBeenDisovered = true;
         }
@@ -37,4 +43,5 @@ public class WorldMapIcon : MonoBehaviour
             GetComponent<SpriteRenderer>().enabled = true;
         }
     }
+
 }

@@ -37,7 +37,7 @@ public class YellowRadarManager : MonoBehaviour
                 {
                     if (!targetsFound.Contains(target.gameObject))
                     {
-                        if (!target.HasBeenDiscovered)
+                        if (!gameSession.HasBeenDiscovered[target.gameObject.GetComponent<Planet>().PlanetID])
                         {
                             targetsFound.Add(target.gameObject);
                             StartCoroutine(DisplayYellowRadar(target));
