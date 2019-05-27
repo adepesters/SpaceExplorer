@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WorldMapIcon : MonoBehaviour
 {
-    [SerializeField] bool hasBeenDisovered = false;
+    bool hasBeenDisovered = false;
 
     Player player;
 

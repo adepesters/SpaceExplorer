@@ -2,33 +2,33 @@
 using UnityEngine;
 using System.IO;
 
-public class Planet1SaveLoad
+public class PlanetSaveLoad
 {
-    public static void SavePlanet1(string path)
+    public static void SavePlanet(string path, int planetID)
     {
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
         using (FileStream fileStream = File.Open(path, FileMode.OpenOrCreate))
         {
             GameSession gameSession = GameObject.FindWithTag("GameSession").gameObject.GetComponent<GameSession>();
-            Planet1Data data = new Planet1Data(gameSession);
+            PlanetData data = new PlanetData(gameSession, planetID);
             binaryFormatter.Serialize(fileStream, data);
         }
     }
 
-    public static void LoadPlanet1(string path)
+    public static void LoadPlanet(string path, int planetID)
     {
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
         using (FileStream fileStream = File.Open(path, FileMode.Open))
         {
-            Planet1Data data = (Planet1Data)binaryFormatter.Deserialize(fileStream);
+            PlanetData data = (PlanetData)binaryFormatter.Deserialize(fileStream);
             GameSession gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
-            gameSession.HasBeenCompleted[1] = data.hasBeenCompleted;
-            gameSession.HasBeenDiscovered[1] = data.hasBeenDiscovered;
+            gameSession.HasBeenCompleted[planetID] = data.hasBeenCompleted;
+            gameSession.HasBeenDiscovered[planetID] = data.hasBeenDiscovered;
             for (int chest = 0; chest < data.openChests.Length; chest++)
             {
-                gameSession.OpenChests[1, chest] = data.openChests[chest];
+                gameSession.OpenChests[planetID, chest] = data.openChests[chest];
             }
         }
     }

@@ -31,11 +31,11 @@ public class GameSession : MonoBehaviour
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
     // planet related info to access
-    bool[,] openChests = new bool[50, 2];
+    bool[,] openChests = new bool[50, 50];
     [SerializeField] bool[] hasBeenDiscovered = new bool[50];
     [SerializeField] bool[] hasBeenCompleted = new bool[50];
 
-    [SerializeField] int currentPlanetID;
+    int currentPlanetID;
 
     private void Awake()
     {
