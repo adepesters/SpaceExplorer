@@ -556,7 +556,7 @@ public class PlayerTileVania : MonoBehaviour
         if (collision.gameObject.name.Contains("Exit To Space"))
         {
             SceneManager.LoadScene("Space");
-            gameSession.SceneType = "Space";
+            gameSession.SceneType = "space";
         }
 
         if (collision.gameObject.name.Contains("Complete Planet"))
