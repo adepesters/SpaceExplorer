@@ -24,10 +24,22 @@ public class GameSession : MonoBehaviour
     public bool[] HasBeenDiscovered { get => hasBeenDiscovered; set => hasBeenDiscovered = value; }
     public bool[] HasBeenCompleted { get => hasBeenCompleted; set => hasBeenCompleted = value; }
     public int CurrentPlanetID { get => currentPlanetID; set => currentPlanetID = value; }
+    public Vector3 PositionSpacePlayer { get => positionSpacePlayer; set => positionSpacePlayer = value; }
+    public float CurrentFuelSpacePlayer { get => currentFuelSpacePlayer; set => currentFuelSpacePlayer = value; }
+    public float MaxFuelSpacePlayer { get => maxFuelSpacePlayer; set => maxFuelSpacePlayer = value; }
+    public int CurrentHealthSpacePlayer { get => currentHealthSpacePlayer; set => currentHealthSpacePlayer = value; }
+    public int MaxHealthSpacePlayer { get => maxHealthSpacePlayer; set => maxHealthSpacePlayer = value; }
 
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
-    // planet related info to access
+    // space player info to save/load
+    Vector3 positionSpacePlayer;
+    float currentFuelSpacePlayer;
+    float maxFuelSpacePlayer;
+    int currentHealthSpacePlayer;
+    int maxHealthSpacePlayer;
+
+    // planets info to save/load
     bool[,] openChests = new bool[50, 50];
     [SerializeField] bool[] hasBeenDiscovered = new bool[50];
     [SerializeField] bool[] hasBeenCompleted = new bool[50];
@@ -57,6 +69,7 @@ public class GameSession : MonoBehaviour
 
         if (sceneType == "space")
         {
+            // initializes planets data
             for (int planet = 0; planet < OpenChests.GetLength(0); planet++)
             {
                 HasBeenDiscovered[planet] = false;
@@ -67,6 +80,12 @@ public class GameSession : MonoBehaviour
                     OpenChests[planet, chest] = false;
                 }
             }
+            // initializes space player data
+            positionSpacePlayer = GameObject.Find("Planet 1").gameObject.transform.position;
+            maxFuelSpacePlayer = 2000f;
+            currentFuelSpacePlayer = maxFuelSpacePlayer;
+            maxHealthSpacePlayer = 6000;
+            currentHealthSpacePlayer = maxHealthSpacePlayer;
         }
     }
 

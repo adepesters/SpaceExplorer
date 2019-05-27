@@ -38,6 +38,7 @@ public class PlayerTileVania : MonoBehaviour
     PS4ControllerCheck PS4ControllerCheck;
     ToolSelector toolSelector;
     Grapin grapin;
+    DataManager dataManager;
 
     bool grapinJump = false;
     bool isTargeting = false;
@@ -87,6 +88,7 @@ public class PlayerTileVania : MonoBehaviour
         toolSelector = FindObjectOfType<ToolSelector>();
         audiosource = GetComponent<AudioSource>();
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+        dataManager = GameObject.FindWithTag("DataManager").GetComponent<DataManager>();
 
         layer1zdepth = GameObject.Find("Layer 1").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
@@ -555,6 +557,7 @@ public class PlayerTileVania : MonoBehaviour
 
         if (collision.gameObject.name.Contains("Exit To Space"))
         {
+            dataManager.SavePlanetData();
             SceneManager.LoadScene("Space");
             gameSession.SceneType = "space";
         }

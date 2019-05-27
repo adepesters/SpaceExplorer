@@ -7,17 +7,19 @@ public class PlayerData
     public float[] position;
     public float currentFuel;
     public float maxFuel;
-    public int health;
+    public int currentHealth;
+    public int maxHealth;
 
-    public PlayerData(Player player)
+    public PlayerData(GameSession gameSession)
     {
-        currentFuel = player.CurrentFuel;
-        maxFuel = player.MaxFuel;
-        health = player.Health;
+        currentFuel = gameSession.CurrentFuelSpacePlayer;
+        maxFuel = gameSession.MaxFuelSpacePlayer;
+        currentHealth = gameSession.CurrentHealthSpacePlayer;
+        maxHealth = gameSession.MaxHealthSpacePlayer;
         position = new float[3];
-        position[0] = player.transform.position.x;
-        position[1] = player.transform.position.y;
-        position[2] = player.transform.position.z;
+        position[0] = gameSession.PositionSpacePlayer.x;
+        position[1] = gameSession.PositionSpacePlayer.y;
+        position[2] = gameSession.PositionSpacePlayer.z;
     }
 
 }

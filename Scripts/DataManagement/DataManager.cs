@@ -47,7 +47,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    private void LoadPlanetData()
+    public void LoadPlanetData()
     {
         // loading current planet
         int planetID = gameSession.CurrentPlanetID;
@@ -64,7 +64,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    private void LoadSpaceData()
+    public void LoadSpaceData()
     {
         // loading space player
         filePath = Path.Combine(Application.persistentDataPath, folderName, "playerData" + fileExtension);
@@ -96,7 +96,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    private void SavePlanetData()
+    public void SavePlanetData()
     {
         folderPath = Path.Combine(Application.persistentDataPath, folderName);
         if (!Directory.Exists(folderPath))

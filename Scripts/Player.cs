@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     [Header("Player")]
     [SerializeField] float moveSpeed = 20f;
     [SerializeField] float padding = 0.5f;
-    [SerializeField] int health = 200;
     float acceleration;
     float deceleration;
     float maxSpeed;
@@ -80,14 +79,10 @@ public class Player : MonoBehaviour
     AttackStyle attackStyle;
     HitCanvas hitCanvas;
 
-    float maxFuel = 2000f;
-    float currentFuel = 2000f;
     GameObject currentBase;
     Vector2 oldPos;
 
-    public float MaxFuel { get => maxFuel; set => maxFuel = value; }
-    public float CurrentFuel { get => currentFuel; set => currentFuel = value; }
-    public int Health { get => health; set => health = value; }
+    GameSession gameSession;
 
     // Start is called before the first frame update
     void Start()
@@ -109,6 +104,7 @@ public class Player : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         attackStyle = GameObject.FindWithTag("AttackStyle").GetComponent<AttackStyle>();
         hitCanvas = GameObject.FindWithTag("HitCanvas").GetComponent<HitCanvas>();
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
 
         playerLasersParent = GameObject.Find(PLAYER_LASERS);
         if (!playerLasersParent)
@@ -118,7 +114,8 @@ public class Player : MonoBehaviour
 
         originalMoveSpeed = moveSpeed;
 
-        CurrentFuel = MaxFuel;
+        transform.position = gameSession.PositionSpacePlayer;
+
         currentBase = GameObject.Find("Home Planet 0").gameObject;
         //transform.position = currentBase.transform.position;
         //oldPos = currentBase.transform.position;
@@ -137,8 +134,9 @@ public class Player : MonoBehaviour
             damagePlayerVisualInstance.gameObject.transform.position = transform.position;
         }
 
-        CurrentFuel -= Vector2.Distance(transform.position, oldPos);
+        gameSession.CurrentFuelSpacePlayer -= Vector2.Distance(transform.position, oldPos);
         oldPos = transform.position;
+        gameSession.PositionSpacePlayer = transform.position;
     }
 
     private void AvoidAndFire()
@@ -350,7 +348,7 @@ public class Player : MonoBehaviour
     {
         if (!isInvincible)
         {
-            Health -= damageDealer.GetDamage();
+            gameSession.CurrentHealthSpacePlayer -= damageDealer.GetDamage();
             StartCoroutine(hitCanvas.HandleHitCanvas());
         }
 
@@ -358,7 +356,7 @@ public class Player : MonoBehaviour
         {
             damageDealer.Hit();
         }
-        if (Health <= 0)
+        if (gameSession.CurrentHealthSpacePlayer <= 0)
         {
             DeathVFX();
             FindObjectOfType<Level>().LoadGameOver();
@@ -408,7 +406,7 @@ public class Player : MonoBehaviour
 
     public int GetHealthPlayer()
     {
-        return Health;
+        return gameSession.CurrentHealthSpacePlayer;
     }
 
     public int GetDamageLaserPlayer()

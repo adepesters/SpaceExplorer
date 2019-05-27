@@ -10,8 +10,8 @@ public static class PlayerSaveLoad
 
         using (FileStream fileStream = File.Open(path, FileMode.OpenOrCreate))
         {
-            Player player = GameObject.FindWithTag("Player").gameObject.GetComponent<Player>();
-            PlayerData data = new PlayerData(player);
+            GameSession gameSession = GameObject.FindWithTag("GameSession").gameObject.GetComponent<GameSession>();
+            PlayerData data = new PlayerData(gameSession);
             binaryFormatter.Serialize(fileStream, data);
         }
     }
@@ -23,12 +23,13 @@ public static class PlayerSaveLoad
         using (FileStream fileStream = File.Open(path, FileMode.Open))
         {
             PlayerData data = (PlayerData)binaryFormatter.Deserialize(fileStream);
-            Player player = GameObject.FindWithTag("Player").gameObject.GetComponent<Player>();
-            player.CurrentFuel = data.currentFuel;
-            player.MaxFuel = data.maxFuel;
-            player.Health = data.health;
+            GameSession gameSession = GameObject.FindWithTag("GameSession").gameObject.GetComponent<GameSession>();
+            gameSession.CurrentFuelSpacePlayer = data.currentFuel;
+            gameSession.MaxFuelSpacePlayer = data.maxFuel;
+            gameSession.CurrentHealthSpacePlayer = data.currentHealth;
+            gameSession.MaxHealthSpacePlayer = data.maxHealth;
             Vector3 position = new Vector3(data.position[0], data.position[1], data.position[2]);
-            player.transform.position = position;
+            gameSession.PositionSpacePlayer = position;
         }
     }
 }
