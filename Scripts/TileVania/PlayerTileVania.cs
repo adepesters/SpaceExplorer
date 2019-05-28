@@ -574,7 +574,8 @@ public class PlayerTileVania : MonoBehaviour
             {
                 gameSession.CurrentFuelSpacePlayer = gameSession.MaxFuelSpacePlayer; // maxout fuel if planet is completed
             }
-            SceneManager.LoadScene("Space");
+            //SceneManager.LoadScene("Space");
+            LoadingScreen.Instance.Show("Space");
             gameSession.SceneType = "space";
         }
 

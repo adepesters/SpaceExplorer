@@ -35,7 +35,8 @@ public class ChoicesConsequencesPlanet1 : MonoBehaviour
     {
         // Debug.Log("yes");
         dataManager.SaveSpaceData();
-        SceneManager.LoadScene("Planet 1");
+        LoadingScreen.Instance.Show("Planet 1");
+        //SceneManager.LoadScene("Planet 1");
         hasAnswered = 0;
         gameSession.SceneType = "planet";
         gameSession.CurrentPlanetID = 1;
