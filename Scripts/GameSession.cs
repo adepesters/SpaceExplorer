@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class GameSession : MonoBehaviour
 {
@@ -65,6 +66,8 @@ public class GameSession : MonoBehaviour
         else if (SceneManager.GetActiveScene().name.Contains("Planet"))
         {
             sceneType = "planet";
+            string numbersOnly = Regex.Replace(SceneManager.GetActiveScene().name, "[^0-9]", "");
+            currentPlanetID = int.Parse(numbersOnly);
         }
 
         if (sceneType == "space")
