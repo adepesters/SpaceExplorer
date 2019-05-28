@@ -90,8 +90,14 @@ public class PlayerTileVania : MonoBehaviour
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         dataManager = GameObject.FindWithTag("DataManager").GetComponent<DataManager>();
 
-        layer1zdepth = GameObject.Find("Layer 1").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
-        layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
+        if (GameObject.Find("Layer 1") != null)
+        {
+            layer1zdepth = GameObject.Find("Layer 1").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
+        }
+        if (GameObject.Find("Layer 2") != null)
+        {
+            layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
+        }
         IgnorePhysicsLayer2();
 
         originalGravity = rigidBody.gravityScale;
