@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveAroundPlayer : MonoBehaviour
 {
-    float enemySpeed = 5f;
+    float enemySpeed = 15f;
     Coroutine moveAround;
     Vector2 target;
 
@@ -38,9 +38,9 @@ public class MoveAroundPlayer : MonoBehaviour
         while (true)
         {
             enemySpeed += UnityEngine.Random.Range(-4f, 4f);
-            enemySpeed = Mathf.Clamp(enemySpeed, 0.5f, 10f);
+            enemySpeed = Mathf.Clamp(enemySpeed, 0.5f, 25f);
             Vector2 playerPos = player.transform.position;
-            Vector2 randomJitter = new Vector2(UnityEngine.Random.Range(-15f, 15f), UnityEngine.Random.Range(-15f, 15f));
+            Vector2 randomJitter = new Vector2(UnityEngine.Random.Range(-50f, 50f), UnityEngine.Random.Range(-40f, 40f));
             target = playerPos + randomJitter;
             yield return new WaitForSeconds(UnityEngine.Random.Range(1f, 4f));
         }
