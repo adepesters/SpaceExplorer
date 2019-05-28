@@ -67,10 +67,10 @@ public class DataManager : MonoBehaviour
     public void LoadSpaceData()
     {
         // loading space player
-        filePath = Path.Combine(Application.persistentDataPath, folderName, "playerData" + fileExtension);
+        filePath = Path.Combine(Application.persistentDataPath, folderName, "spacePlayerData" + fileExtension);
         if (File.Exists(filePath))
         {
-            PlayerSaveLoad.LoadPlayer(filePath);
+            SpacePlayerSaveLoad.LoadSpacePlayer(filePath);
             Debug.Log("Data player loaded");
         }
         else
@@ -120,8 +120,8 @@ public class DataManager : MonoBehaviour
         }
 
         // saving space player
-        dataPath = Path.Combine(folderPath, "playerData" + fileExtension);
-        PlayerSaveLoad.SavePlayer(dataPath);
+        dataPath = Path.Combine(folderPath, "spacePlayerData" + fileExtension);
+        SpacePlayerSaveLoad.SaveSpacePlayer(dataPath);
 
         // saving planets
         foreach (GameObject planet in planets)

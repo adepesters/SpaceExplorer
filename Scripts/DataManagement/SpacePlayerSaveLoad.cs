@@ -2,9 +2,9 @@
 using UnityEngine;
 using System.IO;
 
-public static class PlayerSaveLoad
+public static class SpacePlayerSaveLoad
 {
-    public static void SavePlayer(string path)
+    public static void SaveSpacePlayer(string path)
     {
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
@@ -16,7 +16,7 @@ public static class PlayerSaveLoad
         }
     }
 
-    public static void LoadPlayer(string path)
+    public static void LoadSpacePlayer(string path)
     {
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
