@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class PlayerTileVania : MonoBehaviour
 {
@@ -76,6 +77,8 @@ public class PlayerTileVania : MonoBehaviour
     FeetLowGravity feetLowGravity;
     GameSession gameSession;
 
+    int planetID;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -102,6 +105,9 @@ public class PlayerTileVania : MonoBehaviour
 
         originalGravity = rigidBody.gravityScale;
         feetLowGravity = FindObjectOfType<FeetLowGravity>();
+
+        string numbersOnly = Regex.Replace(SceneManager.GetActiveScene().name, "[^0-9]", "");
+        planetID = int.Parse(numbersOnly);
     }
 
     void Update()
@@ -564,6 +570,10 @@ public class PlayerTileVania : MonoBehaviour
         if (collision.gameObject.name.Contains("Exit To Space"))
         {
             dataManager.SavePlanetData();
+            if (gameSession.HasBeenCompleted[planetID])
+            {
+                gameSession.CurrentFuelSpacePlayer = gameSession.MaxFuelSpacePlayer; // maxout fuel if planet is completed
+            }
             SceneManager.LoadScene("Space");
             gameSession.SceneType = "space";
         }
