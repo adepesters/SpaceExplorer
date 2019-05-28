@@ -84,7 +84,8 @@ public class GameSession : MonoBehaviour
                 }
             }
             // initializes space player data
-            positionSpacePlayer = GameObject.Find("Planet 1").gameObject.transform.position;
+            Vector3 initialPos = GameObject.Find("Planet 1").gameObject.transform.position;
+            positionSpacePlayer = new Vector3(initialPos.x, initialPos.y, 0);
             maxFuelSpacePlayer = 2000f;
             currentFuelSpacePlayer = maxFuelSpacePlayer;
             maxHealthSpacePlayer = 6000;
