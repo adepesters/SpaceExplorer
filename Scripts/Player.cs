@@ -342,6 +342,14 @@ public class Player : MonoBehaviour
             int layer_collider = collision.gameObject.layer;
             ProcessHit(damageDealer, layer_collider);
         }
+
+        if (collision.gameObject.name.Contains("Planet"))
+        {
+            if (gameSession.HasBeenCompleted[collision.gameObject.GetComponent<Planet>().PlanetID])
+            {
+                gameSession.CurrentFuelSpacePlayer = gameSession.MaxFuelSpacePlayer; // refuels when flying over completed planet
+            }
+        }
     }
 
     private void ProcessHit(DamageDealer damageDealer, int layer_collider)
