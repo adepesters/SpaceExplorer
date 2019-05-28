@@ -157,6 +157,7 @@ public class DialogManager : MonoBehaviour
 
     IEnumerator MakeLineAppear(string line)
     {
+        selectedChoice = 0;
         foreach (char caracter in line)
         {
             dialogText.text += caracter;
