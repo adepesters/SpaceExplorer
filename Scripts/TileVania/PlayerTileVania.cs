@@ -79,6 +79,10 @@ public class PlayerTileVania : MonoBehaviour
 
     int planetID;
 
+    SpriteRenderer renderer;
+
+    PlayerTileVaniaDoubleMirror doubleMirror;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -92,6 +96,7 @@ public class PlayerTileVania : MonoBehaviour
         audiosource = GetComponent<AudioSource>();
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         dataManager = GameObject.FindWithTag("DataManager").GetComponent<DataManager>();
+        doubleMirror = FindObjectOfType<PlayerTileVaniaDoubleMirror>();
 
         if (GameObject.Find("Layer 1") != null)
         {
@@ -108,6 +113,8 @@ public class PlayerTileVania : MonoBehaviour
 
         string numbersOnly = Regex.Replace(SceneManager.GetActiveScene().name, "[^0-9]", "");
         planetID = int.Parse(numbersOnly);
+
+        renderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -176,6 +183,7 @@ public class PlayerTileVania : MonoBehaviour
         RestoreOpaquenessLayer1();
 
         rigidBody.simulated = false;
+        renderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
         float speedBridge = 20f * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge);
@@ -183,6 +191,12 @@ public class PlayerTileVania : MonoBehaviour
         {
             moveToFrontLayer = false;
             rigidBody.simulated = true;
+            renderer.enabled = true;
+        }
+
+        if (doubleMirror != null)
+        {
+            doubleMirror.ShouldMerge = false;
         }
     }
 
@@ -193,7 +207,9 @@ public class PlayerTileVania : MonoBehaviour
         DontIgnorePhysicsLayer2();
         ReduceTransparencyLayer1();
 
+
         rigidBody.simulated = false;
+        renderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
         float speedBridge = 20f * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge);
@@ -201,6 +217,11 @@ public class PlayerTileVania : MonoBehaviour
         {
             moveToBackLayer = false;
             rigidBody.simulated = true;
+            renderer.enabled = true;
+            if (doubleMirror != null)
+            {
+                doubleMirror.ShouldMerge = true;
+            }
         }
     }
 
@@ -223,6 +244,10 @@ public class PlayerTileVania : MonoBehaviour
         {
             animator.SetBool("isRunning", false);
             rigidBody.drag = 1000;
+            if (doubleMirror != null)
+            {
+                doubleMirror.IsJumping = false;
+            }
         }
         else
         {
@@ -406,6 +431,10 @@ public class PlayerTileVania : MonoBehaviour
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
                 isJumping = true;
                 canJump = false;
+                if (doubleMirror != null)
+                {
+                    doubleMirror.IsJumping = true;
+                }
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
@@ -604,9 +633,9 @@ public class PlayerTileVania : MonoBehaviour
 
     IEnumerator ChangeColorAfterHit()
     {
-        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        renderer.color = Color.red;
         yield return new WaitForSeconds(0.2f);
-        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        renderer.color = Color.white;
     }
 
 }
