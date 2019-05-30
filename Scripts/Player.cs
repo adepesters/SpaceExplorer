@@ -84,6 +84,8 @@ public class Player : MonoBehaviour
 
     GameSession gameSession;
 
+    SpawningEnemyArea zoneEntered;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -348,6 +350,32 @@ public class Player : MonoBehaviour
             if (gameSession.HasBeenCompleted[collision.gameObject.GetComponent<Planet>().PlanetID])
             {
                 gameSession.CurrentFuelSpacePlayer = gameSession.MaxFuelSpacePlayer; // refuels when flying over completed planet
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains("Spawner Zone"))
+        {
+            zoneEntered = collision.gameObject.GetComponentInChildren<SpawningEnemyArea>();
+            zoneEntered.EnteredZone = true;
+            zoneEntered.gameObject.GetComponent<EnemyRadarActivator>().HasBeenDiscovered = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains("Spawner Zone"))
+        {
+            zoneEntered.EnteredZone = false;
+            zoneEntered.GetComponent<EnemyRadarActivator>().HasBeenDiscovered = false;
+            zoneEntered.SpawnZoneCoroutineHandler = null;
+
+            StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
+            foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)
+            {
+                starfieldGenerator.SetCanSpawn(true);
             }
         }
     }
