@@ -181,6 +181,8 @@ public class Enemy : MonoBehaviour
                                     // to decrease much more than 0 before being able to destroy the gameObject)
         {
             isDead = true;
+            gameSession.CurrentFuelSpacePlayer += 100f;
+            gameSession.CurrentFuelSpacePlayer = Mathf.Clamp(gameSession.CurrentFuelSpacePlayer, 0, gameSession.MaxFuelSpacePlayer);
             ExplodeEnemy();
             DistributeBonuses();
         }
