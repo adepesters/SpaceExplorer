@@ -72,6 +72,8 @@ public class GameSession : MonoBehaviour
 
         if (sceneType == "space")
         {
+            player = GameObject.FindWithTag("Player").GetComponent<Player>();
+
             // initializes planets data
             for (int planet = 0; planet < OpenChests.GetLength(0); planet++)
             {
@@ -84,7 +86,9 @@ public class GameSession : MonoBehaviour
                 }
             }
             // initializes space player data
-            Vector3 initialPos = GameObject.Find("Planet 1").gameObject.transform.position;
+            //Vector3 initialPos = GameObject.Find("Planet 1").gameObject.transform.position;
+            //Vector3 initialPos = GameObject.Find("Zone 3").gameObject.transform.position;
+            Vector3 initialPos = player.transform.position;
             positionSpacePlayer = new Vector3(initialPos.x, initialPos.y, 0);
             maxFuelSpacePlayer = 2000f;
             currentFuelSpacePlayer = maxFuelSpacePlayer;
@@ -98,8 +102,6 @@ public class GameSession : MonoBehaviour
     {
         if (sceneType == "space")
         {
-            player = GameObject.FindWithTag("Player").GetComponent<Player>();
-
             for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
             {
                 CounterPixelBlood[i] = 0;
