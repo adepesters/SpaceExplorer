@@ -34,7 +34,7 @@ public class EnemyRadarManager : MonoBehaviour
         {
             if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
             {
-                if (target.HasBeenDiscovered)
+                if (target.HasBeenDiscovered || target.HasBeenCleared)
                 {
                     targetsFound.Remove(target.gameObject);
                 }
