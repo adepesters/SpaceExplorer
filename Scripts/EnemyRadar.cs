@@ -39,7 +39,7 @@ public class EnemyRadar : MonoBehaviour
 
         Display();
 
-        if (target.GetComponent<EnemyRadarActivator>().HasBeenDiscovered)
+        if (target.GetComponent<EnemyRadarActivator>().HasBeenDiscovered || target.GetComponent<EnemyRadarActivator>().HasBeenCleared)
         {
             Destroy(gameObject);
         }
