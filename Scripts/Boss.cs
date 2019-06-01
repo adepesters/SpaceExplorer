@@ -103,7 +103,7 @@ public class Boss : MonoBehaviour
 
     private void ProcessHit(DamageDealer damageDealer)
     {
-        health -= damageDealer.GetDamage();
+        health -= damageDealer.Damage;
         damageDealer.Hit();
         StartCoroutine(ChangeColorAfterHit());
         if (health <= 0)

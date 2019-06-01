@@ -22,16 +22,16 @@ public class Player : MonoBehaviour
     [Header("Projectile")]
     [SerializeField] Laser laserPrefab;
     [SerializeField] BombPlayer bombPrefab;
-    public float laserSpeed = 35f;
-    public float originalLaserSpeed;
-    public float laserFiringPeriod = 0.1f;
-    public float originalLaserFiringPeriod;
-    int laserDamage = 100;
+    private float laserSpeed = 35f;
+    private float originalLaserSpeed;
+    private float laserFiringPeriod = 0.1f;
+    private float originalLaserFiringPeriod;
+    int laserDamage = 200;
 
-    public float bombSpeed = 5f;
-    public float originalBombSpeed;
-    public float bombFiringPeriod = 0.5f;
-    public float originalBombFiringPeriod;
+    private float bombSpeed = 5f;
+    private float originalBombSpeed;
+    private float bombFiringPeriod = 0.5f;
+    private float originalBombFiringPeriod;
     int bombDamage = 300;
 
     [Header("Sound Effects")]
@@ -86,6 +86,20 @@ public class Player : MonoBehaviour
 
     SpawningEnemyArea zoneEntered;
 
+    public float LaserSpeed { get => laserSpeed; set => laserSpeed = value; }
+    public float OriginalLaserSpeed { get => originalLaserSpeed; set => originalLaserSpeed = value; }
+    public float LaserFiringPeriod { get => laserFiringPeriod; set => laserFiringPeriod = value; }
+    public float OriginalLaserFiringPeriod { get => originalLaserFiringPeriod; set => originalLaserFiringPeriod = value; }
+    public int LaserDamage { get => laserDamage; set => laserDamage = value; }
+    public float BombSpeed { get => bombSpeed; set => bombSpeed = value; }
+    public float OriginalBombSpeed { get => originalBombSpeed; set => originalBombSpeed = value; }
+    public float OriginalBombFiringPeriod { get => originalBombFiringPeriod; set => originalBombFiringPeriod = value; }
+    public float BombFiringPeriod { get => bombFiringPeriod; set => bombFiringPeriod = value; }
+    public int BombDamage { get => bombDamage; set => bombDamage = value; }
+    public bool IsInvincible { get => isInvincible; set => isInvincible = value; }
+    public bool IsImmobile1 { get => isImmobile; set => isImmobile = value; }
+    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -96,11 +110,11 @@ public class Player : MonoBehaviour
 
         count_damage = 0;
 
-        originalLaserSpeed = laserSpeed;
-        originalLaserFiringPeriod = laserFiringPeriod;
+        OriginalLaserSpeed = LaserSpeed;
+        OriginalLaserFiringPeriod = LaserFiringPeriod;
 
-        originalBombSpeed = bombSpeed;
-        originalBombFiringPeriod = bombFiringPeriod;
+        OriginalBombSpeed = BombSpeed;
+        OriginalBombFiringPeriod = BombFiringPeriod;
 
         ps4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
         rigidBody = GetComponent<Rigidbody2D>();
@@ -114,7 +128,7 @@ public class Player : MonoBehaviour
             playerLasersParent = new GameObject(PLAYER_LASERS);
         }
 
-        originalMoveSpeed = moveSpeed;
+        originalMoveSpeed = MoveSpeed;
 
         transform.position = gameSession.PositionSpacePlayer;
 
@@ -167,38 +181,38 @@ public class Player : MonoBehaviour
     private void FireRightProjectile()
     {
         Laser laser = Instantiate(laserPrefab, transform.position, Quaternion.identity, playerLasersParent.transform);
-        laser.GetComponent<Rigidbody2D>().velocity = new Vector2(laserSpeed, 0);
+        laser.GetComponent<Rigidbody2D>().velocity = new Vector2(LaserSpeed, 0);
     }
 
     private void FireLeftProjectile()
     {
         Laser laser = Instantiate(laserPrefab, transform.position, Quaternion.identity, playerLasersParent.transform);
-        laser.GetComponent<Rigidbody2D>().velocity = new Vector2(-laserSpeed, 0);
+        laser.GetComponent<Rigidbody2D>().velocity = new Vector2(-LaserSpeed, 0);
     }
 
     IEnumerator AvoidAndGoLeft()
     {
-        isInvincible = true;
+        IsInvincible = true;
         Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);
         Vector2 newPos = new Vector2(currentPos.x - XOffsetDuringAvoid, currentPos.y);
         transform.position = newPos;
         yield return new WaitForSeconds(timeInvincibleDuringAvoid);
-        isInvincible = false;
+        IsInvincible = false;
     }
 
     IEnumerator AvoidAndGoRight()
     {
-        isInvincible = true;
+        IsInvincible = true;
         Vector2 currentPos = new Vector2(transform.position.x, transform.position.y);
         Vector2 newPos = new Vector2(currentPos.x + XOffsetDuringAvoid, currentPos.y);
         transform.position = newPos;
         yield return new WaitForSeconds(timeInvincibleDuringAvoid);
-        isInvincible = false;
+        IsInvincible = false;
     }
 
     private void Fire()
     {
-        if (!isImmobile)
+        if (!IsImmobile1)
         {
             rightStickX = Input.GetAxis("Mouse X");
             rightStickY = Input.GetAxis("Mouse Y");
@@ -241,12 +255,12 @@ public class Player : MonoBehaviour
             if (attackStyle.GetAttackStyle() == "lasers")
             {
                 InstantiateLaser(xVelocity, yVelocity);
-                yield return new WaitForSeconds(laserFiringPeriod);
+                yield return new WaitForSeconds(LaserFiringPeriod);
             }
             else if (attackStyle.GetAttackStyle() == "bombs")
             {
                 InstantiateBomb(xVelocity, yVelocity);
-                yield return new WaitForSeconds(bombFiringPeriod);
+                yield return new WaitForSeconds(BombFiringPeriod);
             }
         }
     }
@@ -264,9 +278,10 @@ public class Player : MonoBehaviour
         var projectilePos = new Vector3(transform.position.x, transform.position.y, 0.1f);
         Laser projectile = Instantiate(laserPrefab, projectilePos, transform.rotation, playerLasersParent.transform);
         // projectileFiringPeriod = 0.1f;
-        Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * laserSpeed;
+        Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * LaserSpeed;
         projectile.GetComponent<Rigidbody2D>().velocity = directionOfFiring;
         AudioSource.PlayClipAtPoint(laserPlayer, transform.position, volumeLaserPlayer);
+        projectile.GetComponent<DamageDealer>().Damage = LaserDamage;
     }
 
     private void InstantiateBomb(float xVelocity, float yVelocity)
@@ -274,14 +289,15 @@ public class Player : MonoBehaviour
         var projectilePos = new Vector3(transform.position.x, transform.position.y, 0.1f);
         BombPlayer projectile = Instantiate(bombPrefab, projectilePos, transform.rotation, playerLasersParent.transform);
         // projectileFiringPeriod = 0.5f;
-        Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * bombSpeed;
+        Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * BombSpeed;
         projectile.GetComponent<Rigidbody2D>().velocity = directionOfFiring;
         AudioSource.PlayClipAtPoint(laserPlayer, transform.position, volumeLaserPlayer);
+        projectile.GetComponent<DamageDealer>().Damage = BombDamage;
     }
 
     private void Move()
     {
-        if (isImmobile)
+        if (IsImmobile1)
         {
             var deltaX = 0;
             var deltaY = 0;
@@ -290,8 +306,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            var deltaX = Input.GetAxis("Horizontal") * moveSpeed;
-            var deltaY = Input.GetAxis("Vertical") * moveSpeed;
+            var deltaX = Input.GetAxis("Horizontal") * MoveSpeed;
+            var deltaY = Input.GetAxis("Vertical") * MoveSpeed;
 
             rigidBody.velocity = new Vector2(deltaX, deltaY);
 
@@ -312,7 +328,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                moveSpeed = originalMoveSpeed;
+                MoveSpeed = originalMoveSpeed;
             }
 
             if (isFiringCoroutingActive != true && (Mathf.Abs(Input.GetAxis("Horizontal")) > Mathf.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon))
@@ -325,15 +341,15 @@ public class Player : MonoBehaviour
     private void Decelerate()
     {
         deceleration = 50f;
-        moveSpeed -= acceleration * Time.deltaTime;
-        moveSpeed = Mathf.Clamp(moveSpeed, originalMoveSpeed, 80f);
+        MoveSpeed -= acceleration * Time.deltaTime;
+        MoveSpeed = Mathf.Clamp(MoveSpeed, originalMoveSpeed, 80f);
     }
 
     private void Accelerate()
     {
         acceleration = 25f;
-        moveSpeed += acceleration * Time.deltaTime;
-        moveSpeed = Mathf.Clamp(moveSpeed, moveSpeed, 80f);
+        MoveSpeed += acceleration * Time.deltaTime;
+        MoveSpeed = Mathf.Clamp(MoveSpeed, MoveSpeed, 80f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -382,9 +398,9 @@ public class Player : MonoBehaviour
 
     private void ProcessHit(DamageDealer damageDealer, int layer_collider)
     {
-        if (!isInvincible)
+        if (!IsInvincible)
         {
-            gameSession.CurrentHealthSpacePlayer -= damageDealer.GetDamage();
+            gameSession.CurrentHealthSpacePlayer -= damageDealer.Damage;
             StartCoroutine(hitCanvas.HandleHitCanvas());
         }
 
@@ -445,38 +461,4 @@ public class Player : MonoBehaviour
         return gameSession.CurrentHealthSpacePlayer;
     }
 
-    public int GetDamageLaserPlayer()
-    {
-        return laserDamage;
-    }
-
-    public void SetLaserDamage(int newLaserDamage)
-    {
-        laserDamage = newLaserDamage;
-    }
-
-    public float GetLaserFiringPeriod()
-    {
-        return laserFiringPeriod;
-    }
-
-    public void SetInvincible(bool currentInvincibility)
-    {
-        isInvincible = currentInvincibility;
-    }
-
-    public void SetImmobile(bool currentImmobility)
-    {
-        isImmobile = currentImmobility;
-    }
-
-    public bool IsImmobile()
-    {
-        return isImmobile;
-    }
-
-    public void SetMoveSpeed(float currentMoveSpeed)
-    {
-        moveSpeed = currentMoveSpeed;
-    }
 }

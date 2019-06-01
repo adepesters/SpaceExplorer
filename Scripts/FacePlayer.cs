@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FacePlayer : MonoBehaviour
 {
-    float facingSpeed;
+    [SerializeField] float facingSpeed;
 
     bool isImmobile;
 
@@ -13,8 +13,12 @@ public class FacePlayer : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        facingSpeed = UnityEngine.Random.Range(1, 10); // the fastest always aim perfectly for the player
+        facingSpeed = UnityEngine.Random.Range(1f, 10f); // the fastest always aim perfectly for the player
         // the slowest are sloppy and miss the player
+        if (gameObject.name.Contains("LowFuelEnemy"))
+        {
+            facingSpeed = 10f;
+        }
     }
 
     // Update is called once per frame

@@ -55,10 +55,10 @@ public class Bonus : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
-        originalLaserFiringSpeed = player.GetComponent<Player>().originalLaserSpeed;
-        originalLaserFiringPeriod = player.GetComponent<Player>().originalLaserFiringPeriod;
-        originalBombFiringSpeed = player.GetComponent<Player>().originalBombSpeed;
-        originalBombFiringPeriod = player.GetComponent<Player>().originalBombFiringPeriod;
+        originalLaserFiringSpeed = player.GetComponent<Player>().OriginalLaserSpeed;
+        originalLaserFiringPeriod = player.GetComponent<Player>().OriginalLaserFiringPeriod;
+        originalBombFiringSpeed = player.GetComponent<Player>().OriginalBombSpeed;
+        originalBombFiringPeriod = player.GetComponent<Player>().OriginalBombFiringPeriod;
 
         playerLasersParent = GameObject.Find(PLAYER_LASERS);
         if (!playerLasersParent)
@@ -207,11 +207,11 @@ public class Bonus : MonoBehaviour
 
     private IEnumerator PowerUp1Routine()
     {
-        player.GetComponent<Player>().laserFiringPeriod = originalLaserFiringPeriod / 2f;
-        player.GetComponent<Player>().bombFiringPeriod = originalBombFiringPeriod / 2f;
+        player.GetComponent<Player>().LaserFiringPeriod = originalLaserFiringPeriod / 2f;
+        player.GetComponent<Player>().BombFiringPeriod = originalBombFiringPeriod / 2f;
         yield return new WaitForSeconds(durationPowerUp1);
-        player.GetComponent<Player>().laserFiringPeriod = originalLaserFiringPeriod;
-        player.GetComponent<Player>().bombFiringPeriod = originalBombFiringPeriod;
+        player.GetComponent<Player>().LaserFiringPeriod = originalLaserFiringPeriod;
+        player.GetComponent<Player>().BombFiringPeriod = originalBombFiringPeriod;
         Destroy(gameObject);
     }
 
@@ -225,7 +225,7 @@ public class Bonus : MonoBehaviour
     private IEnumerator PowerUp3Routine()
     {
         shield = FindObjectOfType<Shield>();
-        player.SetInvincible(true);
+        player.IsInvincible = true;
         shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
         shield.gameObject.GetComponentInChildren<CircleCollider2D>().enabled = true;
         //enemyLasersParent.GetComponentInChildren<CapsuleCollider2D>().isTrigger = false;
@@ -234,7 +234,7 @@ public class Bonus : MonoBehaviour
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         yield return new WaitForSeconds(durationPowerUp3);
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-        player.SetInvincible(false);
+        player.IsInvincible = false;
         shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         shield.gameObject.GetComponentInChildren<CircleCollider2D>().enabled = false;
         //GameObject.Find("Laser Enemy").GetComponent<CapsuleCollider2D>().isTrigger = true;
@@ -270,8 +270,8 @@ public class Bonus : MonoBehaviour
         attackStyle = FindObjectOfType<AttackStyle>();
         while (true)
         {
-            float laserFiringPeriod = player.GetComponent<Player>().laserFiringPeriod;
-            float bombFiringPeriod = player.GetComponent<Player>().bombFiringPeriod;
+            float laserFiringPeriod = player.GetComponent<Player>().LaserFiringPeriod;
+            float bombFiringPeriod = player.GetComponent<Player>().BombFiringPeriod;
             float firingPeriod = 0;
             float rightStickX = Input.GetAxis("Mouse X");
             float rightStickY = Input.GetAxis("Mouse Y");

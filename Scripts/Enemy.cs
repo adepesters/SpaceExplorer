@@ -173,7 +173,7 @@ public class Enemy : MonoBehaviour
 
     private void ProcessHit(DamageDealer damageDealer)
     {
-        health -= damageDealer.GetDamage();
+        health -= damageDealer.Damage;
         damageDealer.Hit();
         StartCoroutine(ChangeColorAfterHit());
         if (health <= 0 && !isDead) // the isDead is necessary to prevent going into this if condition

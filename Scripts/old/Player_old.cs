@@ -277,7 +277,7 @@ public class Player_old : MonoBehaviour
     {
         if (!isInvincible)
         {
-            health -= damageDealer.GetDamage();
+            health -= damageDealer.Damage;
         }
 
         if (layer_collider != 9)

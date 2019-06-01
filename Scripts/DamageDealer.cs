@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class DamageDealer : MonoBehaviour
 {
-    int damage;
+    [SerializeField] int damage;
 
-    void Start()
-    {
-        damage = FindObjectOfType<Player>().GetDamageLaserPlayer();
-    }
-
-    public int GetDamage() { return damage; }
+    public int Damage { get => damage; set => damage = value; }
 
     public void Hit()
     {

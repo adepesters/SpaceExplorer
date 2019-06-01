@@ -114,7 +114,7 @@ public class CraftingMenu : MonoBehaviour
         {
             indexUpgrade1++;
             indexUpgrade1 = Mathf.Clamp(indexUpgrade1, 0, upgrade1Values.Count - 1);
-            player.SetLaserDamage(upgrade1Values[indexUpgrade1]);
+            player.LaserDamage = upgrade1Values[indexUpgrade1];
             if (indexUpgrade1 == upgrade1Values.Count - 1)
             {
                 oldUpgrade1ValueText.text = upgrade1Values[indexUpgrade1].ToString();

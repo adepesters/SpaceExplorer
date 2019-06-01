@@ -31,6 +31,20 @@ public class Laser : MonoBehaviour
             }
         }
 
+        if (gameObject.name.Contains("Laser LowFuelEnemy"))
+        {
+            float speed = 100f;
+            if (!isImmobile)
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * speed;
+            }
+            else
+            {
+                GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * 0f;
+            }
+        }
+
+
         if (gameObject.name.Contains("Bomb Enemy"))
         {
             float speed = 5f;

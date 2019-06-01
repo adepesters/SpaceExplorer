@@ -201,7 +201,7 @@ public class DialogManager : MonoBehaviour
 
     private void MakeGameObjectsImmobile()
     {
-        player.SetImmobile(true);
+        player.IsImmobile1 = true;
 
         Laser[] lasers = FindObjectsOfType<Laser>();
         foreach (Laser laser in lasers)
@@ -230,7 +230,7 @@ public class DialogManager : MonoBehaviour
 
     private void MakeGameObjectsMobile()
     {
-        player.SetImmobile(false);
+        player.IsImmobile1 = false;
 
         Laser[] lasers = FindObjectsOfType<Laser>();
         foreach (Laser laser in lasers)
