@@ -14,12 +14,14 @@ public class FuelRadar : MonoBehaviour
 
     float distance = 10000f;
 
+    public GameObject TargetZone { get => targetZone; set => targetZone = value; }
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
-        targetZone = GameObject.Find("Pointer");
+        TargetZone = GameObject.Find("Pointer");
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         image = GetComponent<Image>();
     }
@@ -34,13 +36,13 @@ public class FuelRadar : MonoBehaviour
             {
                 if (Vector2.Distance(planet.transform.position, player.transform.position) < distance)
                 {
-                    targetZone = planet;
+                    TargetZone = planet;
                 }
                 distance = Vector2.Distance(planet.transform.position, player.transform.position);
             }
         }
 
-        Transform target = targetZone.gameObject.transform;
+        Transform target = TargetZone.gameObject.transform;
         Vector2 direction = target.position - player.gameObject.transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 135;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);

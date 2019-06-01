@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
+        shotCounter = 0f;
         hitColorChange.r = 255f;
         hitColorChange.g = 0f;
         hitColorChange.b = 0f;
