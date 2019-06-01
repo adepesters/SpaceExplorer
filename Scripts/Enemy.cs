@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] Laser laserPrefab;
     [SerializeField] float projectileSpeed = -25f;
     [SerializeField] float shotCounter;
+    [SerializeField] bool trackTarget;
 
     [Header("VFX")]
     [SerializeField] GameObject destroyVFXParticles;
@@ -156,6 +157,10 @@ public class Enemy : MonoBehaviour
     {
         Laser laser = Instantiate(laserPrefab, transform.position, transform.rotation, enemyLasersParent.transform);
         laser.SetParent(gameObject);
+        if (trackTarget)
+        {
+            laser.TrackTarget1 = true;
+        }
         AudioSource.PlayClipAtPoint(laserEnemy, transform.position, volumeLaserEnemy);
     }
 

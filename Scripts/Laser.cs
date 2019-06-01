@@ -11,9 +11,19 @@ public class Laser : MonoBehaviour
 
     bool isImmobile;
 
+    Player player;
+
+    bool trackTarget;
+
+    public bool TrackTarget1 { get => trackTarget; set => trackTarget = value; }
+
+    float thresholdTargetUpdate = 3f;
+
     void Start()
     {
         angle = transform.eulerAngles.z - 90;
+
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
     void Update()
@@ -64,6 +74,12 @@ public class Laser : MonoBehaviour
             gameObject.layer = 10;
             AttackBackEnemy();
         }
+
+        if (TrackTarget1)
+        {
+            angle = transform.eulerAngles.z - 90;
+            TrackTarget();
+        }
     }
 
     public void AttackBackEnemy()
@@ -76,6 +92,26 @@ public class Laser : MonoBehaviour
             float angleRot = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
             Quaternion rotation = Quaternion.AngleAxis(angleRot, Vector3.forward);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, facingSpeed * Time.deltaTime);
+        }
+    }
+
+    public void TrackTarget()
+    {
+        float facingSpeed = 10;
+        if (player != null)
+        {
+            if (Vector2.Distance(player.transform.position, transform.position) > thresholdTargetUpdate)
+            {
+                Transform target = player.transform;
+                Vector2 direction = target.position - transform.position;
+                float angleRot = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+                Quaternion rotation = Quaternion.AngleAxis(angleRot, Vector3.forward);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, facingSpeed * Time.deltaTime);
+            }
+            else
+            {
+                TrackTarget1 = false;
+            }
         }
     }
 
