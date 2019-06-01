@@ -32,6 +32,8 @@ public class LowFuelEnemyActivator : MonoBehaviour
 
     AudioSource[] musicTracks = new AudioSource[5];
 
+    bool canDestroyLasers = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,14 +67,15 @@ public class LowFuelEnemyActivator : MonoBehaviour
 
         var distance = Vector2.Distance(player.transform.position, fuelRadar.TargetZone.transform.position);
 
-        spawningFrequencyZone = gameSession.MaxFuelSpacePlayer / (distance * 2f);
-        Debug.Log("distance: " + distance);
+        spawningFrequencyZone = (gameSession.MaxFuelSpacePlayer) / (distance);
+        //Debug.Log("distance: " + distance);
         //Debug.Log(gameSession.MaxFuelSpacePlayer);
         Debug.Log("frequency:" + spawningFrequencyZone);
 
         if (gameSession.CurrentFuelSpacePlayer <= 0f)
         {
             shouldSpawn = true;
+            canDestroyLasers = true;
 
             musicTracks[2].volume -= 0.3f * Time.deltaTime;
             musicTracks[3].volume -= 0.3f * Time.deltaTime;
@@ -92,7 +95,26 @@ public class LowFuelEnemyActivator : MonoBehaviour
         }
         else
         {
+            if (canDestroyLasers)
+            {
+                GameObject[] lasers = GameObject.FindGameObjectsWithTag("LaserEnemy");
+                foreach (GameObject laser in lasers)
+                {
+                    Destroy(laser.gameObject);
+                }
+
+                GameObject[] enemies = GameObject.FindGameObjectsWithTag("LowFuelEnemy");
+                foreach (GameObject enemy in enemies)
+                {
+                    enemy.GetComponent<Enemy>().ExplodeEnemy();
+                }
+
+                canDestroyLasers = false;
+                spawnZoneCoroutineHandler = null;
+            }
+
             shouldSpawn = false;
+
             musicTracks[2].volume += 0.1f * Time.deltaTime;
             musicTracks[3].volume += 0.1f * Time.deltaTime;
             musicTracks[4].volume -= 0.2f * Time.deltaTime;

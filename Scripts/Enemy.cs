@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] float projectileSpeed = -25f;
     [SerializeField] float shotCounter;
     [SerializeField] bool trackTarget;
+    [SerializeField] float thresholdTargetUpdate = 3f;
 
     [Header("VFX")]
     [SerializeField] GameObject destroyVFXParticles;
@@ -70,7 +71,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shotCounter = 0f;
+        shotCounter = UnityEngine.Random.Range(minTimeBetweenShots, maxTimeBetweenShots);
         hitColorChange.r = 255f;
         hitColorChange.g = 0f;
         hitColorChange.b = 0f;
@@ -160,6 +161,7 @@ public class Enemy : MonoBehaviour
         if (trackTarget)
         {
             laser.TrackTarget1 = true;
+            laser.ThresholdTargetUpdate = thresholdTargetUpdate;
         }
         AudioSource.PlayClipAtPoint(laserEnemy, transform.position, volumeLaserEnemy);
     }
@@ -200,7 +202,7 @@ public class Enemy : MonoBehaviour
         gameObject.GetComponent<Renderer>().material.color = originalColor;
     }
 
-    private void ExplodeEnemy()
+    public void ExplodeEnemy()
     {
         GameObject vFXParticles = Instantiate(destroyVFXParticles, transform.position, Quaternion.identity) as GameObject;
         Destroy(gameObject);

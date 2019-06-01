@@ -16,8 +16,9 @@ public class Laser : MonoBehaviour
     bool trackTarget;
 
     public bool TrackTarget1 { get => trackTarget; set => trackTarget = value; }
+    public float ThresholdTargetUpdate { get => thresholdTargetUpdate; set => thresholdTargetUpdate = value; }
 
-    float thresholdTargetUpdate = 3f;
+    float thresholdTargetUpdate;
 
     void Start()
     {
@@ -100,7 +101,7 @@ public class Laser : MonoBehaviour
         float facingSpeed = 10;
         if (player != null)
         {
-            if (Vector2.Distance(player.transform.position, transform.position) > thresholdTargetUpdate)
+            if (Vector2.Distance(player.transform.position, transform.position) > ThresholdTargetUpdate)
             {
                 Transform target = player.transform;
                 Vector2 direction = target.position - transform.position;
