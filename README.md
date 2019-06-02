@@ -7,6 +7,7 @@ A 2.5D space exploration game!
 ![](/gifs/3.gif)
 ![](/gifs/4.gif)
 ![](/gifs/5.gif)
+![](/gifs/11.gif)
 ![](/gifs/6.gif)
 ![](/gifs/7.gif)
 ![](/gifs/8.gif)
