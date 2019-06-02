@@ -2,7 +2,9 @@
 
 A 2.5D space exploration game!
 
-![](/gifs/Jun-02-2019 14-28-10.gif)
+gifs/Jun-02-2019 14-21-30.gif
+
+![](gifs/Jun-02-2019 14-28-10.gif)
 
 ![](/gifs/Jun-02-2019 14-25-35.gif)
 
