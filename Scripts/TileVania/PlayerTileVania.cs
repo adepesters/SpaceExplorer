@@ -10,7 +10,7 @@ public class PlayerTileVania : MonoBehaviour
 {
     float health = 10000f;
 
-    float runSpeed = 6f;
+    float runSpeed = 8f;
     [SerializeField] float jumpSpeed = 14f;
     [SerializeField] float climbSpeed = 6f;
 
@@ -83,6 +83,12 @@ public class PlayerTileVania : MonoBehaviour
 
     PlayerTileVaniaDoubleMirror doubleMirror;
 
+    bool isRunning = false;
+
+    bool previousFeetContact, currentFeetContact;
+
+    Rigidbody2D[] rigidbodyObjects;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -115,11 +121,22 @@ public class PlayerTileVania : MonoBehaviour
         planetID = int.Parse(numbersOnly);
 
         renderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+
+        previousFeetContact = false;
+        currentFeetContact = false;
     }
 
     void Update()
     {
-        //Debug.Log(health);
+        previousFeetContact = currentFeetContact;
+        currentFeetContact = feet.AreOnSomething;
+
+        if (feet.AreOnSomething && !previousFeetContact)
+        {
+            isJumping = false;
+            animator.SetBool("isJumping", false);
+        }
+
         counterHit += Time.deltaTime;
 
         if (!isDead && playerOnAir && !playerIsFrozen)
@@ -173,6 +190,7 @@ public class PlayerTileVania : MonoBehaviour
             animator.speed = 0f;
             transform.position = frozenPosition;
         }
+
     }
 
     private void MoveToFrontLayer()
@@ -182,15 +200,17 @@ public class PlayerTileVania : MonoBehaviour
         DontIgnorePhysicsLayer1();
         RestoreOpaquenessLayer1();
 
-        rigidBody.simulated = false;
         renderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
         float speedBridge = 20f * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge);
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
+            foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+            {
+                rigidbodyObject.simulated = true;
+            }
             moveToFrontLayer = false;
-            rigidBody.simulated = true;
             renderer.enabled = true;
         }
 
@@ -207,16 +227,18 @@ public class PlayerTileVania : MonoBehaviour
         DontIgnorePhysicsLayer2();
         ReduceTransparencyLayer1();
 
-
-        rigidBody.simulated = false;
         renderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
         float speedBridge = 20f * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge);
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
+            foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+            {
+                rigidbodyObject.simulated = true;
+            }
+
             moveToBackLayer = false;
-            rigidBody.simulated = true;
             renderer.enabled = true;
             if (doubleMirror != null)
             {
@@ -243,6 +265,7 @@ public class PlayerTileVania : MonoBehaviour
         if (playerIsImmobile || (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")) && (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon)) || isTargeting)
         {
             animator.SetBool("isRunning", false);
+            isRunning = false;
             rigidBody.drag = 1000;
             if (doubleMirror != null)
             {
@@ -251,6 +274,7 @@ public class PlayerTileVania : MonoBehaviour
         }
         else
         {
+            isRunning = true;
             rigidBody.drag = 0;
             animator.SetBool("isRunning", true);
             float xChange = Input.GetAxis("Horizontal") * runSpeed; // we don't put deltaTime here. See notes.
@@ -271,7 +295,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void WalkOnDryLeavesSFX(float xChange)
     {
-        xChange = MapValue(0f, 6f, 0.1f, 1.5f, Mathf.Abs(xChange));
+        xChange = MapValue(0f, runSpeed, 0.1f, 1.5f, Mathf.Abs(xChange));
         float frequencySteps = 1f / Mathf.Exp(xChange);
         if (counterFootSteps > frequencySteps)
         {
@@ -291,6 +315,11 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
+                rigidbodyObjects = FindObjectsOfType<Rigidbody2D>();
+                foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+                {
+                    rigidbodyObject.simulated = false;
+                }
                 moveToBackLayer = true;
             }
         }
@@ -299,6 +328,11 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
+                rigidbodyObjects = FindObjectsOfType<Rigidbody2D>();
+                foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+                {
+                    rigidbodyObject.simulated = false;
+                }
                 moveToFrontLayer = true;
             }
         }
@@ -410,7 +444,14 @@ public class PlayerTileVania : MonoBehaviour
                 //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
                 isJumping = true;
+                isRunning = false;
                 canJump = false;
+                animator.SetBool("isRunning", false);
+                animator.SetBool("isJumping", true);
+                if (doubleMirror != null)
+                {
+                    doubleMirror.IsJumping = true;
+                }
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
@@ -430,7 +471,10 @@ public class PlayerTileVania : MonoBehaviour
                 //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
                 isJumping = true;
+                isRunning = false;
                 canJump = false;
+                animator.SetBool("isRunning", false);
+                animator.SetBool("isJumping", true);
                 if (doubleMirror != null)
                 {
                     doubleMirror.IsJumping = true;

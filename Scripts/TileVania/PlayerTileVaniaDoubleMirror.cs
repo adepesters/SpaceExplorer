@@ -10,11 +10,13 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
 
     bool shouldMerge;
     bool isJumping;
+    Rigidbody2D myrigidbody;
 
     public SpriteRenderer Spriterenderer { get => spriterenderer; set => spriterenderer = value; }
     public bool ShouldMerge { get => shouldMerge; set => shouldMerge = value; }
     public Vector3 Pos { get => pos; set => pos = value; }
     public bool IsJumping { get => isJumping; set => isJumping = value; }
+    public Rigidbody2D Myrigidbody { get => myrigidbody; set => myrigidbody = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -22,24 +24,33 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
         Spriterenderer = GetComponentInChildren<SpriteRenderer>();
         Spriterenderer.enabled = false;
 
+        myrigidbody = GetComponent<Rigidbody2D>();
+
         player = FindObjectOfType<PlayerTileVania>();
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name.Contains("Bridge"))
         {
+            Debug.Log("enter");
             Spriterenderer.enabled = true;
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.name.Contains("Bridge"))
+        if (collision.gameObject.name.Contains("DoubleMirror Destroyer"))
         {
             Spriterenderer.enabled = false;
         }
     }
+
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.name.Contains("Bridge"))
+    //    {
+    //        Debug.Log("exit");
+    //        Spriterenderer.enabled = false;
+    //    }
+    //}
 
     void Update()
     {
