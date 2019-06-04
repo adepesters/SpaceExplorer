@@ -264,6 +264,7 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (playerIsImmobile || (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")) && (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon)) || isTargeting)
         {
+            animator.SetTrigger("isIdle");
             animator.SetBool("isRunning", false);
             isRunning = false;
             rigidBody.drag = 1000;
@@ -576,6 +577,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (PS4ControllerCheck.IsSquarePressed())
             {
+                animator.SetTrigger("isAttacking1");
                 var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
                 Sword sword = Instantiate(rightSwordPrefab, swordPos, Quaternion.identity);
                 SwordHitDirection = "right";
@@ -590,6 +592,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (PS4ControllerCheck.IsSquarePressed())
             {
+                animator.SetTrigger("isAttacking1");
                 var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
                 Sword sword = Instantiate(leftSwordPrefab, swordPos, Quaternion.identity);
                 SwordHitDirection = "left";
