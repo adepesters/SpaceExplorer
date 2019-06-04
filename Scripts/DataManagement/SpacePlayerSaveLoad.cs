@@ -30,6 +30,8 @@ public static class SpacePlayerSaveLoad
             gameSession.MaxHealthSpacePlayer = data.maxHealth;
             Vector3 position = new Vector3(data.position[0], data.position[1], data.position[2]);
             gameSession.PositionSpacePlayer = position;
+            Player player = GameObject.FindWithTag("Player").gameObject.GetComponent<Player>();
+            player.transform.position = position;
         }
     }
 }
