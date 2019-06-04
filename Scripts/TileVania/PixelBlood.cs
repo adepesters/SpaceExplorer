@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PixelBlood : MonoBehaviour
 {
-    float attractionDistance = 1f;
+    float attractionDistance = 1.5f;
     float accelerationAttraction = 0.01f;
 
     PlayerTileVania player;
