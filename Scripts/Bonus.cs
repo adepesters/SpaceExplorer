@@ -103,19 +103,19 @@ public class Bonus : MonoBehaviour
                     }
                     if (this.name.Contains("pink"))
                     {
-                        FindObjectOfType<GameSession>().counterStarBronze++;
+                        GameObject.FindWithTag("GameSession").GetComponent<GameSession>().counterStarBronze++;
                         Destroy(gameObject);
                         AudioSource.PlayClipAtPoint(coinSound, player.transform.position, volumeSound);
                     }
                     if (this.name.Contains("cyan"))
                     {
-                        FindObjectOfType<GameSession>().counterStarSilver++;
+                        GameObject.FindWithTag("GameSession").GetComponent<GameSession>().counterStarSilver++;
                         Destroy(gameObject);
                         AudioSource.PlayClipAtPoint(coinSound, player.transform.position, volumeSound);
                     }
                     if (this.name.Contains("green"))
                     {
-                        FindObjectOfType<GameSession>().counterStarGold++;
+                        GameObject.FindWithTag("GameSession").GetComponent<GameSession>().counterStarGold++;
                         Destroy(gameObject);
                         AudioSource.PlayClipAtPoint(coinSound, player.transform.position, volumeSound);
                     }
