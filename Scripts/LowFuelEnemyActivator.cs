@@ -70,7 +70,7 @@ public class LowFuelEnemyActivator : MonoBehaviour
         spawningFrequencyZone = (gameSession.MaxFuelSpacePlayer) / (distance);
         //Debug.Log("distance: " + distance);
         //Debug.Log(gameSession.MaxFuelSpacePlayer);
-        Debug.Log("frequency:" + spawningFrequencyZone);
+        //Debug.Log("frequency:" + spawningFrequencyZone);
 
         if (gameSession.CurrentFuelSpacePlayer <= 0f)
         {

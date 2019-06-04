@@ -44,7 +44,7 @@ public class Laser : MonoBehaviour
 
         if (gameObject.name.Contains("Laser LowFuelEnemy"))
         {
-            float speed = 100f;
+            float speed = 130f;
             if (!isImmobile)
             {
                 GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * speed;
