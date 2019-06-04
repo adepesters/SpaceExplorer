@@ -56,7 +56,7 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
     {
         if (!shouldMerge && !IsJumping)
         {
-            Pos = new Vector3(player.transform.position.x, -0.8f, 5.03f);
+            Pos = new Vector3(player.transform.position.x, -0.4f, 5.03f);
         }
         else if (!shouldMerge && IsJumping)
         {

@@ -31,7 +31,7 @@ public class FloatingRock : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) < 2f)
+        if (Vector3.Distance(transform.position, player.transform.position) < 4f)
         {
             GetComponent<PolygonCollider2D>().enabled = true;
         }
