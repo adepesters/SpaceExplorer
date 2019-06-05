@@ -88,6 +88,7 @@ public class PlayerTileVania : MonoBehaviour
     bool previousFeetContact, currentFeetContact;
 
     Rigidbody2D[] rigidbodyObjects;
+    Collider2D[] colliderObjects;
 
     void Start()
     {
@@ -210,6 +211,12 @@ public class PlayerTileVania : MonoBehaviour
             {
                 rigidbodyObject.simulated = true;
             }
+
+            foreach (Collider2D colliderObject in colliderObjects)
+            {
+                colliderObject.enabled = true;
+            }
+
             moveToFrontLayer = false;
             renderer.enabled = true;
         }
@@ -236,6 +243,11 @@ public class PlayerTileVania : MonoBehaviour
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
             {
                 rigidbodyObject.simulated = true;
+            }
+
+            foreach (Collider2D colliderObject in colliderObjects)
+            {
+                colliderObject.enabled = true;
             }
 
             moveToBackLayer = false;
@@ -321,6 +333,16 @@ public class PlayerTileVania : MonoBehaviour
                 {
                     rigidbodyObject.simulated = false;
                 }
+
+                colliderObjects = FindObjectsOfType<Collider2D>();
+                foreach (Collider2D colliderObject in colliderObjects)
+                {
+                    if (!colliderObject.gameObject.name.Contains("Camera"))
+                    {
+                        colliderObject.enabled = false;
+                    }
+                }
+
                 moveToBackLayer = true;
             }
         }
@@ -334,6 +356,16 @@ public class PlayerTileVania : MonoBehaviour
                 {
                     rigidbodyObject.simulated = false;
                 }
+
+                colliderObjects = FindObjectsOfType<Collider2D>();
+                foreach (Collider2D colliderObject in colliderObjects)
+                {
+                    if (!colliderObject.gameObject.name.Contains("Camera"))
+                    {
+                        colliderObject.enabled = false;
+                    }
+                }
+
                 moveToFrontLayer = true;
             }
         }
