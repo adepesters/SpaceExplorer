@@ -47,17 +47,27 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
 
     void Update()
     {
-        if (!shouldMerge && !IsJumping)
+        if (!IsJumping)
         {
-            Pos = new Vector3(player.transform.position.x, -0.4f, 5.03f);
+            if (player.CurrentLayer == 1)
+            {
+                Pos = new Vector3(player.transform.position.x, -0.4f, 5.03f);
+            }
+            else if (player.CurrentLayer == 2)
+            {
+                Pos = new Vector3(player.transform.position.x, -1.4f, 0.03f);
+            }
         }
-        else if (!shouldMerge && IsJumping)
+        else
         {
-            Pos = new Vector3(player.transform.position.x, player.transform.position.y + 1.3f, 5.03f);
-        }
-        else if (shouldMerge)
-        {
-            Pos = player.transform.position;
+            if (player.CurrentLayer == 1)
+            {
+                Pos = new Vector3(player.transform.position.x, player.transform.position.y + 1.3f, 5.03f);
+            }
+            else if (player.CurrentLayer == 2)
+            {
+                Pos = new Vector3(player.transform.position.x, player.transform.position.y + -1.0f, 0.03f);
+            }
         }
         transform.position = Pos;
         Spriterenderer.sprite = player.GetComponentInChildren<SpriteRenderer>().sprite;

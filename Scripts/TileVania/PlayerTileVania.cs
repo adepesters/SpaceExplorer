@@ -47,6 +47,7 @@ public class PlayerTileVania : MonoBehaviour
     public bool GrapinJump { get => grapinJump; set => grapinJump = value; }
     public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
     public string SwordHitDirection { get => swordHitDirection; set => swordHitDirection = value; }
+    public int CurrentLayer { get => currentLayer; set => currentLayer = value; }
 
     float currentPos;
     float previousPos;
@@ -79,7 +80,7 @@ public class PlayerTileVania : MonoBehaviour
 
     int planetID;
 
-    SpriteRenderer renderer;
+    SpriteRenderer spriterenderer;
 
     PlayerTileVaniaDoubleMirror doubleMirror;
 
@@ -91,6 +92,10 @@ public class PlayerTileVania : MonoBehaviour
     Collider2D[] colliderObjects;
 
     GameObject[] transparentOccludersLayer1;
+
+    int currentLayer = 1;
+
+    float speedBridge = 30f;
 
     void Start()
     {
@@ -124,7 +129,7 @@ public class PlayerTileVania : MonoBehaviour
         string numbersOnly = Regex.Replace(SceneManager.GetActiveScene().name, "[^0-9]", "");
         planetID = int.Parse(numbersOnly);
 
-        renderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
+        spriterenderer = transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
 
         previousFeetContact = false;
         currentFeetContact = false;
@@ -211,10 +216,9 @@ public class PlayerTileVania : MonoBehaviour
         DontIgnorePhysicsLayer1();
         RestoreOpaquenessLayer1();
 
-        renderer.enabled = false;
+        //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
-        float speedBridge = 20f * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
@@ -233,12 +237,9 @@ public class PlayerTileVania : MonoBehaviour
             }
 
             moveToFrontLayer = false;
-            renderer.enabled = true;
-        }
+            //spriterenderer.enabled = true;
 
-        if (doubleMirror != null)
-        {
-            doubleMirror.ShouldMerge = false;
+            currentLayer = 1;
         }
     }
 
@@ -249,10 +250,9 @@ public class PlayerTileVania : MonoBehaviour
         DontIgnorePhysicsLayer2();
         ReduceTransparencyLayer1();
 
-        renderer.enabled = false;
+        //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
-        float speedBridge = 20f * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
@@ -271,11 +271,9 @@ public class PlayerTileVania : MonoBehaviour
             }
 
             moveToBackLayer = false;
-            renderer.enabled = true;
-            if (doubleMirror != null)
-            {
-                doubleMirror.ShouldMerge = true;
-            }
+            //spriterenderer.enabled = true;
+
+            currentLayer = 2;
         }
     }
 
@@ -728,9 +726,9 @@ public class PlayerTileVania : MonoBehaviour
 
     IEnumerator ChangeColorAfterHit()
     {
-        renderer.color = Color.red;
+        spriterenderer.color = Color.red;
         yield return new WaitForSeconds(0.2f);
-        renderer.color = Color.white;
+        spriterenderer.color = Color.white;
     }
 
 }
