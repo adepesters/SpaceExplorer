@@ -90,6 +90,8 @@ public class PlayerTileVania : MonoBehaviour
     Rigidbody2D[] rigidbodyObjects;
     Collider2D[] colliderObjects;
 
+    GameObject[] transparentOccludersLayer1;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -113,6 +115,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         }
+
         IgnorePhysicsLayer2();
 
         originalGravity = rigidBody.gravityScale;
@@ -125,6 +128,13 @@ public class PlayerTileVania : MonoBehaviour
 
         previousFeetContact = false;
         currentFeetContact = false;
+
+        transparentOccludersLayer1 = GameObject.FindGameObjectsWithTag("TransparentOccluderLayer1");
+
+        foreach (GameObject transparentOccluder in transparentOccludersLayer1)
+        {
+            transparentOccluder.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 
     void Update()
@@ -217,6 +227,11 @@ public class PlayerTileVania : MonoBehaviour
                 colliderObject.enabled = true;
             }
 
+            foreach (GameObject transparentOccluder in transparentOccludersLayer1)
+            {
+                transparentOccluder.GetComponent<MeshRenderer>().enabled = false;
+            }
+
             moveToFrontLayer = false;
             renderer.enabled = true;
         }
@@ -248,6 +263,11 @@ public class PlayerTileVania : MonoBehaviour
             foreach (Collider2D colliderObject in colliderObjects)
             {
                 colliderObject.enabled = true;
+            }
+
+            foreach (GameObject transparentOccluder in transparentOccludersLayer1)
+            {
+                transparentOccluder.GetComponent<MeshRenderer>().enabled = true;
             }
 
             moveToBackLayer = false;
@@ -328,20 +348,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                rigidbodyObjects = FindObjectsOfType<Rigidbody2D>();
-                foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
-                {
-                    rigidbodyObject.simulated = false;
-                }
-
-                colliderObjects = FindObjectsOfType<Collider2D>();
-                foreach (Collider2D colliderObject in colliderObjects)
-                {
-                    if (!colliderObject.gameObject.name.Contains("Camera"))
-                    {
-                        colliderObject.enabled = false;
-                    }
-                }
+                DisablePhysics();
 
                 moveToBackLayer = true;
             }
@@ -351,22 +358,31 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (inFrontOfBridge)
             {
-                rigidbodyObjects = FindObjectsOfType<Rigidbody2D>();
-                foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
-                {
-                    rigidbodyObject.simulated = false;
-                }
-
-                colliderObjects = FindObjectsOfType<Collider2D>();
-                foreach (Collider2D colliderObject in colliderObjects)
-                {
-                    if (!colliderObject.gameObject.name.Contains("Camera"))
-                    {
-                        colliderObject.enabled = false;
-                    }
-                }
+                DisablePhysics();
 
                 moveToFrontLayer = true;
+            }
+        }
+    }
+
+    private void DisablePhysics()
+    {
+        rigidbodyObjects = FindObjectsOfType<Rigidbody2D>();
+        foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+        {
+            if (!rigidbodyObject.gameObject.name.Contains("Double Mirror"))
+            {
+                rigidbodyObject.simulated = false;
+            }
+        }
+
+        colliderObjects = FindObjectsOfType<Collider2D>();
+        foreach (Collider2D colliderObject in colliderObjects)
+        {
+            if (!colliderObject.gameObject.name.Contains("Camera") && !colliderObject.gameObject.name.Contains("Bridge")
+            && !colliderObject.gameObject.name.Contains("Double Mirror"))
+            {
+                colliderObject.enabled = false;
             }
         }
     }
