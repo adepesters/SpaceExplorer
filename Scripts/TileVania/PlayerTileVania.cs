@@ -97,6 +97,9 @@ public class PlayerTileVania : MonoBehaviour
 
     float speedBridge = 30f;
 
+    [SerializeField] AudioClip layerChange;
+    float volumeSoundLayerChange = 0.05f;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -349,6 +352,7 @@ public class PlayerTileVania : MonoBehaviour
                 DisablePhysics();
 
                 moveToBackLayer = true;
+                audiosource.PlayOneShot(layerChange, volumeSoundLayerChange);
             }
         }
 
@@ -359,6 +363,7 @@ public class PlayerTileVania : MonoBehaviour
                 DisablePhysics();
 
                 moveToFrontLayer = true;
+                audiosource.PlayOneShot(layerChange, volumeSoundLayerChange);
             }
         }
     }
