@@ -33,6 +33,7 @@ public class Chest : MonoBehaviour
             GetComponent<ActionTrigger>().CanAppear = false;
             GetComponent<ActionTrigger>().DisableActionBox();
             player.XisActionTrigger1 = false;
+            transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 
@@ -45,5 +46,6 @@ public class Chest : MonoBehaviour
         GetComponent<ActionTrigger>().DisableActionBox();
         gameSession.OpenChests[1, chestID] = true;
         player.XisActionTrigger1 = false;
+        transform.GetChild(0).gameObject.SetActive(false);
     }
 }
