@@ -8,9 +8,10 @@ public class Chest : MonoBehaviour
 {
     [SerializeField] int chestID;
     [SerializeField] bool isOpen = false;
-    [SerializeField] int planetID;
+    int planetID;
 
     GameSession gameSession;
+    PlayerTileVania player;
 
     public bool IsOpen { get => isOpen; set => isOpen = value; }
 
@@ -20,14 +21,18 @@ public class Chest : MonoBehaviour
         string numbersOnly = Regex.Replace(SceneManager.GetActiveScene().name, "[^0-9]", "");
         planetID = int.Parse(numbersOnly);
 
+        player = FindObjectOfType<PlayerTileVania>();
+
         GetComponent<ActionTrigger>().MyDelegate1 = OpenChest;
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         isOpen = gameSession.OpenChests[planetID, chestID];
         if (isOpen)
         {
             GetComponentInParent<SpriteRenderer>().color = Color.red;
+            GetComponent<Collider2D>().enabled = false;
             GetComponent<ActionTrigger>().CanAppear = false;
             GetComponent<ActionTrigger>().DisableActionBox();
+            player.XisActionTrigger1 = false;
         }
     }
 
@@ -38,6 +43,7 @@ public class Chest : MonoBehaviour
         if (isOpen)
         {
             GetComponentInParent<SpriteRenderer>().color = Color.red;
+            GetComponent<Collider2D>().enabled = false;
             GetComponent<ActionTrigger>().CanAppear = false;
             GetComponent<ActionTrigger>().DisableActionBox();
         }
@@ -45,10 +51,12 @@ public class Chest : MonoBehaviour
 
     void OpenChest()
     {
-        GetComponent<Chest>().IsOpen = true;
+        isOpen = true;
         GetComponentInParent<SpriteRenderer>().color = Color.red;
+        GetComponent<Collider2D>().enabled = false;
         GetComponent<ActionTrigger>().CanAppear = false;
         GetComponent<ActionTrigger>().DisableActionBox();
         gameSession.OpenChests[1, chestID] = true;
+        player.XisActionTrigger1 = false;
     }
 }

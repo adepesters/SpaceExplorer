@@ -48,6 +48,7 @@ public class PlayerTileVania : MonoBehaviour
     public bool IsTargeting { get => isTargeting; set => isTargeting = value; }
     public string SwordHitDirection { get => swordHitDirection; set => swordHitDirection = value; }
     public int CurrentLayer { get => currentLayer; set => currentLayer = value; }
+    public bool XisActionTrigger1 { get => XisActionTrigger; set => XisActionTrigger = value; }
 
     float currentPos;
     float previousPos;
@@ -91,14 +92,14 @@ public class PlayerTileVania : MonoBehaviour
     Rigidbody2D[] rigidbodyObjects;
     Collider2D[] colliderObjects;
 
-    GameObject[] transparentOccludersLayer1;
-
     int currentLayer = 1;
 
     float speedBridge = 30f;
 
     [SerializeField] AudioClip layerChange;
     float volumeSoundLayerChange = 0.05f;
+
+    bool XisActionTrigger = false;
 
     void Start()
     {
@@ -136,13 +137,6 @@ public class PlayerTileVania : MonoBehaviour
 
         previousFeetContact = false;
         currentFeetContact = false;
-
-        transparentOccludersLayer1 = GameObject.FindGameObjectsWithTag("TransparentOccluderLayer1");
-
-        foreach (GameObject transparentOccluder in transparentOccludersLayer1)
-        {
-            transparentOccluder.GetComponent<MeshRenderer>().enabled = false;
-        }
     }
 
     void Update()
@@ -234,11 +228,6 @@ public class PlayerTileVania : MonoBehaviour
                 colliderObject.enabled = true;
             }
 
-            foreach (GameObject transparentOccluder in transparentOccludersLayer1)
-            {
-                transparentOccluder.GetComponent<MeshRenderer>().enabled = false;
-            }
-
             moveToFrontLayer = false;
             //spriterenderer.enabled = true;
 
@@ -266,11 +255,6 @@ public class PlayerTileVania : MonoBehaviour
             foreach (Collider2D colliderObject in colliderObjects)
             {
                 colliderObject.enabled = true;
-            }
-
-            foreach (GameObject transparentOccluder in transparentOccludersLayer1)
-            {
-                transparentOccluder.GetComponent<MeshRenderer>().enabled = true;
             }
 
             moveToBackLayer = false;
@@ -485,7 +469,7 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (originalGravity < 1)
         {
-            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump))
+            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump) && !XisActionTrigger1)
             {
                 canJump = true;
                 rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
@@ -512,7 +496,7 @@ public class PlayerTileVania : MonoBehaviour
         }
         else
         {
-            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump))
+            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump) && !XisActionTrigger1)
             {
                 canJump = true;
                 rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
@@ -680,6 +664,11 @@ public class PlayerTileVania : MonoBehaviour
         {
             inFrontOfBridge = false;
         }
+
+        if (collision.gameObject.name.Contains("Chest opener"))
+        {
+            XisActionTrigger1 = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -709,6 +698,11 @@ public class PlayerTileVania : MonoBehaviour
         if (collision.gameObject.name.Contains("Complete Planet"))
         {
             gameSession.HasBeenCompleted[gameSession.CurrentPlanetID] = true;
+        }
+
+        if (collision.gameObject.name.Contains("Chest opener"))
+        {
+            XisActionTrigger1 = true;
         }
     }
 
