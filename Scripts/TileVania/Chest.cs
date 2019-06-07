@@ -36,19 +36,6 @@ public class Chest : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        isOpen = gameSession.OpenChests[planetID, chestID];
-
-        if (isOpen)
-        {
-            GetComponentInParent<SpriteRenderer>().color = Color.red;
-            GetComponent<Collider2D>().enabled = false;
-            GetComponent<ActionTrigger>().CanAppear = false;
-            GetComponent<ActionTrigger>().DisableActionBox();
-        }
-    }
-
     void OpenChest()
     {
         isOpen = true;
