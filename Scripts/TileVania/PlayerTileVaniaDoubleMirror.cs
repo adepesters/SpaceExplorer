@@ -35,13 +35,15 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
         {
             Spriterenderer.enabled = true;
         }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.name.Contains("Bridge"))
+        if (collision.gameObject.name.Contains("StartUpdatingPixels"))
+        {
+            GetComponentInChildren<ErasePixels>().UpdateColors = true;
+            Spriterenderer.enabled = true;
+        }
+        if (collision.gameObject.name.Contains("StopUpdatingPixels"))
         {
             Spriterenderer.enabled = false;
+            GetComponentInChildren<ErasePixels>().UpdateColors = false;
         }
     }
 
