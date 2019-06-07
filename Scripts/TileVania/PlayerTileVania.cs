@@ -345,7 +345,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void MoveAcrossLayers()
     {
-        if (Input.GetAxis("Vertical") > 0.99)
+        if (Input.GetAxis("Vertical") > 0.99 && this.tag != "Layer2")
         {
             if (inFrontOfBridge)
             {
@@ -356,7 +356,7 @@ public class PlayerTileVania : MonoBehaviour
             }
         }
 
-        if (Input.GetAxis("Vertical") < -0.99)
+        if (Input.GetAxis("Vertical") < -0.99 && this.tag != "Layer1")
         {
             if (inFrontOfBridge)
             {
