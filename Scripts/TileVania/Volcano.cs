@@ -29,35 +29,47 @@ public class Volcano : MonoBehaviour
     {
         while (true)
         {
-            int rdnChoice = Random.Range(0, 10);
-            float rdnTime = Random.Range(0.01f, 0.1f);
+            float rdnTime = Random.Range(0.01f, 0.1f) * 1.2f; //1.2 is arbitrary.
+
             Vector3 rdnTarget;
             Vector3 oriPos;
 
             oriPos = new Vector3(transform.position.x, transform.position.y + 35, transform.position.z + 5);
             target = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
 
-            if (rdnChoice < 1)
+            if (Mathf.Abs(player.transform.position.x - transform.position.x) < 100f) // to make sure only close-by volcanos can target the player
             {
-                newRock = Instantiate(rock, oriPos, Quaternion.identity, volcanoRocksParent.transform);
-                newRock.GetComponent<VolcanicRock>().Target = target;
-                newRock.GetComponent<VolcanicRock>().IsTargetingPlayerLayer = true;
-                newRock.tag = player.tag;
-            }
-            if (rdnChoice > 0 && rdnChoice < 5)
-            {
+                int rdnChoice = Random.Range(0, 10);
 
-                rdnTarget = new Vector3(target.x + Random.Range(-30f, 30f),
-                target.y, target.z);
-                newRock = Instantiate(rock, oriPos, Quaternion.identity, volcanoRocksParent.transform);
-                newRock.GetComponent<VolcanicRock>().Target = rdnTarget;
-                newRock.GetComponent<VolcanicRock>().IsTargetingPlayerLayer = true;
-                newRock.tag = player.tag;
+                if (rdnChoice < 1)
+                {
+                    newRock = Instantiate(rock, oriPos, Quaternion.identity, volcanoRocksParent.transform);
+                    newRock.GetComponent<VolcanicRock>().Target = target;
+                    newRock.GetComponent<VolcanicRock>().IsTargetingPlayerLayer = true;
+                    newRock.tag = player.tag;
+                }
+                if (rdnChoice > 0 && rdnChoice < 5)
+                {
+
+                    rdnTarget = new Vector3(target.x + Random.Range(-30f, 30f),
+                    target.y, target.z);
+                    newRock = Instantiate(rock, oriPos, Quaternion.identity, volcanoRocksParent.transform);
+                    newRock.GetComponent<VolcanicRock>().Target = rdnTarget;
+                    newRock.GetComponent<VolcanicRock>().IsTargetingPlayerLayer = true;
+                    newRock.tag = player.tag;
+                }
+                else if (rdnChoice > 4)
+                {
+                    rdnTarget = new Vector3(target.x + Random.Range(-200f, 200f),
+                            target.y, target.z + Random.Range(0, 160f));
+                    newRock = Instantiate(rock, oriPos, Quaternion.identity, volcanoRocksParent.transform);
+                    newRock.GetComponent<VolcanicRock>().Target = rdnTarget;
+                }
             }
-            else if (rdnChoice > 4)
+            else
             {
-                rdnTarget = new Vector3(target.x + Random.Range(-200f, 200f),
-                        target.y, target.z + Random.Range(0, 160f));
+                rdnTarget = new Vector3(transform.position.x + Random.Range(-200f, 200f),
+                            transform.position.y, transform.position.z + Random.Range(0, 160f));
                 newRock = Instantiate(rock, oriPos, Quaternion.identity, volcanoRocksParent.transform);
                 newRock.GetComponent<VolcanicRock>().Target = rdnTarget;
             }

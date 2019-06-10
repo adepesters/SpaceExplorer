@@ -14,7 +14,21 @@ public class VolcanicRock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timeToTarget = transform.position.z * Random.Range(5f, 8f) / 150f; // to adjust for depth of volcano
+        float factorScale = Random.Range(0.5f, 1.5f);
+        Vector3 newScale = new Vector3(transform.localScale.x * factorScale,
+        transform.localScale.y * factorScale,
+            transform.localScale.z);
+        transform.localScale = newScale;
+
+        if (isTargetingPlayerLayer)
+        {
+            timeToTarget = transform.position.z * Random.Range(5f, 8f) / 150f; // to adjust for depth of volcano
+            timeToTarget = Mathf.Clamp(timeToTarget, 3f, 9f);
+        }
+        else
+        {
+            timeToTarget = Random.Range(5f, 8f);
+        }
         transform.position = new Vector3(transform.position.x + Random.Range(-5f, 5f),
         transform.position.y + Random.Range(-5f, 5f),
             transform.position.z);
