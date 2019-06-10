@@ -17,16 +17,12 @@ public class Feet : MonoBehaviour
             areOnSomething = true;
             CurrentSurface = collision.gameObject;
         }
-        else if (collision.gameObject.name.Contains("Tree"))
-        {
-            areOnSomething = true;
-            CurrentSurface = collision.gameObject;
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         areOnSomething = false;
+        CurrentSurface = null;
     }
 
 }

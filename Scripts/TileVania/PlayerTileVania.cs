@@ -49,6 +49,7 @@ public class PlayerTileVania : MonoBehaviour
     public string SwordHitDirection { get => swordHitDirection; set => swordHitDirection = value; }
     public int CurrentLayer { get => currentLayer; set => currentLayer = value; }
     public bool XisActionTrigger1 { get => XisActionTrigger; set => XisActionTrigger = value; }
+    public bool IsJumping { get => isJumping; set => isJumping = value; }
 
     float currentPos;
     float previousPos;
@@ -146,7 +147,7 @@ public class PlayerTileVania : MonoBehaviour
 
         if (feet.AreOnSomething && !previousFeetContact)
         {
-            isJumping = false;
+            IsJumping = false;
             animator.SetBool("isJumping", false);
         }
 
@@ -479,7 +480,7 @@ public class PlayerTileVania : MonoBehaviour
             {
                 //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
-                isJumping = true;
+                IsJumping = true;
                 isRunning = false;
                 canJump = false;
                 animator.SetBool("isRunning", false);
@@ -491,7 +492,7 @@ public class PlayerTileVania : MonoBehaviour
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                isJumping = false;
+                IsJumping = false;
             }
         }
         else
@@ -506,7 +507,7 @@ public class PlayerTileVania : MonoBehaviour
             {
                 //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
-                isJumping = true;
+                IsJumping = true;
                 isRunning = false;
                 canJump = false;
                 animator.SetBool("isRunning", false);
@@ -518,7 +519,7 @@ public class PlayerTileVania : MonoBehaviour
             }
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                isJumping = false;
+                IsJumping = false;
             }
         }
     }

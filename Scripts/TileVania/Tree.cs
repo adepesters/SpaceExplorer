@@ -8,27 +8,28 @@ public class Tree : MonoBehaviour
 
     PlayerTileVania player;
     Feet feet;
+    ExtendedLegs extendedLegs;
+
+    bool previousFeetContact, currentFeetContact;
+
+    bool isSolid = false;
+
+    bool feetTouching;
 
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerTileVania>();
         feet = FindObjectOfType<Feet>();
+        extendedLegs = FindObjectOfType<ExtendedLegs>();
 
-        if (treeIsTrigger)
-        {
-            GetComponent<PolygonCollider2D>().isTrigger = true;
-        }
+        GetComponent<PolygonCollider2D>().isTrigger = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (treeIsTrigger)
-        {
-            GetComponent<PolygonCollider2D>().isTrigger = true;
-        }
-        else
+        if (player.IsJumping && player.GetComponent<Rigidbody2D>().velocity.y < 0f && feetTouching)
         {
             GetComponent<PolygonCollider2D>().isTrigger = false;
         }
@@ -38,21 +39,16 @@ public class Tree : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("Feet"))
         {
-            if (!feet.CurrentSurface.name.Contains("Ground"))
-            {
-                if (!(player.GetComponent<Rigidbody2D>().velocity.y > 0f))
-                {
-                    treeIsTrigger = false;
-                }
-            }
+            feetTouching = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.name.Contains("Feet"))
+        if (collision.gameObject.name.Contains("Extended Legs"))
         {
-            treeIsTrigger = true;
+            feetTouching = false;
+            GetComponent<PolygonCollider2D>().isTrigger = true;
         }
     }
 
