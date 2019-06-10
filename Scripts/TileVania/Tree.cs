@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
-    bool treeIsTrigger = true;
-
     PlayerTileVania player;
     Feet feet;
     ExtendedLegs extendedLegs;
-
-    bool previousFeetContact, currentFeetContact;
-
-    bool isSolid = false;
 
     bool feetTouching;
 
