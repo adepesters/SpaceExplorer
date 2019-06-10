@@ -703,7 +703,10 @@ public class PlayerTileVania : MonoBehaviour
 
         if (collision.gameObject.name.Contains("Chest opener"))
         {
-            XisActionTrigger1 = true;
+            if (!collision.gameObject.GetComponent<Chest>().IsOpen)
+            {
+                XisActionTrigger1 = true;
+            }
         }
     }
 
