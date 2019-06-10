@@ -24,5 +24,4 @@ public class Feet : MonoBehaviour
         areOnSomething = false;
         CurrentSurface = null;
     }
-
 }
