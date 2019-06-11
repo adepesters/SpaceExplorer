@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class SpawningEnemyArea : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class SpawningEnemyArea : MonoBehaviour
     bool enteredZone = false;
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
-    int maxNumEnemiesZone = 20;
+    int maxNumEnemiesZone = 1;
     const string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
@@ -34,13 +35,26 @@ public class SpawningEnemyArea : MonoBehaviour
 
     bool currentlyFighting = false;
 
+    int spawningEnemyAreaID;
+
+    GameSession gameSession;
+
     public bool EnteredZone { get => enteredZone; set => enteredZone = value; }
     public Coroutine SpawnZoneCoroutineHandler { get => spawnZoneCoroutineHandler; set => spawnZoneCoroutineHandler = value; }
     public bool CurrentlyFighting { get => currentlyFighting; set => currentlyFighting = value; }
+    public bool ZoneCleaned { get => zoneCleaned; set => zoneCleaned = value; }
+    public int SpawningEnemyAreaID { get => spawningEnemyAreaID; set => spawningEnemyAreaID = value; }
+
+    void Awake()
+    {
+        string numbersOnly = Regex.Replace(this.gameObject.name, "[^0-9]", "");
+        SpawningEnemyAreaID = int.Parse(numbersOnly);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         zoneEnemiesParent = GameObject.Find(ZONE_ENEMIES_PARENT);
         if (zoneEnemiesParent == null)
         {
@@ -49,6 +63,7 @@ public class SpawningEnemyArea : MonoBehaviour
 
         Color color = new Color(1f, 0.9243603f, 0.2028302f, 0);
         areaClearedText.GetComponent<Text>().color = color;
+        gameSession.IsCleaned[SpawningEnemyAreaID] = false;
     }
 
     // Update is called once per frame
@@ -89,9 +104,9 @@ public class SpawningEnemyArea : MonoBehaviour
         }
 
         int numEnemiesZone = zoneEnemiesParent.transform.childCount;
-        if (numEnemiesZone == 0 && indexEnemiesZone == maxNumEnemiesZone && zoneCleaned == false)
+        if (numEnemiesZone == 0 && indexEnemiesZone == maxNumEnemiesZone && ZoneCleaned == false)
         {
-            zoneCleaned = true;
+            ZoneCleaned = true;
             GetComponent<PolygonCollider2D>().enabled = false;
 
             if (areaCleanedRoutine == null)
@@ -102,9 +117,10 @@ public class SpawningEnemyArea : MonoBehaviour
             GetComponent<EnemyRadarActivator>().HasBeenCleared = true;
         }
 
-        if (zoneCleaned)
+        if (ZoneCleaned)
         {
             CurrentlyFighting = false;
+            gameSession.IsCleaned[SpawningEnemyAreaID] = true;
 
             StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
             foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)

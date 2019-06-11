@@ -10,17 +10,23 @@ public class PixelBlocksField : MonoBehaviour
     [SerializeField] bool playerCanPass = false;
     CircleCollider2D mycircleCollider;
 
+    GameSession gameSession;
+
+    int planetID;
+
     public bool PlayerCanPass { get => playerCanPass; set => playerCanPass = value; }
 
     // Start is called before the first frame update
     void Start()
     {
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         mycircleCollider = GetComponent<CircleCollider2D>();
         radius = mycircleCollider.radius;
         for (int i = 0; i < numBlocks; i++)
         {
             GeneratePixelBlock();
         }
+        planetID = GetComponentInParent<Planet>().PlanetID;
     }
 
     private void GeneratePixelBlock()
@@ -34,6 +40,7 @@ public class PixelBlocksField : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerCanPass = gameSession.IsCleaned[planetID];
         if (PlayerCanPass)
         {
             mycircleCollider.enabled = false;

@@ -31,6 +31,7 @@ public class GameSession : MonoBehaviour
     public int CurrentHealthSpacePlayer { get => currentHealthSpacePlayer; set => currentHealthSpacePlayer = value; }
     public int MaxHealthSpacePlayer { get => maxHealthSpacePlayer; set => maxHealthSpacePlayer = value; }
     public Vector3 PositionPointer { get => positionPointer; set => positionPointer = value; }
+    public bool[] IsCleaned { get => isCleaned; set => isCleaned = value; }
 
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
@@ -45,6 +46,7 @@ public class GameSession : MonoBehaviour
     bool[,] openChests = new bool[50, 50];
     [SerializeField] bool[] hasBeenDiscovered = new bool[50];
     [SerializeField] bool[] hasBeenCompleted = new bool[50];
+    [SerializeField] bool[] isCleaned = new bool[100];
 
     int currentPlanetID;
 
@@ -98,7 +100,14 @@ public class GameSession : MonoBehaviour
             maxHealthSpacePlayer = 6000;
             currentHealthSpacePlayer = maxHealthSpacePlayer;
 
+            // initializes pointer data
             positionPointer = new Vector3(initialPos.x, initialPos.y, 0);
+
+            // initializes spawning enemy areas
+            for (int spawningArea = 0; spawningArea < IsCleaned.Length; spawningArea++)
+            {
+                IsCleaned[spawningArea] = false;
+            }
         }
     }
 
