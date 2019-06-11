@@ -94,6 +94,18 @@ public class DataManager : MonoBehaviour
                 Debug.LogError("File does not exist at path " + filePath);
             }
         }
+
+        // loading pointer
+        filePath = Path.Combine(Application.persistentDataPath, folderName, "pointerData" + fileExtension);
+        if (File.Exists(filePath))
+        {
+            PointerSaveLoad.LoadPointer(filePath);
+            Debug.Log("Data pointer loaded");
+        }
+        else
+        {
+            Debug.LogError("File does not exist at path " + filePath);
+        }
     }
 
     public void SavePlanetData()
@@ -130,6 +142,10 @@ public class DataManager : MonoBehaviour
             dataPath = Path.Combine(folderPath, "planet" + planetID + "Data" + fileExtension);
             PlanetSaveLoad.SavePlanet(dataPath, planetID);
         }
+
+        // saving pointer
+        dataPath = Path.Combine(folderPath, "pointerData" + fileExtension);
+        PointerSaveLoad.SavePointer(dataPath);
 
         Debug.Log("Data Space saved");
     }

@@ -30,6 +30,7 @@ public class GameSession : MonoBehaviour
     public float MaxFuelSpacePlayer { get => maxFuelSpacePlayer; set => maxFuelSpacePlayer = value; }
     public int CurrentHealthSpacePlayer { get => currentHealthSpacePlayer; set => currentHealthSpacePlayer = value; }
     public int MaxHealthSpacePlayer { get => maxHealthSpacePlayer; set => maxHealthSpacePlayer = value; }
+    public Vector3 PositionPointer { get => positionPointer; set => positionPointer = value; }
 
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
@@ -46,6 +47,8 @@ public class GameSession : MonoBehaviour
     [SerializeField] bool[] hasBeenCompleted = new bool[50];
 
     int currentPlanetID;
+
+    Vector3 positionPointer;
 
     private void Awake()
     {
@@ -94,6 +97,8 @@ public class GameSession : MonoBehaviour
             currentFuelSpacePlayer = maxFuelSpacePlayer;
             maxHealthSpacePlayer = 6000;
             currentHealthSpacePlayer = maxHealthSpacePlayer;
+
+            positionPointer = new Vector3(initialPos.x, initialPos.y, 0);
         }
     }
 
