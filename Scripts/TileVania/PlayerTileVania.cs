@@ -66,13 +66,13 @@ public class PlayerTileVania : MonoBehaviour
     float layer2zdepth;
 
     [SerializeField] AudioClip[] footstepsDryLeavesSound;
-    float volumeSoundFootSteps = 1f;
+    float volumeSoundFootSteps = 0.3f;
     float counterFootSteps;
 
     AudioSource audiosource;
 
     [SerializeField] AudioClip[] swordSlashSound;
-    float volumeSoundswordSlash = 1f;
+    float volumeSoundswordSlash = 0.6f;
 
     float counterHit;
 
@@ -98,7 +98,7 @@ public class PlayerTileVania : MonoBehaviour
     float speedBridge = 30f;
 
     [SerializeField] AudioClip layerChange;
-    float volumeSoundLayerChange = 0.05f;
+    float volumeSoundLayerChange = 0.2f;
 
     bool XisActionTrigger = false;
 

@@ -35,7 +35,7 @@ public class EnemyTileVania : MonoBehaviour
     bool shouldBeKilled;
 
     [SerializeField] AudioClip[] swordSlashSound;
-    float volumeSoundswordSlash = 0.1f;
+    float volumeSoundswordSlash = 0.5f;
 
     // Start is called before the first frame update
     void Start()
