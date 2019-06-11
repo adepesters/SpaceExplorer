@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hitColorChange.r = 0f;
+        hitColorChange.r = 1f;
         hitColorChange.g = 0f;
         hitColorChange.b = 0f;
         hitColorChange.a = 0f;
@@ -440,20 +440,18 @@ public class Player : MonoBehaviour
 
     private IEnumerator ShowDamageAfterHit()
     {
-        //GameObject vFXParticles = Instantiate(destroyVFXParticles, transform.position, Quaternion.identity) as GameObject;
-        if (count_damage < damagePlayerVisual.Count - 1)
-        {
-            Destroy(damagePlayerVisualInstance);
-        }
+        //if (count_damage < damagePlayerVisual.Count - 1)
+        //{
+        //    Destroy(damagePlayerVisualInstance);
+        //}
         gameObject.GetComponent<Renderer>().material.color = hitColorChange;
         yield return new WaitForSeconds(changeColorTime);
         gameObject.GetComponent<Renderer>().material.color = Color.white;
-        if (count_damage <= damagePlayerVisual.Count - 1)
-        {
-            damagePlayerVisualInstance = Instantiate(damagePlayerVisual[count_damage], transform.position, Quaternion.identity);
-        }
-        count_damage++;
-        //Destroy(vFXParticles, destroyParticlesAfterXTime);
+        //if (count_damage <= damagePlayerVisual.Count - 1)
+        //{
+        //    damagePlayerVisualInstance = Instantiate(damagePlayerVisual[count_damage], transform.position, Quaternion.identity);
+        //}
+        //count_damage++;
     }
 
     public int GetHealthPlayer()
