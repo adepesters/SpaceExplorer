@@ -19,6 +19,8 @@ public class EnemyRadar : MonoBehaviour
 
     float discoveryThresholdDist = 15f;
 
+    float counter = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,20 +55,34 @@ public class EnemyRadar : MonoBehaviour
 
     private void Display()
     {
-        switch (distanceThreshold)
+        //switch (distanceThreshold)
+        //{
+        //    case 0:
+        //        GetComponent<Image>().sprite = enemyRadarSprites[3];
+        //        break;
+        //    case 1:
+        //        GetComponent<Image>().sprite = enemyRadarSprites[2];
+        //        break;
+        //    case 2:
+        //        GetComponent<Image>().sprite = enemyRadarSprites[1];
+        //        break;
+        //    case 3:
+        //        GetComponent<Image>().sprite = enemyRadarSprites[0];
+        //        break;
+        //}
+        counter += Time.deltaTime;
+        GetComponent<Image>().sprite = enemyRadarSprites[0];
+        if (counter < 1f)
         {
-            case 0:
-                GetComponent<Image>().sprite = enemyRadarSprites[3];
-                break;
-            case 1:
-                GetComponent<Image>().sprite = enemyRadarSprites[2];
-                break;
-            case 2:
-                GetComponent<Image>().sprite = enemyRadarSprites[1];
-                break;
-            case 3:
-                GetComponent<Image>().sprite = enemyRadarSprites[0];
-                break;
+            GetComponent<Image>().CrossFadeAlpha(1, 1f, false);
+        }
+        else
+        {
+            GetComponent<Image>().CrossFadeAlpha(0, 1f, false);
+        }
+        if (counter > 2f)
+        {
+            counter = 0f;
         }
     }
 
@@ -84,4 +100,5 @@ public class EnemyRadar : MonoBehaviour
         target = currentTarget;
         detectionDistance = currentDetectionDistance;
     }
+
 }
