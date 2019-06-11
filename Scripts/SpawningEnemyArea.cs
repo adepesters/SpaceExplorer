@@ -18,7 +18,7 @@ public class SpawningEnemyArea : MonoBehaviour
     bool enteredZone = false;
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
-    int maxNumEnemiesZone = 1;
+    int maxNumEnemiesZone = 20;
     const string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
@@ -32,10 +32,11 @@ public class SpawningEnemyArea : MonoBehaviour
 
     float a = 0f;
 
-    AudioSource[] musicTracks = new AudioSource[5];
+    bool currentlyFighting = false;
 
     public bool EnteredZone { get => enteredZone; set => enteredZone = value; }
     public Coroutine SpawnZoneCoroutineHandler { get => spawnZoneCoroutineHandler; set => spawnZoneCoroutineHandler = value; }
+    public bool CurrentlyFighting { get => currentlyFighting; set => currentlyFighting = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -48,11 +49,6 @@ public class SpawningEnemyArea : MonoBehaviour
 
         Color color = new Color(1f, 0.9243603f, 0.2028302f, 0);
         areaClearedText.GetComponent<Text>().color = color;
-
-        musicTracks[1] = GameObject.FindWithTag("Track1").GetComponent<AudioSource>();
-        musicTracks[2] = GameObject.FindWithTag("Track2").GetComponent<AudioSource>();
-        musicTracks[3] = GameObject.FindWithTag("Track3").GetComponent<AudioSource>();
-        musicTracks[4] = GameObject.FindWithTag("Track4").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -69,21 +65,12 @@ public class SpawningEnemyArea : MonoBehaviour
 
         if (enteredZone)
         {
+            CurrentlyFighting = true;
+
             if (SpawnZoneCoroutineHandler == null)
             {
                 SpawnZoneCoroutineHandler = StartCoroutine(SpawnZone());
             }
-
-            musicTracks[2].volume -= 0.3f * Time.deltaTime;
-            musicTracks[3].volume -= 0.3f * Time.deltaTime;
-            musicTracks[4].volume += 0.2f * Time.deltaTime;
-
-            musicTracks[2].volume =
-            Mathf.Clamp(musicTracks[2].volume, 0, 1);
-            musicTracks[3].volume =
-            Mathf.Clamp(musicTracks[3].volume, 0, 1);
-            musicTracks[4].volume =
-            Mathf.Clamp(musicTracks[4].volume, 0, 1);
 
             MakeStarfieldDisappear[] starfields = FindObjectsOfType<MakeStarfieldDisappear>();
             foreach (MakeStarfieldDisappear starfield in starfields)
@@ -117,16 +104,7 @@ public class SpawningEnemyArea : MonoBehaviour
 
         if (zoneCleaned)
         {
-            musicTracks[2].volume += 0.1f * Time.deltaTime;
-            musicTracks[3].volume += 0.1f * Time.deltaTime;
-            musicTracks[4].volume -= 0.2f * Time.deltaTime;
-
-            musicTracks[2].volume =
-            Mathf.Clamp(musicTracks[2].volume, 0, 1);
-            musicTracks[3].volume =
-            Mathf.Clamp(musicTracks[3].volume, 0, 1);
-            musicTracks[4].volume =
-            Mathf.Clamp(musicTracks[4].volume, 0, 1);
+            CurrentlyFighting = false;
 
             StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
             foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)

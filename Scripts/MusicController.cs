@@ -4,35 +4,86 @@ using UnityEngine;
 
 public class MusicController : MonoBehaviour
 {
-    [SerializeField] AudioClip[] tracks;
+    AudioSource[] musicTracks = new AudioSource[5];
 
-    float[] volumeTrack = new float[4];
+    LowFuelEnemyActivator lowFuelEnemyActivator;
+    GameObject[] spawningEnemyAreas;
+
+    int mode = 0; // default exploration music tracks
+
+    int fighting = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        volumeTrack[0] = 1f;
-        volumeTrack[1] = 1f;
-        volumeTrack[2] = 1f;
-        volumeTrack[3] = 0f;
+        lowFuelEnemyActivator = GameObject.FindWithTag("LowFuelEnemyActivator").GetComponent<LowFuelEnemyActivator>();
+        spawningEnemyAreas = GameObject.FindGameObjectsWithTag("SpawningEnemyArea");
 
-        GetComponent<AudioSource>().PlayOneShot(tracks[0], volumeTrack[0]);
-        GetComponent<AudioSource>().PlayOneShot(tracks[1], volumeTrack[1]);
-        GetComponent<AudioSource>().PlayOneShot(tracks[2], volumeTrack[2]);
-        GetComponent<AudioSource>().PlayOneShot(tracks[3], volumeTrack[3]);
+        musicTracks[1] = GameObject.FindWithTag("Track1").GetComponent<AudioSource>();
+        musicTracks[2] = GameObject.FindWithTag("Track2").GetComponent<AudioSource>();
+        musicTracks[3] = GameObject.FindWithTag("Track3").GetComponent<AudioSource>();
+        musicTracks[4] = GameObject.FindWithTag("Track4").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        volumeTrack[0] = 1f;
-        volumeTrack[1] = 1f;
-        volumeTrack[2] = 1f;
-        volumeTrack[3] = 0f;
+        fighting = 0;
+        if (lowFuelEnemyActivator.CurrentlyFighting)
+        {
+            fighting++;
+        }
+        else
+        {
+            foreach (GameObject spawningEnemyArea in spawningEnemyAreas)
+            {
+                if (spawningEnemyArea.GetComponent<SpawningEnemyArea>().CurrentlyFighting)
+                {
+                    fighting++;
+                }
+            }
+        }
+
+        if (fighting > 0)
+        {
+            mode = 1;
+        }
+        else
+        {
+            mode = 0;
+        }
+
+
+        switch (mode)
+        {
+            case 0:
+                musicTracks[2].volume += 0.1f * Time.deltaTime;
+                musicTracks[3].volume += 0.1f * Time.deltaTime;
+                musicTracks[4].volume -= 0.2f * Time.deltaTime;
+
+                musicTracks[2].volume =
+                Mathf.Clamp(musicTracks[2].volume, 0, 1);
+                musicTracks[3].volume =
+                Mathf.Clamp(musicTracks[3].volume, 0, 1);
+                musicTracks[4].volume =
+                Mathf.Clamp(musicTracks[4].volume, 0, 1);
+
+                break;
+
+            case 1:
+                musicTracks[2].volume -= 0.3f * Time.deltaTime;
+                musicTracks[3].volume -= 0.3f * Time.deltaTime;
+                musicTracks[4].volume += 0.2f * Time.deltaTime;
+
+                musicTracks[2].volume =
+                Mathf.Clamp(musicTracks[2].volume, 0, 1);
+                musicTracks[3].volume =
+                Mathf.Clamp(musicTracks[3].volume, 0, 1);
+                musicTracks[4].volume =
+                Mathf.Clamp(musicTracks[4].volume, 0, 1);
+
+                break;
+        }
     }
 
-    public void SetVolumeTrack(int currentTrackIndex, float currentVolume)
-    {
-        volumeTrack[currentTrackIndex] = currentVolume;
-    }
 }

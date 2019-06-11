@@ -30,9 +30,11 @@ public class LowFuelEnemyActivator : MonoBehaviour
     bool zoneCleaned = false;
     float spawningFrequencyZone = 1f;
 
-    AudioSource[] musicTracks = new AudioSource[5];
-
     bool canDestroyLasers = false;
+
+    bool currentlyFighting = false;
+
+    public bool CurrentlyFighting { get => currentlyFighting; set => currentlyFighting = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -46,11 +48,6 @@ public class LowFuelEnemyActivator : MonoBehaviour
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         fuelRadar = GameObject.FindWithTag("FuelRadar").GetComponent<FuelRadar>();
-
-        musicTracks[1] = GameObject.FindWithTag("Track1").GetComponent<AudioSource>();
-        musicTracks[2] = GameObject.FindWithTag("Track2").GetComponent<AudioSource>();
-        musicTracks[3] = GameObject.FindWithTag("Track3").GetComponent<AudioSource>();
-        musicTracks[4] = GameObject.FindWithTag("Track4").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -74,19 +71,10 @@ public class LowFuelEnemyActivator : MonoBehaviour
 
         if (gameSession.CurrentFuelSpacePlayer <= 0f)
         {
+            CurrentlyFighting = true;
+
             shouldSpawn = true;
             canDestroyLasers = true;
-
-            musicTracks[2].volume -= 0.3f * Time.deltaTime;
-            musicTracks[3].volume -= 0.3f * Time.deltaTime;
-            musicTracks[4].volume += 0.2f * Time.deltaTime;
-
-            musicTracks[2].volume =
-            Mathf.Clamp(musicTracks[2].volume, 0, 1);
-            musicTracks[3].volume =
-            Mathf.Clamp(musicTracks[3].volume, 0, 1);
-            musicTracks[4].volume =
-            Mathf.Clamp(musicTracks[4].volume, 0, 1);
 
             if (spawnZoneCoroutineHandler == null)
             {
@@ -113,18 +101,9 @@ public class LowFuelEnemyActivator : MonoBehaviour
                 spawnZoneCoroutineHandler = null;
             }
 
+            CurrentlyFighting = false;
+
             shouldSpawn = false;
-
-            musicTracks[2].volume += 0.1f * Time.deltaTime;
-            musicTracks[3].volume += 0.1f * Time.deltaTime;
-            musicTracks[4].volume -= 0.2f * Time.deltaTime;
-
-            musicTracks[2].volume =
-            Mathf.Clamp(musicTracks[2].volume, 0, 1);
-            musicTracks[3].volume =
-            Mathf.Clamp(musicTracks[3].volume, 0, 1);
-            musicTracks[4].volume =
-            Mathf.Clamp(musicTracks[4].volume, 0, 1);
         }
 
     }
