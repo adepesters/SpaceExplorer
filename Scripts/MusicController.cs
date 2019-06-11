@@ -28,6 +28,60 @@ public class MusicController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckIfCurrentlyFighting();
+
+        if (fighting > 0)
+        {
+            mode = 1;
+        }
+        else
+        {
+            mode = 0;
+        }
+
+
+        switch (mode)
+        {
+            case 0:
+                DefaultMode();
+                break;
+
+            case 1:
+                FightingMode();
+                break;
+        }
+    }
+
+    private void FightingMode()
+    {
+        musicTracks[2].volume -= 0.3f * Time.deltaTime;
+        musicTracks[3].volume -= 0.3f * Time.deltaTime;
+        musicTracks[4].volume += 0.2f * Time.deltaTime;
+
+        musicTracks[2].volume =
+        Mathf.Clamp(musicTracks[2].volume, 0, 1);
+        musicTracks[3].volume =
+        Mathf.Clamp(musicTracks[3].volume, 0, 1);
+        musicTracks[4].volume =
+        Mathf.Clamp(musicTracks[4].volume, 0, 1);
+    }
+
+    private void DefaultMode()
+    {
+        musicTracks[2].volume += 0.1f * Time.deltaTime;
+        musicTracks[3].volume += 0.1f * Time.deltaTime;
+        musicTracks[4].volume -= 0.2f * Time.deltaTime;
+
+        musicTracks[2].volume =
+        Mathf.Clamp(musicTracks[2].volume, 0, 1);
+        musicTracks[3].volume =
+        Mathf.Clamp(musicTracks[3].volume, 0, 1);
+        musicTracks[4].volume =
+        Mathf.Clamp(musicTracks[4].volume, 0, 1);
+    }
+
+    private void CheckIfCurrentlyFighting()
+    {
         fighting = 0;
         if (lowFuelEnemyActivator.CurrentlyFighting)
         {
@@ -43,47 +97,5 @@ public class MusicController : MonoBehaviour
                 }
             }
         }
-
-        if (fighting > 0)
-        {
-            mode = 1;
-        }
-        else
-        {
-            mode = 0;
-        }
-
-
-        switch (mode)
-        {
-            case 0:
-                musicTracks[2].volume += 0.1f * Time.deltaTime;
-                musicTracks[3].volume += 0.1f * Time.deltaTime;
-                musicTracks[4].volume -= 0.2f * Time.deltaTime;
-
-                musicTracks[2].volume =
-                Mathf.Clamp(musicTracks[2].volume, 0, 1);
-                musicTracks[3].volume =
-                Mathf.Clamp(musicTracks[3].volume, 0, 1);
-                musicTracks[4].volume =
-                Mathf.Clamp(musicTracks[4].volume, 0, 1);
-
-                break;
-
-            case 1:
-                musicTracks[2].volume -= 0.3f * Time.deltaTime;
-                musicTracks[3].volume -= 0.3f * Time.deltaTime;
-                musicTracks[4].volume += 0.2f * Time.deltaTime;
-
-                musicTracks[2].volume =
-                Mathf.Clamp(musicTracks[2].volume, 0, 1);
-                musicTracks[3].volume =
-                Mathf.Clamp(musicTracks[3].volume, 0, 1);
-                musicTracks[4].volume =
-                Mathf.Clamp(musicTracks[4].volume, 0, 1);
-
-                break;
-        }
     }
-
 }
