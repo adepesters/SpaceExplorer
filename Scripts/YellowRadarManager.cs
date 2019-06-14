@@ -13,7 +13,7 @@ public class YellowRadarManager : MonoBehaviour
 
     Player player;
 
-    float detectionDistance = 400f;
+    float detectionDistance = 600f;
 
     GameSession gameSession;
 
