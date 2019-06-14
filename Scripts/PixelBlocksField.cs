@@ -31,7 +31,7 @@ public class PixelBlocksField : MonoBehaviour
 
     private void GeneratePixelBlock()
     {
-        Vector3 pos = Random.insideUnitCircle * (radius - 3);
+        Vector3 pos = Random.insideUnitCircle * (radius - 4);
         pos += transform.parent.transform.position;
         GameObject newPixelBlock = Instantiate(pixelBlock, pos, Quaternion.identity, transform);
         newPixelBlock.transform.localScale *= Random.Range(0.05f, 0.8f);
