@@ -217,6 +217,9 @@ public class PlayerTileVania : MonoBehaviour
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
+
+        doubleMirror.IsCrossing = true; // to lock double mirror position while player is crossing layers
+
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
@@ -232,6 +235,7 @@ public class PlayerTileVania : MonoBehaviour
             moveToFrontLayer = false;
             //spriterenderer.enabled = true;
 
+            doubleMirror.IsCrossing = false;
             currentLayer = 1;
         }
     }
@@ -246,6 +250,9 @@ public class PlayerTileVania : MonoBehaviour
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
+
+        doubleMirror.IsCrossing = true; // to lock double mirror position while player is crossing layers
+
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
@@ -261,6 +268,7 @@ public class PlayerTileVania : MonoBehaviour
             moveToBackLayer = false;
             //spriterenderer.enabled = true;
 
+            doubleMirror.IsCrossing = false;
             currentLayer = 2;
         }
     }
@@ -656,6 +664,8 @@ public class PlayerTileVania : MonoBehaviour
             inFrontOfBridge = true;
             entryFrontLayer = collision.gameObject.transform.Find("Entry Front Layer").gameObject.transform;
             entryBackLayer = collision.gameObject.transform.Find("Entry Back Layer").gameObject.transform;
+            doubleMirror.EntryFrontLayer = entryFrontLayer;
+            doubleMirror.EntryBackLayer = entryBackLayer;
         }
     }
 
