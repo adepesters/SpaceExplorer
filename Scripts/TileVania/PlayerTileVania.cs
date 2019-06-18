@@ -216,6 +216,8 @@ public class PlayerTileVania : MonoBehaviour
 
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
+        speedBridge = Mathf.Abs(layer2zdepth - layer1zdepth) * 30f / 5f;
+        speedBridge = Mathf.Clamp(speedBridge, 5f, 80f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
 
         doubleMirror.IsCrossing = true; // to lock double mirror position while player is crossing layers
@@ -249,6 +251,8 @@ public class PlayerTileVania : MonoBehaviour
 
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
+        speedBridge = Mathf.Abs(layer2zdepth - layer1zdepth) * 30f / 5f;
+        speedBridge = Mathf.Clamp(speedBridge, 5f, 80f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
 
         doubleMirror.IsCrossing = true; // to lock double mirror position while player is crossing layers
