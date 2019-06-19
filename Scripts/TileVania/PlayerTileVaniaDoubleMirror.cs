@@ -63,13 +63,13 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
     {
         if (!IsCrossing)
         {
-            if (player.CurrentLayer == 1)
+            if (Mathf.Abs(entryFrontLayer.position.z - player.transform.position.z) < Mathf.Abs(entryBackLayer.position.z - player.transform.position.z)) // player is on layer of front entry
             {
                 Pos = new Vector3(player.transform.position.x,
                 player.transform.position.y + (entryBackLayer.position.y - entryFrontLayer.position.y),
                     entryBackLayer.position.z + 0.03f);
             }
-            else if (player.CurrentLayer == 2)
+            else
             {
                 Pos = new Vector3(player.transform.position.x,
                 player.transform.position.y + (entryFrontLayer.position.y - entryBackLayer.position.y),
