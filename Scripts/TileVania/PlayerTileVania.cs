@@ -218,7 +218,7 @@ public class PlayerTileVania : MonoBehaviour
     {
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, entryFrontLayer.position.z + 0.003f);
-        speedBridge = Mathf.Abs(layer2zdepth - layer1zdepth) * 30f / 5f;
+        speedBridge = Mathf.Abs(entryBackLayer.position.z - entryFrontLayer.position.z) * 30f / 5f;
         speedBridge = Mathf.Clamp(speedBridge, 5f, 80f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
 
@@ -256,7 +256,7 @@ public class PlayerTileVania : MonoBehaviour
     {
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, entryBackLayer.position.z + 0.003f);
-        speedBridge = Mathf.Abs(layer2zdepth - layer1zdepth) * 30f / 5f;
+        speedBridge = Mathf.Abs(entryBackLayer.position.z - entryFrontLayer.position.z) * 30f / 5f;
         speedBridge = Mathf.Clamp(speedBridge, 5f, 80f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
 
