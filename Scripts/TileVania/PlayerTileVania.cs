@@ -407,8 +407,8 @@ public class PlayerTileVania : MonoBehaviour
 
     private void RestoreOpaquenessLayer(int layerID)
     {
-        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer" + layerID);
-        foreach (GameObject eachGameObject in gameObjectsLayer1)
+        GameObject[] gameObjectsLayer = GameObject.FindGameObjectsWithTag("Layer" + layerID);
+        foreach (GameObject eachGameObject in gameObjectsLayer)
         {
             if (eachGameObject.GetComponent<SpriteRenderer>() != null)
             {
@@ -421,8 +421,8 @@ public class PlayerTileVania : MonoBehaviour
 
     private void ReduceTransparencyLayer(int layerID)
     {
-        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer" + layerID);
-        foreach (GameObject eachGameObject in gameObjectsLayer1)
+        GameObject[] gameObjectsLayer = GameObject.FindGameObjectsWithTag("Layer" + layerID);
+        foreach (GameObject eachGameObject in gameObjectsLayer)
         {
             if (eachGameObject.GetComponent<SpriteRenderer>() != null)
             {
