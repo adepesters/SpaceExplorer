@@ -126,7 +126,14 @@ public class PlayerTileVania : MonoBehaviour
             layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         }
 
-        IgnorePhysicsLayer2();
+        //IgnorePhysicsLayer2();
+        gameObject.tag = "Layer1";
+        foreach (Transform child in transform)
+        {
+            child.tag = "Layer1";
+        }
+        //FindObjectOfType<PhysicsController>().HandlePhysicsLayers();
+        HandlePhysicsLayers();
 
         originalGravity = rigidBody.gravityScale;
         feetLowGravity = FindObjectOfType<FeetLowGravity>();
@@ -209,10 +216,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void MoveToFrontLayer()
     {
-        gameObject.tag = "Layer1";
-        IgnorePhysicsLayer2();
-        DontIgnorePhysicsLayer1();
-        RestoreOpaquenessLayer1();
+
 
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
@@ -224,6 +228,17 @@ public class PlayerTileVania : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
+            gameObject.tag = "Layer1";
+            foreach (Transform child in transform)
+            {
+                child.tag = "Layer1";
+            }
+            //IgnorePhysicsLayer2();
+            //DontIgnorePhysicsLayer1();
+            //FindObjectOfType<PhysicsController>().HandlePhysicsLayers();
+            HandlePhysicsLayers();
+            RestoreOpaquenessLayer1();
+
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
             {
                 rigidbodyObject.simulated = true;
@@ -244,10 +259,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void MoveToBackLayer()
     {
-        gameObject.tag = "Layer2";
-        IgnorePhysicsLayer1();
-        DontIgnorePhysicsLayer2();
-        ReduceTransparencyLayer1();
+
 
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
@@ -259,6 +271,17 @@ public class PlayerTileVania : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
+            gameObject.tag = "Layer2";
+            foreach (Transform child in transform)
+            {
+                child.tag = "Layer2";
+            }
+            //IgnorePhysicsLayer1();
+            //DontIgnorePhysicsLayer2();
+            //FindObjectOfType<PhysicsController>().HandlePhysicsLayers();
+            HandlePhysicsLayers();
+            ReduceTransparencyLayer1();
+
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
             {
                 rigidbodyObject.simulated = true;
@@ -418,62 +441,88 @@ public class PlayerTileVania : MonoBehaviour
         }
     }
 
-    private void IgnorePhysicsLayer2()
-    {
-        GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
-        foreach (GameObject eachGameObject in gameObjectsLayer2)
-        {
-            if (eachGameObject.GetComponent<Collider2D>() != null)
-            {
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), true);
-            }
-        }
-    }
+    //private void IgnorePhysicsLayer2()
+    //{
+    //    GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
+    //    foreach (GameObject eachGameObject in gameObjectsLayer2)
+    //    {
+    //        if (eachGameObject.GetComponent<Collider2D>() != null)
+    //        {
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), true);
+    //        }
+    //    }
+    //}
 
-    private void DontIgnorePhysicsLayer2()
-    {
-        GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
-        foreach (GameObject eachGameObject in gameObjectsLayer2)
-        {
-            if (eachGameObject.GetComponent<Collider2D>() != null)
-            {
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
-            }
-        }
-    }
+    //private void DontIgnorePhysicsLayer2()
+    //{
+    //    GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
+    //    foreach (GameObject eachGameObject in gameObjectsLayer2)
+    //    {
+    //        if (eachGameObject.GetComponent<Collider2D>() != null)
+    //        {
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
+    //        }
+    //    }
+    //}
 
-    private void IgnorePhysicsLayer1()
-    {
-        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
-        foreach (GameObject eachGameObject in gameObjectsLayer1)
-        {
-            if (eachGameObject.GetComponent<Collider2D>() != null)
-            {
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), true);
-            }
-        }
-    }
+    //private void IgnorePhysicsLayer1()
+    //{
+    //    GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
+    //    foreach (GameObject eachGameObject in gameObjectsLayer1)
+    //    {
+    //        if (eachGameObject.GetComponent<Collider2D>() != null)
+    //        {
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), true);
+    //        }
+    //    }
+    //}
 
-    private void DontIgnorePhysicsLayer1()
+    //private void DontIgnorePhysicsLayer1()
+    //{
+    //    GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
+    //    foreach (GameObject eachGameObject in gameObjectsLayer1)
+    //    {
+    //        if (eachGameObject.GetComponent<Collider2D>() != null)
+    //        {
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
+    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
+    //        }
+    //    }
+    //}
+
+    private void HandlePhysicsLayers()
     {
-        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
-        foreach (GameObject eachGameObject in gameObjectsLayer1)
+        colliderObjects = FindObjectsOfType<Collider2D>();
+        foreach (Collider2D colliderObject in colliderObjects)
         {
-            if (eachGameObject.GetComponent<Collider2D>() != null)
+            if (colliderObject.tag != this.tag)
             {
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
-                Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
+                if (!colliderObject.gameObject.name.Contains("Camera") && !colliderObject.gameObject.name.Contains("Bridge")
+            && !colliderObject.gameObject.name.Contains("Double Mirror"))
+                {
+                    Physics2D.IgnoreCollision(colliderObject, GetComponent<Collider2D>(), true);
+                    Physics2D.IgnoreCollision(colliderObject, feet.GetComponent<Collider2D>(), true);
+                    Physics2D.IgnoreCollision(colliderObject, extendedLegs.GetComponent<Collider2D>(), true);
+                    Physics2D.IgnoreCollision(colliderObject, grapin.GetComponent<Collider2D>(), true);
+                }
+            }
+            else
+            {
+                Physics2D.IgnoreCollision(colliderObject, GetComponent<Collider2D>(), false);
+                Physics2D.IgnoreCollision(colliderObject, feet.GetComponent<Collider2D>(), false);
+                Physics2D.IgnoreCollision(colliderObject, extendedLegs.GetComponent<Collider2D>(), false);
+                Physics2D.IgnoreCollision(colliderObject, grapin.GetComponent<Collider2D>(), false);
             }
         }
     }
