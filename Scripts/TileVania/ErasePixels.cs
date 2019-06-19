@@ -14,12 +14,13 @@ public class ErasePixels : MonoBehaviour
     GameObject portal;
 
     public bool UpdateColors { get => updateColors; set => updateColors = value; }
+    public GameObject Portal { get => portal; set => portal = value; }
 
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerTileVania>();
-        portal = GameObject.FindWithTag("Portal");
+        Portal = GameObject.FindWithTag("Portal");
     }
 
     public Texture2D CopyTexture2D(Texture2D copiedTexture)
@@ -34,11 +35,11 @@ public class ErasePixels : MonoBehaviour
             int x = 0;
             while (x < texture.width)
             {
-                if (player.transform.position.x - portal.transform.position.x > 0)
+                if (player.transform.position.x - Portal.transform.position.x > 0)
                 {
                     if (player.transform.localScale.x > 0)
                     {
-                        if (x > texture.width - (14 + 15 * (player.transform.position.x - portal.transform.position.x)))
+                        if (x > texture.width - (14 + 15 * (player.transform.position.x - Portal.transform.position.x)))
                         {
                             Color pixelColor = texture.GetPixel(x, y);
                             Color color = pixelColor;
@@ -52,7 +53,7 @@ public class ErasePixels : MonoBehaviour
                     }
                     else
                     {
-                        if (x < (13 + 15 * (player.transform.position.x - portal.transform.position.x)))
+                        if (x < (13 + 15 * (player.transform.position.x - Portal.transform.position.x)))
                         {
                             Color pixelColor = texture.GetPixel(x, y);
                             Color color = pixelColor;
@@ -65,11 +66,11 @@ public class ErasePixels : MonoBehaviour
                         }
                     }
                 }
-                else if (player.transform.position.x - portal.transform.position.x < 0)
+                else if (player.transform.position.x - Portal.transform.position.x < 0)
                 {
                     if (player.transform.localScale.x < 0)
                     {
-                        if (x > texture.width - (14 + 15 * (portal.transform.position.x - player.transform.position.x)))
+                        if (x > texture.width - (14 + 15 * (Portal.transform.position.x - player.transform.position.x)))
                         {
                             Color pixelColor = texture.GetPixel(x, y);
                             Color color = pixelColor;
@@ -83,7 +84,7 @@ public class ErasePixels : MonoBehaviour
                     }
                     else
                     {
-                        if (x < (13 + 15 * (portal.transform.position.x - player.transform.position.x)))
+                        if (x < (13 + 15 * (Portal.transform.position.x - player.transform.position.x)))
                         {
                             Color pixelColor = texture.GetPixel(x, y);
                             Color color = pixelColor;

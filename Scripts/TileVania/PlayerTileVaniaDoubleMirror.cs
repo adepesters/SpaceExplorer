@@ -45,6 +45,7 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
         if (collision.gameObject.name.Contains("Bridge"))
         {
             Spriterenderer.enabled = true;
+            GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
         }
         if (collision.gameObject.name.Contains("StartUpdatingPixels"))
         {
