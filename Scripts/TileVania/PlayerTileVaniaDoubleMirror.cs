@@ -17,6 +17,8 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
     bool isJumping;
     Rigidbody2D myrigidbody;
 
+    bool playerInPortal;
+
     public SpriteRenderer Spriterenderer { get => spriterenderer; set => spriterenderer = value; }
     public bool ShouldMerge { get => shouldMerge; set => shouldMerge = value; }
     public Vector3 Pos { get => pos; set => pos = value; }
@@ -25,6 +27,7 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
     public Transform EntryFrontLayer { get => entryFrontLayer; set => entryFrontLayer = value; }
     public Transform EntryBackLayer { get => entryBackLayer; set => entryBackLayer = value; }
     public bool IsCrossing { get => isCrossing; set => isCrossing = value; }
+    public bool PlayerInPortal { get => playerInPortal; set => playerInPortal = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -42,16 +45,30 @@ public class PlayerTileVaniaDoubleMirror : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name.Contains("Bridge"))
+        if (collision.gameObject.name.Contains("Bridge") && playerInPortal)
         {
             Spriterenderer.enabled = true;
             GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
         }
-        if (collision.gameObject.name.Contains("StartUpdatingPixels"))
+
+        if (collision.gameObject.name.Contains("Bridge") && !playerInPortal)
+        {
+            Spriterenderer.enabled = false;
+            GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
+        }
+
+        if (collision.gameObject.name.Contains("StartUpdatingPixels") && playerInPortal)
         {
             GetComponentInChildren<ErasePixels>().UpdateColors = true;
             Spriterenderer.enabled = true;
         }
+
+        if (collision.gameObject.name.Contains("StartUpdatingPixels") && !playerInPortal)
+        {
+            GetComponentInChildren<ErasePixels>().UpdateColors = true;
+            Spriterenderer.enabled = false;
+        }
+
         if (collision.gameObject.name.Contains("StopUpdatingPixels"))
         {
             Spriterenderer.enabled = false;

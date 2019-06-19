@@ -50,6 +50,7 @@ public class PlayerTileVania : MonoBehaviour
     public int CurrentLayer { get => currentLayer; set => currentLayer = value; }
     public bool XisActionTrigger1 { get => XisActionTrigger; set => XisActionTrigger = value; }
     public bool IsJumping { get => isJumping; set => isJumping = value; }
+    public bool InFrontOfBridge { get => inFrontOfBridge; set => inFrontOfBridge = value; }
 
     float currentPos;
     float previousPos;
@@ -357,7 +358,7 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (Input.GetAxis("Vertical") > 0.99)
         {
-            if (inFrontOfBridge &&
+            if (InFrontOfBridge &&
         Mathf.Abs(entryFrontLayer.position.z - transform.position.z) < Mathf.Abs(entryBackLayer.position.z - transform.position.z))
             {
                 currentDepth = transform.position.z;
@@ -371,7 +372,7 @@ public class PlayerTileVania : MonoBehaviour
         if (Input.GetAxis("Vertical") < -0.99)
 
         {
-            if (inFrontOfBridge &&
+            if (InFrontOfBridge &&
             Mathf.Abs(entryFrontLayer.position.z - transform.position.z) > Mathf.Abs(entryBackLayer.position.z - transform.position.z))
             {
                 currentDepth = transform.position.z;
@@ -649,7 +650,7 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("Bridge"))
         {
-            inFrontOfBridge = true;
+            InFrontOfBridge = true;
             entryFrontLayer = collision.gameObject.transform.Find("Entry Front Layer").gameObject.transform;
             entryBackLayer = collision.gameObject.transform.Find("Entry Back Layer").gameObject.transform;
             doubleMirror.EntryFrontLayer = entryFrontLayer;
@@ -661,12 +662,17 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("Bridge"))
         {
-            inFrontOfBridge = false;
+            InFrontOfBridge = false;
         }
 
         if (collision.gameObject.name.Contains("Chest opener"))
         {
             XisActionTrigger1 = false;
+        }
+
+        if (collision.gameObject.name.Contains("portail Front Layer") || collision.gameObject.name.Contains("portail Back Layer"))
+        {
+            doubleMirror.PlayerInPortal = false;
         }
     }
 
@@ -706,6 +712,12 @@ public class PlayerTileVania : MonoBehaviour
                 XisActionTrigger1 = true;
             }
         }
+
+        if (collision.gameObject.name.Contains("portail Front Layer") || collision.gameObject.name.Contains("portail Back Layer"))
+        {
+            doubleMirror.PlayerInPortal = true;
+        }
+
     }
 
     void ProcessHit(float damage)

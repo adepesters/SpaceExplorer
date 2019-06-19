@@ -20,7 +20,7 @@ public class ErasePixels : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<PlayerTileVania>();
-        Portal = GameObject.FindWithTag("Portal");
+        Portal = new GameObject();
     }
 
     public Texture2D CopyTexture2D(Texture2D copiedTexture)
