@@ -58,6 +58,8 @@ public class EnemyTileVania : MonoBehaviour
 
         //assigning a slightly different z position to each object, to avoid clipping when camera is rotated
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + UnityEngine.Random.Range(0.001f, 0.009f));
+
+        HandlePhysicsLayers();
     }
 
     // Update is called once per frame
@@ -264,5 +266,25 @@ public class EnemyTileVania : MonoBehaviour
             FindObjectOfType<Sword>().SpeedAnimation = 1f;
         }
         player.SetPlayerOnAir(false, originalPlayerPos);
+    }
+
+    private void HandlePhysicsLayers()
+    {
+        Collider2D[] colliderObjects = FindObjectsOfType<Collider2D>();
+        foreach (Collider2D colliderObject in colliderObjects)
+        {
+            if (colliderObject.tag != this.tag)
+            {
+                if (!colliderObject.gameObject.name.Contains("Camera") && !colliderObject.gameObject.name.Contains("Bridge")
+            && !colliderObject.gameObject.name.Contains("Double Mirror"))
+                {
+                    Physics2D.IgnoreCollision(colliderObject, GetComponent<Collider2D>(), true);
+                }
+            }
+            else
+            {
+                Physics2D.IgnoreCollision(colliderObject, GetComponent<Collider2D>(), false);
+            }
+        }
     }
 }
