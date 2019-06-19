@@ -217,7 +217,7 @@ public class PlayerTileVania : MonoBehaviour
     private void MoveToFrontLayer()
     {
         //spriterenderer.enabled = false;
-        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, entryFrontLayer.position.z);
+        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, entryFrontLayer.position.z + 0.003f);
         speedBridge = Mathf.Abs(layer2zdepth - layer1zdepth) * 30f / 5f;
         speedBridge = Mathf.Clamp(speedBridge, 5f, 80f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
@@ -233,7 +233,7 @@ public class PlayerTileVania : MonoBehaviour
                 child.tag = "Layer" + currentLayer;
             }
             HandlePhysicsLayers();
-            RestoreOpaquenessLayer1();
+            RestoreOpaquenessLayer(currentLayer);
 
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
             {
@@ -255,7 +255,7 @@ public class PlayerTileVania : MonoBehaviour
     private void MoveToBackLayer()
     {
         //spriterenderer.enabled = false;
-        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, entryBackLayer.position.z);
+        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, entryBackLayer.position.z + 0.003f);
         speedBridge = Mathf.Abs(layer2zdepth - layer1zdepth) * 30f / 5f;
         speedBridge = Mathf.Clamp(speedBridge, 5f, 80f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
@@ -271,7 +271,7 @@ public class PlayerTileVania : MonoBehaviour
                 child.tag = "Layer" + currentLayer;
             }
             HandlePhysicsLayers();
-            ReduceTransparencyLayer1();
+            ReduceTransparencyLayer(currentLayer - 1);
 
             foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
             {
@@ -405,9 +405,9 @@ public class PlayerTileVania : MonoBehaviour
         }
     }
 
-    private void RestoreOpaquenessLayer1()
+    private void RestoreOpaquenessLayer(int layerID)
     {
-        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
+        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer" + layerID);
         foreach (GameObject eachGameObject in gameObjectsLayer1)
         {
             if (eachGameObject.GetComponent<SpriteRenderer>() != null)
@@ -419,9 +419,9 @@ public class PlayerTileVania : MonoBehaviour
         }
     }
 
-    private void ReduceTransparencyLayer1()
+    private void ReduceTransparencyLayer(int layerID)
     {
-        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
+        GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer" + layerID);
         foreach (GameObject eachGameObject in gameObjectsLayer1)
         {
             if (eachGameObject.GetComponent<SpriteRenderer>() != null)
