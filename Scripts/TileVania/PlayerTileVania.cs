@@ -102,6 +102,8 @@ public class PlayerTileVania : MonoBehaviour
 
     bool XisActionTrigger = false;
 
+    float currentDepth = 0;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -126,13 +128,11 @@ public class PlayerTileVania : MonoBehaviour
             layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
         }
 
-        //IgnorePhysicsLayer2();
-        gameObject.tag = "Layer1";
+        gameObject.tag = "Layer" + currentLayer;
         foreach (Transform child in transform)
         {
-            child.tag = "Layer1";
+            child.tag = "Layer" + currentLayer;
         }
-        //FindObjectOfType<PhysicsController>().HandlePhysicsLayers();
         HandlePhysicsLayers();
 
         originalGravity = rigidBody.gravityScale;
@@ -216,10 +216,8 @@ public class PlayerTileVania : MonoBehaviour
 
     private void MoveToFrontLayer()
     {
-
-
         //spriterenderer.enabled = false;
-        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, layer1zdepth + 0.003f);
+        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryFrontLayer.position.y, entryFrontLayer.position.z);
         speedBridge = Mathf.Abs(layer2zdepth - layer1zdepth) * 30f / 5f;
         speedBridge = Mathf.Clamp(speedBridge, 5f, 80f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
@@ -228,14 +226,12 @@ public class PlayerTileVania : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
-            gameObject.tag = "Layer1";
+            currentLayer -= 1;
+            gameObject.tag = "Layer" + currentLayer;
             foreach (Transform child in transform)
             {
-                child.tag = "Layer1";
+                child.tag = "Layer" + currentLayer;
             }
-            //IgnorePhysicsLayer2();
-            //DontIgnorePhysicsLayer1();
-            //FindObjectOfType<PhysicsController>().HandlePhysicsLayers();
             HandlePhysicsLayers();
             RestoreOpaquenessLayer1();
 
@@ -253,16 +249,13 @@ public class PlayerTileVania : MonoBehaviour
             //spriterenderer.enabled = true;
 
             doubleMirror.IsCrossing = false;
-            currentLayer = 1;
         }
     }
 
     private void MoveToBackLayer()
     {
-
-
         //spriterenderer.enabled = false;
-        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, layer2zdepth + 0.003f);
+        Vector3 targetPos = new Vector3(entryFrontLayer.position.x, entryBackLayer.position.y, entryBackLayer.position.z);
         speedBridge = Mathf.Abs(layer2zdepth - layer1zdepth) * 30f / 5f;
         speedBridge = Mathf.Clamp(speedBridge, 5f, 80f);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
@@ -271,14 +264,12 @@ public class PlayerTileVania : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
-            gameObject.tag = "Layer2";
+            currentLayer += 1;
+            gameObject.tag = "Layer" + currentLayer;
             foreach (Transform child in transform)
             {
-                child.tag = "Layer2";
+                child.tag = "Layer" + currentLayer;
             }
-            //IgnorePhysicsLayer1();
-            //DontIgnorePhysicsLayer2();
-            //FindObjectOfType<PhysicsController>().HandlePhysicsLayers();
             HandlePhysicsLayers();
             ReduceTransparencyLayer1();
 
@@ -296,7 +287,6 @@ public class PlayerTileVania : MonoBehaviour
             //spriterenderer.enabled = true;
 
             doubleMirror.IsCrossing = false;
-            currentLayer = 2;
         }
     }
 
@@ -365,10 +355,12 @@ public class PlayerTileVania : MonoBehaviour
 
     private void MoveAcrossLayers()
     {
-        if (Input.GetAxis("Vertical") > 0.99 && this.tag != "Layer2")
+        if (Input.GetAxis("Vertical") > 0.99)
         {
-            if (inFrontOfBridge)
+            if (inFrontOfBridge &&
+        Mathf.Abs(entryFrontLayer.position.z - transform.position.z) < Mathf.Abs(entryBackLayer.position.z - transform.position.z))
             {
+                currentDepth = transform.position.z;
                 DisablePhysics();
 
                 moveToBackLayer = true;
@@ -376,10 +368,13 @@ public class PlayerTileVania : MonoBehaviour
             }
         }
 
-        if (Input.GetAxis("Vertical") < -0.99 && this.tag != "Layer1")
+        if (Input.GetAxis("Vertical") < -0.99)
+
         {
-            if (inFrontOfBridge)
+            if (inFrontOfBridge &&
+            Mathf.Abs(entryFrontLayer.position.z - transform.position.z) > Mathf.Abs(entryBackLayer.position.z - transform.position.z))
             {
+                currentDepth = transform.position.z;
                 DisablePhysics();
 
                 moveToFrontLayer = true;
@@ -440,66 +435,6 @@ public class PlayerTileVania : MonoBehaviour
             }
         }
     }
-
-    //private void IgnorePhysicsLayer2()
-    //{
-    //    GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
-    //    foreach (GameObject eachGameObject in gameObjectsLayer2)
-    //    {
-    //        if (eachGameObject.GetComponent<Collider2D>() != null)
-    //        {
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), true);
-    //        }
-    //    }
-    //}
-
-    //private void DontIgnorePhysicsLayer2()
-    //{
-    //    GameObject[] gameObjectsLayer2 = GameObject.FindGameObjectsWithTag("Layer2");
-    //    foreach (GameObject eachGameObject in gameObjectsLayer2)
-    //    {
-    //        if (eachGameObject.GetComponent<Collider2D>() != null)
-    //        {
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
-    //        }
-    //    }
-    //}
-
-    //private void IgnorePhysicsLayer1()
-    //{
-    //    GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
-    //    foreach (GameObject eachGameObject in gameObjectsLayer1)
-    //    {
-    //        if (eachGameObject.GetComponent<Collider2D>() != null)
-    //        {
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), true);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), true);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), true);
-    //        }
-    //    }
-    //}
-
-    //private void DontIgnorePhysicsLayer1()
-    //{
-    //    GameObject[] gameObjectsLayer1 = GameObject.FindGameObjectsWithTag("Layer1");
-    //    foreach (GameObject eachGameObject in gameObjectsLayer1)
-    //    {
-    //        if (eachGameObject.GetComponent<Collider2D>() != null)
-    //        {
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), feet.GetComponent<Collider2D>(), false);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), extendedLegs.GetComponent<Collider2D>(), false);
-    //            Physics2D.IgnoreCollision(eachGameObject.GetComponent<Collider2D>(), grapin.GetComponent<Collider2D>(), false);
-    //        }
-    //    }
-    //}
 
     private void HandlePhysicsLayers()
     {
