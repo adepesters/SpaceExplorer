@@ -24,7 +24,6 @@ public class Sword : MonoBehaviour
         {
             GetComponent<CapsuleCollider2D>().enabled = false;
         }
-        //Debug.Log(speedAnimation);
         animator.speed = SpeedAnimation;
         var swordPos = GameObject.Find("SwordHandler").gameObject.transform.position;
         transform.position = swordPos;
