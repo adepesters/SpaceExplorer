@@ -39,7 +39,7 @@ public class ActionTrigger : MonoBehaviour
     {
         if (canAppear)
         {
-            if (collision.gameObject.layer == 8 && !collision.gameObject.name.Contains("Double Mirror")) // player
+            if (collision.gameObject.name.Contains("Player") || collision.gameObject.name.Contains("PlayerTileVania"))
             {
                 canActivate = true;
                 EnableActionBox();
@@ -49,7 +49,7 @@ public class ActionTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 8 && !collision.gameObject.name.Contains("Double Mirror")) // player
+        if (collision.gameObject.name.Contains("Player") || collision.gameObject.name.Contains("PlayerTileVania"))
         {
             canActivate = false;
             DisableActionBox();
