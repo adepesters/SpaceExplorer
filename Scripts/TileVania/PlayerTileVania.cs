@@ -105,6 +105,8 @@ public class PlayerTileVania : MonoBehaviour
 
     float currentDepth = 0;
 
+    bool playerInPortal = false;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -672,7 +674,7 @@ public class PlayerTileVania : MonoBehaviour
 
         if (collision.gameObject.name.Contains("portail Front Layer") || collision.gameObject.name.Contains("portail Back Layer"))
         {
-            doubleMirror.PlayerInPortal = false;
+            playerInPortal = false;
         }
     }
 
@@ -715,7 +717,37 @@ public class PlayerTileVania : MonoBehaviour
 
         if (collision.gameObject.name.Contains("portail Front Layer") || collision.gameObject.name.Contains("portail Back Layer"))
         {
-            doubleMirror.PlayerInPortal = true;
+            playerInPortal = true;
+        }
+
+        if (collision.gameObject.name.Contains("Bridge") && playerInPortal)
+        {
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = true;
+            doubleMirror.GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
+        }
+
+        if (collision.gameObject.name.Contains("Bridge") && !playerInPortal)
+        {
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            doubleMirror.GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
+        }
+
+        if (collision.gameObject.name.Contains("StartUpdatingPixels") && playerInPortal)
+        {
+            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = true;
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        }
+
+        if (collision.gameObject.name.Contains("StartUpdatingPixels") && !playerInPortal)
+        {
+            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = true;
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        }
+
+        if (collision.gameObject.name.Contains("StopUpdatingPixels"))
+        {
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = false;
         }
 
     }
