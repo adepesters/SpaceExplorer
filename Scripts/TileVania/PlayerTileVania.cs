@@ -658,6 +658,37 @@ public class PlayerTileVania : MonoBehaviour
             doubleMirror.EntryFrontLayer = entryFrontLayer;
             doubleMirror.EntryBackLayer = entryBackLayer;
         }
+
+        if (collision.gameObject.name.Contains("Bridge") && playerInPortal)
+        {
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = true;
+            doubleMirror.GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
+        }
+
+        if (collision.gameObject.name.Contains("Bridge") && !playerInPortal)
+        {
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            doubleMirror.GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
+        }
+
+        if (collision.gameObject.name.Contains("StartUpdatingPixels") && playerInPortal)
+        {
+            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = true;
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        }
+
+        if (collision.gameObject.name.Contains("StartUpdatingPixels") && !playerInPortal)
+        {
+            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = true;
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        }
+
+        if (collision.gameObject.name.Contains("StopUpdatingPixels"))
+        {
+            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = false;
+        }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -719,37 +750,6 @@ public class PlayerTileVania : MonoBehaviour
         {
             playerInPortal = true;
         }
-
-        if (collision.gameObject.name.Contains("Bridge") && playerInPortal)
-        {
-            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = true;
-            doubleMirror.GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
-        }
-
-        if (collision.gameObject.name.Contains("Bridge") && !playerInPortal)
-        {
-            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
-            doubleMirror.GetComponentInChildren<ErasePixels>().Portal = collision.gameObject.transform.parent.transform.GetChild(0).gameObject;
-        }
-
-        if (collision.gameObject.name.Contains("StartUpdatingPixels") && playerInPortal)
-        {
-            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = true;
-            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = true;
-        }
-
-        if (collision.gameObject.name.Contains("StartUpdatingPixels") && !playerInPortal)
-        {
-            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = true;
-            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
-        }
-
-        if (collision.gameObject.name.Contains("StopUpdatingPixels"))
-        {
-            doubleMirror.GetComponentInChildren<SpriteRenderer>().enabled = false;
-            doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = false;
-        }
-
     }
 
     void ProcessHit(float damage)
