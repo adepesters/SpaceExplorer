@@ -16,7 +16,8 @@ public class SpaceBlock : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        color = new Color(0, 0f, Random.Range(0.3f, 1f), Random.Range(0.4f, 0.8f));
+        //color = new Color(0, 0f, Random.Range(0.3f, 1f), Random.Range(0.4f, 0.8f));
+        color = new Color(0, 0f, Random.Range(0.3f, 1f), 1);
         initPos = transform.position;
         myRenderer = GetComponent<SpriteRenderer>();
         myRenderer.color = color;
@@ -51,10 +52,10 @@ public class SpaceBlock : MonoBehaviour
 
     private void ChangeColor()
     {
-        color.a += Random.Range(-0.03f, 0.03f) * Time.deltaTime * speedOfColorChange;
+        //color.a += Random.Range(-0.03f, 0.03f) * Time.deltaTime * speedOfColorChange;
         color.b += Random.Range(-0.03f, 0.03f) * Time.deltaTime * speedOfColorChange;
-        color.a = Mathf.Clamp(color.a, 0.5f, 0.8f);
-        color.b = Mathf.Clamp(color.a, 0.5f, 1f);
+        //color.a = Mathf.Clamp(color.a, 0.5f, 0.8f);
+        color.b = Mathf.Clamp(color.b, 0.5f, 1f);
         myRenderer.color = color;
     }
 
