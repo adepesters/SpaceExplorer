@@ -30,7 +30,7 @@ public class Tree : MonoBehaviour
             GetComponent<PolygonCollider2D>().isTrigger = false;
         }
 
-        if (Input.GetAxis("Vertical") < -0.8f) // get off the tree
+        if (Input.GetAxis("Vertical") < -0.8f && !GetComponent<PolygonCollider2D>().isTrigger) // get off the tree
         {
             GetComponent<PolygonCollider2D>().isTrigger = true;
             GetComponent<PolygonCollider2D>().enabled = false;
