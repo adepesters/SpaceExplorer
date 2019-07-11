@@ -30,7 +30,7 @@ public class ProximityDetector : MonoBehaviour
         //Debug.Log(pressed);
         //Debug.Log(transparentRedCircleAppear);
 
-        Vector2 pos = new Vector2(player.transform.position.x, player.transform.position.y);
+        Vector3 pos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
         transform.position = pos;
     }
 
