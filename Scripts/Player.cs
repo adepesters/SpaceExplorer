@@ -86,6 +86,20 @@ public class Player : MonoBehaviour
 
     SpawningEnemyArea zoneEntered;
 
+    AudioSource audiosource;
+
+    // to move across layers
+    bool moveToBackLayer;
+    bool moveToFrontLayer;
+    Vector3 currentPosition;
+    float speedBridge = 80f;
+    int currentLayer = 1;
+    [SerializeField] AudioClip layerChange;
+    float volumeSoundLayerChange = 0.2f;
+    float layer1Depth = 0f;
+    float layer2Depth = 25f;
+    float layer3Depth = 50f;
+
     public float LaserSpeed { get => laserSpeed; set => laserSpeed = value; }
     public float OriginalLaserSpeed { get => originalLaserSpeed; set => originalLaserSpeed = value; }
     public float LaserFiringPeriod { get => laserFiringPeriod; set => laserFiringPeriod = value; }
@@ -121,6 +135,7 @@ public class Player : MonoBehaviour
         attackStyle = GameObject.FindWithTag("AttackStyle").GetComponent<AttackStyle>();
         hitCanvas = GameObject.FindWithTag("HitCanvas").GetComponent<HitCanvas>();
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+        audiosource = GetComponent<AudioSource>();
 
         playerLasersParent = GameObject.Find(PLAYER_LASERS);
         if (!playerLasersParent)
@@ -145,14 +160,134 @@ public class Player : MonoBehaviour
         Fire();
         //AvoidAndFire();
 
+        MoveAcrossLayers();
+        if (moveToBackLayer)
+        {
+            MoveToBackLayer();
+        }
+
+        if (moveToFrontLayer)
+        {
+            MoveToFrontLayer();
+        }
+
         if (damagePlayerVisualInstance != null)
         {
             damagePlayerVisualInstance.gameObject.transform.position = transform.position;
         }
 
+        // update game session
         gameSession.CurrentFuelSpacePlayer -= Vector2.Distance(transform.position, oldPos);
         oldPos = transform.position;
         gameSession.PositionSpacePlayer = transform.position;
+    }
+
+    private void MoveToFrontLayer()
+    {
+        //spriterenderer.enabled = false;
+        Vector3 targetPos = new Vector3(0, 0, 0);
+        if (currentLayer == 3)
+        {
+            targetPos = new Vector3(transform.position.x, transform.position.y, layer2Depth + 0.003f);
+        }
+        if (currentLayer == 2)
+        {
+            targetPos = new Vector3(transform.position.x, transform.position.y, layer1Depth + 0.003f);
+        }
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
+        {
+            currentLayer -= 1;
+            gameObject.tag = "Layer" + currentLayer;
+            foreach (Transform child in transform)
+            {
+                child.tag = "Layer" + currentLayer;
+            }
+            //HandlePhysicsLayers();
+            //RestoreOpaquenessLayer(currentLayer);
+
+            //foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+            //{
+            //    rigidbodyObject.simulated = true;
+            //}
+
+            //foreach (Collider2D colliderObject in colliderObjects)
+            //{
+            //    colliderObject.enabled = true;
+            //}
+
+            moveToFrontLayer = false;
+            //spriterenderer.enabled = true;
+
+        }
+    }
+
+    private void MoveToBackLayer()
+    {
+        //spriterenderer.enabled = false;
+        Vector3 targetPos = new Vector3(0, 0, 0);
+        if (currentLayer == 1)
+        {
+            targetPos = new Vector3(transform.position.x, transform.position.y, layer2Depth + 0.003f);
+        }
+        if (currentLayer == 2)
+        {
+            targetPos = new Vector3(transform.position.x, transform.position.y, layer3Depth + 0.003f);
+        }
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speedBridge * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
+        {
+            currentLayer += 1;
+            gameObject.tag = "Layer" + currentLayer;
+            foreach (Transform child in transform)
+            {
+                child.tag = "Layer" + currentLayer;
+            }
+            //HandlePhysicsLayers();
+            //ReduceTransparencyLayer(currentLayer - 1);
+
+            //foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+            //{
+            //    rigidbodyObject.simulated = true;
+            //}
+
+            //foreach (Collider2D colliderObject in colliderObjects)
+            //{
+            //    colliderObject.enabled = true;
+            //}
+
+            moveToBackLayer = false;
+            //spriterenderer.enabled = true;
+
+        }
+    }
+
+    private void MoveAcrossLayers()
+    {
+        if (Input.GetAxis("Vertical") > 0.9 && ps4ControllerCheck.IsXPressed())
+        {
+            if (transform.position.z < 53f)
+            {
+                //DisablePhysics();
+
+                moveToBackLayer = true;
+                //audiosource.PlayOneShot(layerChange, volumeSoundLayerChange);
+            }
+        }
+
+        if (Input.GetAxis("Vertical") < -0.9 && ps4ControllerCheck.IsXPressed())
+
+        {
+            if (transform.position.z > 5f)
+            {
+                //DisablePhysics();
+
+                moveToFrontLayer = true;
+                //audiosource.PlayOneShot(layerChange, volumeSoundLayerChange);
+            }
+        }
     }
 
     private void AvoidAndFire()
