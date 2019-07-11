@@ -99,6 +99,8 @@ public class Player : MonoBehaviour
     float layer1Depth = 0f;
     float layer2Depth = 25f;
     float layer3Depth = 50f;
+    Rigidbody2D[] rigidbodyObjects;
+    Collider2D[] colliderObjects;
 
     public float LaserSpeed { get => laserSpeed; set => laserSpeed = value; }
     public float OriginalLaserSpeed { get => originalLaserSpeed; set => originalLaserSpeed = value; }
@@ -113,6 +115,7 @@ public class Player : MonoBehaviour
     public bool IsInvincible { get => isInvincible; set => isInvincible = value; }
     public bool IsImmobile1 { get => isImmobile; set => isImmobile = value; }
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
+    public int CurrentLayer { get => currentLayer; set => currentLayer = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -142,6 +145,7 @@ public class Player : MonoBehaviour
         {
             playerLasersParent = new GameObject(PLAYER_LASERS);
         }
+        HandlePhysicsLayers();
 
         originalMoveSpeed = MoveSpeed;
 
@@ -186,11 +190,11 @@ public class Player : MonoBehaviour
     {
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(0, 0, 0);
-        if (currentLayer == 3)
+        if (CurrentLayer == 3)
         {
             targetPos = new Vector3(transform.position.x, transform.position.y, layer2Depth + 0.003f);
         }
-        if (currentLayer == 2)
+        if (CurrentLayer == 2)
         {
             targetPos = new Vector3(transform.position.x, transform.position.y, layer1Depth + 0.003f);
         }
@@ -198,13 +202,13 @@ public class Player : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
-            currentLayer -= 1;
-            gameObject.tag = "Layer" + currentLayer;
-            foreach (Transform child in transform)
-            {
-                child.tag = "Layer" + currentLayer;
-            }
-            //HandlePhysicsLayers();
+            CurrentLayer -= 1;
+            //gameObject.tag = "Layer" + CurrentLayer;
+            //foreach (Transform child in transform)
+            //{
+            //    child.tag = "Layer" + CurrentLayer;
+            //}
+            HandlePhysicsLayers();
             //RestoreOpaquenessLayer(currentLayer);
 
             //foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
@@ -227,11 +231,11 @@ public class Player : MonoBehaviour
     {
         //spriterenderer.enabled = false;
         Vector3 targetPos = new Vector3(0, 0, 0);
-        if (currentLayer == 1)
+        if (CurrentLayer == 1)
         {
             targetPos = new Vector3(transform.position.x, transform.position.y, layer2Depth + 0.003f);
         }
-        if (currentLayer == 2)
+        if (CurrentLayer == 2)
         {
             targetPos = new Vector3(transform.position.x, transform.position.y, layer3Depth + 0.003f);
         }
@@ -239,13 +243,13 @@ public class Player : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
-            currentLayer += 1;
-            gameObject.tag = "Layer" + currentLayer;
-            foreach (Transform child in transform)
-            {
-                child.tag = "Layer" + currentLayer;
-            }
-            //HandlePhysicsLayers();
+            CurrentLayer += 1;
+            //gameObject.tag = "Layer" + CurrentLayer;
+            //foreach (Transform child in transform)
+            //{
+            //    child.tag = "Layer" + CurrentLayer;
+            //}
+            HandlePhysicsLayers();
             //ReduceTransparencyLayer(currentLayer - 1);
 
             //foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
@@ -286,6 +290,22 @@ public class Player : MonoBehaviour
 
                 moveToFrontLayer = true;
                 //audiosource.PlayOneShot(layerChange, volumeSoundLayerChange);
+            }
+        }
+    }
+
+    private void HandlePhysicsLayers()
+    {
+        colliderObjects = FindObjectsOfType<Collider2D>();
+        foreach (Collider2D colliderObject in colliderObjects)
+        {
+            if (colliderObject.GetComponent<ManualLayer>().Layer != CurrentLayer)
+            {
+                Physics2D.IgnoreCollision(colliderObject, GetComponent<Collider2D>(), true);
+            }
+            else
+            {
+                Physics2D.IgnoreCollision(colliderObject, GetComponent<Collider2D>(), false);
             }
         }
     }
