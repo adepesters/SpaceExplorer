@@ -63,9 +63,6 @@ public class PlayerTileVania : MonoBehaviour
     bool moveToBackLayer;
     bool moveToFrontLayer;
 
-    float layer1zdepth;
-    float layer2zdepth;
-
     [SerializeField] AudioClip[] footstepsDryLeavesSound;
     float volumeSoundFootSteps = 0.3f;
     float counterFootSteps;
@@ -121,15 +118,6 @@ public class PlayerTileVania : MonoBehaviour
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         dataManager = GameObject.FindWithTag("DataManager").GetComponent<DataManager>();
         doubleMirror = FindObjectOfType<PlayerTileVaniaDoubleMirror>();
-
-        if (GameObject.Find("Layer 1") != null)
-        {
-            layer1zdepth = GameObject.Find("Layer 1").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
-        }
-        if (GameObject.Find("Layer 2") != null)
-        {
-            layer2zdepth = GameObject.Find("Layer 2").gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.position.z;
-        }
 
         gameObject.tag = "Layer" + currentLayer;
         foreach (Transform child in transform)
