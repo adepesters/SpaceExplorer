@@ -100,8 +100,6 @@ public class PlayerTileVania : MonoBehaviour
 
     bool XisActionTrigger = false;
 
-    float currentDepth = 0;
-
     bool playerInPortal = false;
 
     void Start()
@@ -351,7 +349,6 @@ public class PlayerTileVania : MonoBehaviour
             if (InFrontOfBridge &&
         Mathf.Abs(entryFrontLayer.position.z - transform.position.z) < Mathf.Abs(entryBackLayer.position.z - transform.position.z))
             {
-                currentDepth = transform.position.z;
                 DisablePhysics();
 
                 moveToBackLayer = true;
@@ -365,7 +362,6 @@ public class PlayerTileVania : MonoBehaviour
             if (InFrontOfBridge &&
             Mathf.Abs(entryFrontLayer.position.z - transform.position.z) > Mathf.Abs(entryBackLayer.position.z - transform.position.z))
             {
-                currentDepth = transform.position.z;
                 DisablePhysics();
 
                 moveToFrontLayer = true;
