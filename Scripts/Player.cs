@@ -203,23 +203,23 @@ public class Player : MonoBehaviour
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
             CurrentLayer -= 1;
-            //gameObject.tag = "Layer" + CurrentLayer;
-            //foreach (Transform child in transform)
-            //{
-            //    child.tag = "Layer" + CurrentLayer;
-            //}
             HandlePhysicsLayers();
-            //RestoreOpaquenessLayer(currentLayer);
 
-            //foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
-            //{
-            //    rigidbodyObject.simulated = true;
-            //}
+            foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+            {
+                if (!rigidbodyObject.gameObject.name.Contains("Shield"))
+                {
+                    rigidbodyObject.simulated = true;
+                }
+            }
 
-            //foreach (Collider2D colliderObject in colliderObjects)
-            //{
-            //    colliderObject.enabled = true;
-            //}
+            foreach (Collider2D colliderObject in colliderObjects)
+            {
+                if (!colliderObject.gameObject.name.Contains("Shield"))
+                {
+                    colliderObject.enabled = true;
+                }
+            }
 
             moveToFrontLayer = false;
             //spriterenderer.enabled = true;
@@ -244,23 +244,23 @@ public class Player : MonoBehaviour
         if (Vector3.Distance(transform.position, targetPos) < Mathf.Epsilon)
         {
             CurrentLayer += 1;
-            //gameObject.tag = "Layer" + CurrentLayer;
-            //foreach (Transform child in transform)
-            //{
-            //    child.tag = "Layer" + CurrentLayer;
-            //}
             HandlePhysicsLayers();
-            //ReduceTransparencyLayer(currentLayer - 1);
 
-            //foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
-            //{
-            //    rigidbodyObject.simulated = true;
-            //}
+            foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+            {
+                if (!rigidbodyObject.gameObject.name.Contains("Shield"))
+                {
+                    rigidbodyObject.simulated = true;
+                }
+            }
 
-            //foreach (Collider2D colliderObject in colliderObjects)
-            //{
-            //    colliderObject.enabled = true;
-            //}
+            foreach (Collider2D colliderObject in colliderObjects)
+            {
+                if (!colliderObject.gameObject.name.Contains("Shield"))
+                {
+                    colliderObject.enabled = true;
+                }
+            }
 
             moveToBackLayer = false;
             //spriterenderer.enabled = true;
@@ -274,7 +274,7 @@ public class Player : MonoBehaviour
         {
             if (transform.position.z < 53f)
             {
-                //DisablePhysics();
+                DisablePhysics();
 
                 moveToBackLayer = true;
                 //audiosource.PlayOneShot(layerChange, volumeSoundLayerChange);
@@ -286,7 +286,7 @@ public class Player : MonoBehaviour
         {
             if (transform.position.z > 5f)
             {
-                //DisablePhysics();
+                DisablePhysics();
 
                 moveToFrontLayer = true;
                 //audiosource.PlayOneShot(layerChange, volumeSoundLayerChange);
@@ -306,6 +306,27 @@ public class Player : MonoBehaviour
             else
             {
                 Physics2D.IgnoreCollision(colliderObject, GetComponent<Collider2D>(), false);
+            }
+        }
+    }
+
+    private void DisablePhysics()
+    {
+        rigidbodyObjects = FindObjectsOfType<Rigidbody2D>();
+        foreach (Rigidbody2D rigidbodyObject in rigidbodyObjects)
+        {
+            if (!rigidbodyObject.gameObject.name.Contains("Shield"))
+            {
+                rigidbodyObject.simulated = false;
+            }
+        }
+
+        colliderObjects = FindObjectsOfType<Collider2D>();
+        foreach (Collider2D colliderObject in colliderObjects)
+        {
+            if (!colliderObject.gameObject.name.Contains("Shield"))
+            {
+                colliderObject.enabled = false;
             }
         }
     }

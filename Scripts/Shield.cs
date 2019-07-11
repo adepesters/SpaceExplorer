@@ -9,13 +9,13 @@ public class Shield : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        FindObjectOfType<Shield>().gameObject.GetComponentInChildren<CircleCollider2D>().enabled = false;
-        FindObjectOfType<Shield>().gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        GetComponentInChildren<CircleCollider2D>().enabled = false;
+        GetComponentInChildren<SpriteRenderer>().color = new Color(0, 0, 0, 0);
     }
 
     void Update()
     {
-        Vector2 pos = new Vector2(player.transform.position.x, player.transform.position.y);
+        Vector3 pos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
         transform.position = pos;
     }
 
