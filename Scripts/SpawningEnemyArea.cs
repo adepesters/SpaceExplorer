@@ -19,7 +19,7 @@ public class SpawningEnemyArea : MonoBehaviour
     bool enteredZone = false;
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
-    int maxNumEnemiesZone = 30;
+    int maxNumEnemiesZone = 5;
     const string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
@@ -38,6 +38,7 @@ public class SpawningEnemyArea : MonoBehaviour
     int spawningEnemyAreaID;
 
     GameSession gameSession;
+    Player player;
 
     public bool EnteredZone { get => enteredZone; set => enteredZone = value; }
     public Coroutine SpawnZoneCoroutineHandler { get => spawnZoneCoroutineHandler; set => spawnZoneCoroutineHandler = value; }
@@ -55,6 +56,7 @@ public class SpawningEnemyArea : MonoBehaviour
     void Start()
     {
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         zoneEnemiesParent = GameObject.Find(ZONE_ENEMIES_PARENT);
         if (zoneEnemiesParent == null)
         {
@@ -78,56 +80,68 @@ public class SpawningEnemyArea : MonoBehaviour
         bottomSpawnerCenter = GameObject.FindWithTag("BottomSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
         bottomSpawnerExtents = GameObject.FindWithTag("BottomSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
 
-        if (enteredZone)
+        if (GetComponent<ManualLayer>().Layer == player.CurrentLayer)
         {
-            CurrentlyFighting = true;
-
-            if (SpawnZoneCoroutineHandler == null)
+            if (enteredZone && !ZoneCleaned)
             {
-                SpawnZoneCoroutineHandler = StartCoroutine(SpawnZone());
+                CurrentlyFighting = true;
+
+                if (SpawnZoneCoroutineHandler == null)
+                {
+                    SpawnZoneCoroutineHandler = StartCoroutine(SpawnZone());
+                }
+
+                MakeStarfieldDisappear[] starfields = FindObjectsOfType<MakeStarfieldDisappear>();
+                foreach (MakeStarfieldDisappear starfield in starfields)
+                {
+                    starfield.SetTransparencyToZero(0f);
+                }
+
+                StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
+                foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)
+                {
+                    //if (starfieldGenerator.GetSpeed() != 0)
+                    //{
+                    starfieldGenerator.SetCanSpawn(false);
+                    // }
+                }
             }
 
-            MakeStarfieldDisappear[] starfields = FindObjectsOfType<MakeStarfieldDisappear>();
-            foreach (MakeStarfieldDisappear starfield in starfields)
+            int numEnemiesZone = zoneEnemiesParent.transform.childCount;
+            if (numEnemiesZone == 0 && indexEnemiesZone == maxNumEnemiesZone && ZoneCleaned == false)
             {
-                starfield.SetTransparencyToZero(0f);
+                ZoneCleaned = true;
+                GetComponent<PolygonCollider2D>().enabled = false;
+
+                if (areaCleanedRoutine == null)
+                {
+                    areaCleanedRoutine = StartCoroutine(LaunchAreaClearedText());
+                    areaCleanedRoutine = null;
+                }
+                GetComponent<EnemyRadarActivator>().HasBeenCleared = true;
             }
 
-            StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
-            foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)
+            if (ZoneCleaned)
             {
-                //if (starfieldGenerator.GetSpeed() != 0)
-                //{
-                starfieldGenerator.SetCanSpawn(false);
-                // }
+                CurrentlyFighting = false;
+                gameSession.IsCleaned[SpawningEnemyAreaID] = true;
+
+                StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
+                foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)
+                {
+                    starfieldGenerator.SetCanSpawn(true);
+                }
+
             }
         }
-
-        int numEnemiesZone = zoneEnemiesParent.transform.childCount;
-        if (numEnemiesZone == 0 && indexEnemiesZone == maxNumEnemiesZone && ZoneCleaned == false)
+        else
         {
-            ZoneCleaned = true;
-            GetComponent<PolygonCollider2D>().enabled = false;
-
-            if (areaCleanedRoutine == null)
+            enteredZone = false;
+            indexEnemiesZone = 0;
+            foreach (Transform enemy in zoneEnemiesParent.transform)
             {
-                areaCleanedRoutine = StartCoroutine(LaunchAreaClearedText());
-                areaCleanedRoutine = null;
+                Destroy(enemy.gameObject);
             }
-            GetComponent<EnemyRadarActivator>().HasBeenCleared = true;
-        }
-
-        if (ZoneCleaned)
-        {
-            CurrentlyFighting = false;
-            gameSession.IsCleaned[SpawningEnemyAreaID] = true;
-
-            StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
-            foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)
-            {
-                starfieldGenerator.SetCanSpawn(true);
-            }
-
         }
     }
 
@@ -156,7 +170,8 @@ public class SpawningEnemyArea : MonoBehaviour
     {
         while (EnteredZone)
         {
-            if (indexEnemiesZone < maxNumEnemiesZone)
+            if (indexEnemiesZone < maxNumEnemiesZone &&
+            GetComponent<ManualLayer>().Layer == player.CurrentLayer)
             {
                 int randomSpawnerIndex = UnityEngine.Random.Range(0, GetSpawnersCollidingWithArea().Count);
                 int randomSpawner = GetSpawnersCollidingWithArea()[randomSpawnerIndex];
