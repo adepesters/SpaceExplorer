@@ -274,7 +274,6 @@ public class Player : MonoBehaviour
     {
         if (Input.GetAxis("Vertical") > 0.5 && ps4ControllerCheck.IsXPressed())
         {
-            Debug.Log("ok");
             if (transform.position.z < 40f)
             {
                 DisablePhysics();
