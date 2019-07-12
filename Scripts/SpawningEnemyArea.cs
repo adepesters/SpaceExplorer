@@ -19,7 +19,7 @@ public class SpawningEnemyArea : MonoBehaviour
     bool enteredZone = false;
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
-    int maxNumEnemiesZone = 1;
+    int maxNumEnemiesZone = 30;
     const string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
@@ -165,29 +165,33 @@ public class SpawningEnemyArea : MonoBehaviour
 
                 if (randomSpawner == 0)
                 {
-                    Vector2 position = new Vector2(leftSpawnerCenter[0] + UnityEngine.Random.Range(-leftSpawnerExtents[0] / 2f, leftSpawnerExtents[0] / 2f),
-                    leftSpawnerCenter[1] + UnityEngine.Random.Range(-leftSpawnerExtents[1] / 2f, leftSpawnerExtents[1] / 2f));
+                    Vector3 position = new Vector3(leftSpawnerCenter[0] + UnityEngine.Random.Range(-leftSpawnerExtents[0] / 2f, leftSpawnerExtents[0] / 2f),
+                    leftSpawnerCenter[1] + UnityEngine.Random.Range(-leftSpawnerExtents[1] / 2f, leftSpawnerExtents[1] / 2f),
+                        transform.position.z);
 
                     Instantiate(randomEnemy, position, Quaternion.identity, zoneEnemiesParent.transform);
                 }
                 else if (randomSpawner == 1)
                 {
-                    Vector2 position = new Vector2(rightSpawnerCenter[0] + UnityEngine.Random.Range(-rightSpawnerExtents[0] / 2f, rightSpawnerExtents[0] / 2f),
-                    rightSpawnerCenter[1] + UnityEngine.Random.Range(-rightSpawnerExtents[1] / 2f, rightSpawnerExtents[1] / 2f));
+                    Vector3 position = new Vector3(rightSpawnerCenter[0] + UnityEngine.Random.Range(-rightSpawnerExtents[0] / 2f, rightSpawnerExtents[0] / 2f),
+                    rightSpawnerCenter[1] + UnityEngine.Random.Range(-rightSpawnerExtents[1] / 2f, rightSpawnerExtents[1] / 2f),
+                        transform.position.z);
 
                     Instantiate(randomEnemy, position, Quaternion.identity, zoneEnemiesParent.transform);
                 }
                 else if (randomSpawner == 2)
                 {
-                    Vector2 position = new Vector2(bottomSpawnerCenter[0] + UnityEngine.Random.Range(-bottomSpawnerExtents[0] / 2f, bottomSpawnerExtents[0] / 2f),
-                    bottomSpawnerCenter[1] + UnityEngine.Random.Range(-bottomSpawnerExtents[1] / 2f, bottomSpawnerExtents[1] / 2f));
+                    Vector3 position = new Vector3(bottomSpawnerCenter[0] + UnityEngine.Random.Range(-bottomSpawnerExtents[0] / 2f, bottomSpawnerExtents[0] / 2f),
+                    bottomSpawnerCenter[1] + UnityEngine.Random.Range(-bottomSpawnerExtents[1] / 2f, bottomSpawnerExtents[1] / 2f),
+                        transform.position.z);
 
                     Instantiate(randomEnemy, position, Quaternion.identity, zoneEnemiesParent.transform);
                 }
                 else if (randomSpawner == 3)
                 {
-                    Vector2 position = new Vector2(topSpawnerCenter[0] + UnityEngine.Random.Range(-topSpawnerExtents[0] / 2f, topSpawnerExtents[0] / 2f),
-                    topSpawnerCenter[1] + UnityEngine.Random.Range(-topSpawnerExtents[1] / 2f, topSpawnerExtents[1] / 2f));
+                    Vector3 position = new Vector3(topSpawnerCenter[0] + UnityEngine.Random.Range(-topSpawnerExtents[0] / 2f, topSpawnerExtents[0] / 2f),
+                    topSpawnerCenter[1] + UnityEngine.Random.Range(-topSpawnerExtents[1] / 2f, topSpawnerExtents[1] / 2f),
+                    transform.position.z);
 
                     Instantiate(randomEnemy, position, Quaternion.identity, zoneEnemiesParent.transform);
                 }
