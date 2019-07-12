@@ -168,7 +168,8 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<DamageDealer>())
+        if (collision.gameObject.GetComponent<DamageDealer>()
+        && collision.gameObject.GetComponent<ManualLayer>().Layer == GetComponent<ManualLayer>().Layer)
         {
             DamageDealer damageDealer = collision.gameObject.GetComponent<DamageDealer>();
             if (collision.gameObject.name != "Player")
