@@ -530,7 +530,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<DamageDealer>())
+        if (collision.gameObject.GetComponent<DamageDealer>()
+        && collision.gameObject.GetComponent<ManualLayer>().Layer == currentLayer)
         {
             DamageDealer damageDealer = collision.gameObject.GetComponent<DamageDealer>();
             int layer_collider = collision.gameObject.layer;
