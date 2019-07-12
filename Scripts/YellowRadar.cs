@@ -39,10 +39,10 @@ public class YellowRadar : MonoBehaviour
 
         Display();
 
-        if (Vector2.Distance(player.transform.position, target.transform.position) < discoveryThresholdDist)
-        {
-            Destroy(gameObject);
-        }
+        //if (Vector2.Distance(player.transform.position, target.transform.position) < discoveryThresholdDist)
+        //{
+        //    Destroy(gameObject);
+        //}
 
     }
 
