@@ -30,7 +30,12 @@ public class YellowRadar : MonoBehaviour
     {
         RotateTowardsTarget();
 
-        if (Vector2.Distance(player.transform.position, target.transform.position) > detectionDistance)
+        if (Vector2.Distance(player.transform.position, target.transform.position) > detectionDistance) // destroys radar when target too far from player
+        {
+            Destroy(gameObject);
+        }
+
+        if (target.GetComponent<ManualLayer>().Layer != player.CurrentLayer) // destroys radar when target not on same layer than player
         {
             Destroy(gameObject);
         }
