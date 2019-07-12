@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -102,6 +103,9 @@ public class Player : MonoBehaviour
     Rigidbody2D[] rigidbodyObjects;
     Collider2D[] colliderObjects;
 
+    // display position on Space UI
+    GameObject xcoordinate, ycoordinate, zcoordinate;
+
     public float LaserSpeed { get => laserSpeed; set => laserSpeed = value; }
     public float OriginalLaserSpeed { get => originalLaserSpeed; set => originalLaserSpeed = value; }
     public float LaserFiringPeriod { get => laserFiringPeriod; set => laserFiringPeriod = value; }
@@ -155,6 +159,11 @@ public class Player : MonoBehaviour
         //transform.position = currentBase.transform.position;
         //oldPos = currentBase.transform.position;
         oldPos = transform.position;
+
+        // get UI elements to display coordinates
+        xcoordinate = GameObject.FindWithTag("XCoordinateDisplay");
+        ycoordinate = GameObject.FindWithTag("YCoordinateDisplay");
+        zcoordinate = GameObject.FindWithTag("ZCoordinateDisplay");
     }
 
     // Update is called once per frame
@@ -184,6 +193,14 @@ public class Player : MonoBehaviour
         gameSession.CurrentFuelSpacePlayer -= Vector2.Distance(transform.position, oldPos);
         oldPos = transform.position;
         gameSession.PositionSpacePlayer = transform.position;
+
+        // update Space UI coordinates
+        float modifiedX = (int)transform.position.x;
+        xcoordinate.GetComponent<Text>().text = modifiedX.ToString();
+        float modifiedY = (int)transform.position.y;
+        ycoordinate.GetComponent<Text>().text = modifiedY.ToString();
+        float modifiedZ = 100 + (int)transform.position.z * 25;
+        zcoordinate.GetComponent<Text>().text = modifiedZ.ToString();
     }
 
     private void MoveToFrontLayer()

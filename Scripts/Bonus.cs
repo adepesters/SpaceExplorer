@@ -226,6 +226,7 @@ public class Bonus : MonoBehaviour
     {
         shield = FindObjectOfType<Shield>();
         player.IsInvincible = true;
+        shield.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
         shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
         shield.gameObject.GetComponentInChildren<CircleCollider2D>().enabled = true;
         //enemyLasersParent.GetComponentInChildren<CapsuleCollider2D>().isTrigger = false;
@@ -235,7 +236,7 @@ public class Bonus : MonoBehaviour
         yield return new WaitForSeconds(durationPowerUp3);
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         player.IsInvincible = false;
-        shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        shield.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = false;
         shield.gameObject.GetComponentInChildren<CircleCollider2D>().enabled = false;
         //GameObject.Find("Laser Enemy").GetComponent<CapsuleCollider2D>().isTrigger = true;
         Destroy(gameObject);
