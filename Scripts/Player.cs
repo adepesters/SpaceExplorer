@@ -451,7 +451,7 @@ public class Player : MonoBehaviour
 
     private void InstantiateLaser(float xVelocity, float yVelocity)
     {
-        var projectilePos = new Vector3(transform.position.x, transform.position.y, 0.1f);
+        var projectilePos = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f);
         Laser projectile = Instantiate(laserPrefab, projectilePos, transform.rotation, playerLasersParent.transform);
         // projectileFiringPeriod = 0.1f;
         Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * LaserSpeed;
@@ -462,7 +462,7 @@ public class Player : MonoBehaviour
 
     private void InstantiateBomb(float xVelocity, float yVelocity)
     {
-        var projectilePos = new Vector3(transform.position.x, transform.position.y, 0.1f);
+        var projectilePos = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f);
         BombPlayer projectile = Instantiate(bombPrefab, projectilePos, transform.rotation, playerLasersParent.transform);
         // projectileFiringPeriod = 0.5f;
         Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * BombSpeed;
