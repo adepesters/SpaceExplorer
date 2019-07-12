@@ -288,7 +288,7 @@ public class Bonus : MonoBehaviour
                     Vector2 rotatedVectorLaser1 = Quaternion.Euler(0, 0, -20) * originalLaserRotation * originalLaserFiringSpeed;
                     Vector2 rotatedVectorLaser2 = Quaternion.Euler(0, 0, 20) * originalLaserRotation * originalLaserFiringSpeed;
 
-                    var projectilePos = new Vector3(player.transform.position.x, player.transform.position.y, 0.1f);
+                    var projectilePos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 0.1f);
                     Laser laser1 = Instantiate(laserPrefab, projectilePos, player.transform.rotation, playerLasersParent.transform);
                     Laser laser2 = Instantiate(laserPrefab, projectilePos, player.transform.rotation, playerLasersParent.transform);
 
@@ -302,7 +302,7 @@ public class Bonus : MonoBehaviour
                     Vector2 rotatedVectorLaser1 = Quaternion.Euler(0, 0, -20) * originalLaserRotation * originalBombFiringSpeed;
                     Vector2 rotatedVectorLaser2 = Quaternion.Euler(0, 0, 20) * originalLaserRotation * originalBombFiringSpeed;
 
-                    var projectilePos = new Vector3(player.transform.position.x, player.transform.position.y, 0.1f);
+                    var projectilePos = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 0.1f);
                     BombPlayer bomb1 = Instantiate(bombPrefab, projectilePos, player.transform.rotation, playerLasersParent.transform);
                     BombPlayer bomb2 = Instantiate(bombPrefab, projectilePos, player.transform.rotation, playerLasersParent.transform);
 
