@@ -25,7 +25,7 @@ public class YellowRadarActivator : MonoBehaviour
     {
         if (!gameSession.HasBeenDiscovered[planetID])
         {
-            if (Vector2.Distance(player.transform.position, transform.position) < discoveryThresholdDist)
+            if (Vector3.Distance(player.transform.position, transform.position) < discoveryThresholdDist)
             {
                 gameSession.HasBeenDiscovered[planetID] = true;
             }
