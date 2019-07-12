@@ -10,7 +10,7 @@ public class Shield : MonoBehaviour
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         GetComponentInChildren<CircleCollider2D>().enabled = false;
-        GetComponentInChildren<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        GetComponentInChildren<SpriteRenderer>().enabled = false;
     }
 
     void Update()
