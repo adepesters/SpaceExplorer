@@ -221,6 +221,7 @@ public class Player : MonoBehaviour
                 }
             }
 
+            gameSession.CurrentFuelSpacePlayer -= 500f;
             moveToFrontLayer = false;
             //spriterenderer.enabled = true;
 
@@ -262,6 +263,7 @@ public class Player : MonoBehaviour
                 }
             }
 
+            gameSession.CurrentFuelSpacePlayer -= 500f;
             moveToBackLayer = false;
             //spriterenderer.enabled = true;
 
@@ -270,7 +272,7 @@ public class Player : MonoBehaviour
 
     private void MoveAcrossLayers()
     {
-        if (Input.GetAxis("Vertical") > 0.9 && ps4ControllerCheck.IsXPressed())
+        if (Input.GetAxis("Vertical") > 0.5 && ps4ControllerCheck.IsXPressed())
         {
             if (transform.position.z < 53f)
             {
@@ -281,7 +283,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Input.GetAxis("Vertical") < -0.9 && ps4ControllerCheck.IsXPressed())
+        if (Input.GetAxis("Vertical") < -0.5 && ps4ControllerCheck.IsXPressed())
 
         {
             if (transform.position.z > 5f)
