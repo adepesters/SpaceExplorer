@@ -83,7 +83,7 @@ public class Bonus : MonoBehaviour
             {
                 transform.position = Vector2.MoveTowards(transform.position, player.transform.position, (bonusSpeed + accelerationAttraction) * Time.deltaTime);
                 accelerationAttraction += accelerationAttraction;
-                if (transform.position == player.transform.position)
+                if (transform.position.x == player.transform.position.x && transform.position.y == player.transform.position.y)
                 {
                     GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
                     if (this.name.Contains("PowerUp 1") && powerUp1Routine == null)
