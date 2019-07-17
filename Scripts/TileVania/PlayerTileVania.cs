@@ -102,6 +102,8 @@ public class PlayerTileVania : MonoBehaviour
 
     bool playerInPortal = false;
 
+    Scene scene;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -134,6 +136,8 @@ public class PlayerTileVania : MonoBehaviour
 
         previousFeetContact = false;
         currentFeetContact = false;
+
+        scene = SceneManager.GetActiveScene();
     }
 
     void Update()
@@ -311,7 +315,10 @@ public class PlayerTileVania : MonoBehaviour
             rigidBody.drag = 0;
             animator.SetBool("isRunning", true);
             float xChange = Input.GetAxis("Horizontal") * runSpeed; // we don't put deltaTime here. See notes.
-            rigidBody.velocity = new Vector2(xChange, rigidBody.velocity.y);
+            if (!scene.name.Contains("Circular"))
+            {
+                rigidBody.velocity = new Vector2(xChange, rigidBody.velocity.y);
+            }
             if (xChange != 0)
             {
                 transform.localScale = new Vector3(Mathf.Sign(xChange) * originalScale.x, originalScale.y, originalScale.z);
