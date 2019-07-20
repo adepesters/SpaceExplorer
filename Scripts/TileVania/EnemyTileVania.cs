@@ -37,6 +37,8 @@ public class EnemyTileVania : MonoBehaviour
     [SerializeField] AudioClip[] swordSlashSound;
     float volumeSoundswordSlash = 0.5f;
 
+    Vector3 originalScale;
+
     //GameObject nonPixelatedVersion;
 
     // Start is called before the first frame update
@@ -62,6 +64,8 @@ public class EnemyTileVania : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + UnityEngine.Random.Range(0.001f, 0.009f));
 
         HandlePhysicsLayers();
+
+        originalScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
 
         //        nonPixelatedVersion = transform.GetChild(1).gameObject;
         //      nonPixelatedVersion.GetComponent<SpriteRenderer>().enabled = false;
@@ -93,6 +97,12 @@ public class EnemyTileVania : MonoBehaviour
             }
             originalPos = targetPos;
         }
+
+        if (player.tag == gameObject.tag)
+        {
+            transform.localScale = new Vector3(-Mathf.Sign(transform.position.x - player.transform.position.x) * originalScale.x, transform.localScale.y, transform.localScale.z);
+        }
+
         //Debug.Log(beingHit);
     }
 
