@@ -757,6 +757,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (collision.gameObject.tag == gameObject.tag)
             {
+                animator.SetTrigger("isHurt");
                 beingHit = true;
                 float damage = 100f;
                 ProcessHit(damage);
