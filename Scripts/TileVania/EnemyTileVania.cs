@@ -46,6 +46,8 @@ public class EnemyTileVania : MonoBehaviour
     float probOfImmediateAttack = 0.4f; // chance that enemy attacks as soon as player is in sight
     float tmpRandomImmediateAttack; // randomly chosen number between 0 and 1
 
+    bool isOnGround = false; // is enemy touching the ground
+
     //GameObject nonPixelatedVersion;
 
     // Start is called before the first frame update
@@ -157,6 +159,19 @@ public class EnemyTileVania : MonoBehaviour
                 ProcessHit(collision, contact[0].point);
             }
         }
+
+        if (collision.gameObject.name.Contains("Ground"))
+        {
+            isOnGround = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.name.Contains("Ground"))
+        {
+            isOnGround = false;
+        }
     }
 
     private void ProcessHit(Collision2D collision, Vector2 contactPoint)
@@ -254,7 +269,7 @@ public class EnemyTileVania : MonoBehaviour
                 counterAttack = 0f;
             }
         }
-        if (counterAttack > counterAttackFrequency && player.tag == gameObject.tag && Vector2.Distance(player.transform.position, transform.position) < 5f)
+        if (isOnGround && counterAttack > counterAttackFrequency && player.tag == gameObject.tag && Vector2.Distance(player.transform.position, transform.position) < 5f)
         {
             jumpAttack = true;
 
