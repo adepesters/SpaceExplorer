@@ -39,6 +39,13 @@ public class EnemyTileVania : MonoBehaviour
 
     Vector3 originalScale;
 
+    bool jumpAttack = false; // should enemy attack
+    float counterAttack = 0f; // counting time between attacks
+    float counterAttackFrequency; // how often does enemy attack
+    float timeToTarget = 1.5f; // determines the speed of the attack
+    float probOfImmediateAttack = 0.4f; // chance that enemy attacks as soon as player is in sight
+    float tmpRandomImmediateAttack; // randomly chosen number between 0 and 1
+
     //GameObject nonPixelatedVersion;
 
     // Start is called before the first frame update
@@ -67,6 +74,9 @@ public class EnemyTileVania : MonoBehaviour
 
         originalScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
 
+        counterAttackFrequency = UnityEngine.Random.Range(0f, 5f); // initialization of counterAttackFrequency
+        tmpRandomImmediateAttack = UnityEngine.Random.Range(0f, 1f); // initialization of tmpRandomImmediateAttack
+
         //        nonPixelatedVersion = transform.GetChild(1).gameObject;
         //      nonPixelatedVersion.GetComponent<SpriteRenderer>().enabled = false;
     }
@@ -74,7 +84,9 @@ public class EnemyTileVania : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!beingHit)
+        JumpAttack();
+
+        if (!beingHit && !jumpAttack)
         {
             transform.position = new Vector3(originalPos.x, transform.position.y, transform.position.z);
         }
@@ -102,6 +114,8 @@ public class EnemyTileVania : MonoBehaviour
         {
             transform.localScale = new Vector3(-Mathf.Sign(transform.position.x - player.transform.position.x) * originalScale.x, transform.localScale.y, transform.localScale.z);
         }
+
+        counterAttack += Time.deltaTime;
 
         //Debug.Log(beingHit);
     }
@@ -231,6 +245,35 @@ public class EnemyTileVania : MonoBehaviour
         }
     }
 
+    public void JumpAttack()
+    {
+        if (Vector2.Distance(player.transform.position, transform.position) > 5f || player.tag != gameObject.tag)
+        {
+            if (tmpRandomImmediateAttack > probOfImmediateAttack) // determines if enemy attacks as soon as player is in sight
+            {
+                counterAttack = 0f;
+            }
+        }
+        if (counterAttack > counterAttackFrequency && player.tag == gameObject.tag && Vector2.Distance(player.transform.position, transform.position) < 5f)
+        {
+            jumpAttack = true;
+
+            Vector3 target = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+            GetComponent<Rigidbody2D>().velocity = CalculateTrajectoryVelocity(transform.position, target, timeToTarget);
+            counterAttack = 0f;
+            counterAttackFrequency = UnityEngine.Random.Range(0f, 5f);
+            timeToTarget = UnityEngine.Random.Range(1.3f, 2f);
+            tmpRandomImmediateAttack = UnityEngine.Random.Range(0f, 1f);
+        }
+    }
+
+    Vector3 CalculateTrajectoryVelocity(Vector3 origin, Vector3 currentTarget, float t)
+    {
+        float vx = (currentTarget.x - origin.x) / t;
+        float vz = (currentTarget.z - origin.z) / t;
+        float vy = ((currentTarget.y - origin.y) - 0.5f * Physics.gravity.y * t * t) / t;
+        return new Vector3(vx, vy, vz);
+    }
 
     private void BleedParticles(Vector2 contactPoint)
     {
