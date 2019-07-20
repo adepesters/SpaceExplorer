@@ -15,6 +15,7 @@ public class PlayerTileVania : MonoBehaviour
     [SerializeField] Image[] heartsSprites; // heart sprites with quarter/half/3 quarters hearts
     float initialHealth = 20f;
     float maxHealth = 64f;
+    int[] counterHeartFragments = new int[16];
 
     float runSpeed = 8f;
     [SerializeField] float jumpSpeed = 14f;
@@ -155,18 +156,20 @@ public class PlayerTileVania : MonoBehaviour
         }
 
         // initializing heart UI appearance
-        for (int i = 0; i < (int)initialHealth / 4; i++)
+        //for (int i = 0; i < (int)initialHealth / 4; i++)
+        //{
+        //    hearts[i].GetComponent<Image>().enabled = true;
+        //}
+
+        //for (int i = (int)initialHealth / 4; i < (int)maxHealth / 4; i++)
+        //{
+        //    hearts[i].GetComponent<Image>().enabled = false;
+        //}
+
+        for (int i = 0; i < 5; i++)
         {
-            hearts[i].GetComponent<Image>().enabled = true;
+            counterHeartFragments[i] = 4;
         }
-
-        for (int i = (int)initialHealth / 4; i < (int)maxHealth / 4; i++)
-        {
-            hearts[i].GetComponent<Image>().enabled = false;
-        }
-
-
-
     }
 
     void Update()
@@ -787,9 +790,54 @@ public class PlayerTileVania : MonoBehaviour
                 animator.SetTrigger("isHurt");
                 beingHit = true;
                 float damage = 1f;
+                UpdateHeartsUI(damage);
+
                 ProcessHit(damage);
                 GetComponent<Rigidbody2D>().velocity = new Vector3(Mathf.Sign(transform.position.x - collision.transform.position.x) * 5f, 5f, 0f);
             }
+        }
+    }
+
+    private void UpdateHeartsUI(float damage)
+    {
+        int tmpDamage = (int)damage;
+
+        while (tmpDamage > 0)
+        {
+            for (int i = 15; i >= 0; i--)
+            {
+                int tmp = tmpDamage - counterHeartFragments[i];
+                if (tmp > 0 && i != 0)
+                {
+                    tmpDamage = tmp;
+                    counterHeartFragments[i] = 0;
+                }
+                else if (tmp <= 0)
+                {
+                    counterHeartFragments[i] = -tmp;
+                    tmpDamage = 0;
+                    break;
+                }
+                else if (tmp > 0 && i == 0)
+                {
+                    tmpDamage = 0;
+                    counterHeartFragments[i] = 0;
+                }
+            }
+        }
+
+        int j = 0;
+        foreach (Image heart in hearts)
+        {
+            if (counterHeartFragments[j] == 0)
+            {
+                heart.GetComponent<Image>().enabled = false;
+            }
+            else
+            {
+                heart.GetComponent<Image>().sprite = heartsSprites[counterHeartFragments[j] - 1].GetComponent<Image>().sprite;
+            }
+            j++;
         }
     }
 
@@ -797,14 +845,15 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (counterHit > 0.2f)
         {
+            health -= damage;
             if (health <= 0)
             {
+                Debug.Log("dead");
                 //Die(); not yet implemented
             }
             else
             {
                 counterHit = 0f;
-                health -= damage;
                 StartCoroutine(ChangeColorAfterHit());
             }
         }
