@@ -142,6 +142,7 @@ public class PlayerTileVania : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(health);
         previousFeetContact = currentFeetContact;
         currentFeetContact = feet.AreOnSomething;
 
@@ -740,6 +741,18 @@ public class PlayerTileVania : MonoBehaviour
         if (collision.gameObject.name.Contains("portail Front Layer") || collision.gameObject.name.Contains("portail Back Layer"))
         {
             playerInPortal = true;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.name.Contains("Enemy"))
+        {
+            if (collision.gameObject.tag == gameObject.tag)
+            {
+                float damage = 100f;
+                ProcessHit(damage);
+            }
         }
     }
 
