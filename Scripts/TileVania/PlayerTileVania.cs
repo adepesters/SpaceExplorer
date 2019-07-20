@@ -104,6 +104,8 @@ public class PlayerTileVania : MonoBehaviour
 
     Scene scene;
 
+    bool beingHit = false;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -142,7 +144,6 @@ public class PlayerTileVania : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(health);
         previousFeetContact = currentFeetContact;
         currentFeetContact = feet.AreOnSomething;
 
@@ -286,7 +287,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void CheckIfIsImmobile()
     {
-        if (PS4ControllerCheck.noButtonPressed() && feet.AreOnSomething)
+        if (PS4ControllerCheck.noButtonPressed() && feet.AreOnSomething && !beingHit)
         {
             rigidBody.velocity = new Vector2(0f, 0f);
             playerIsImmobile = true;
@@ -316,7 +317,7 @@ public class PlayerTileVania : MonoBehaviour
             rigidBody.drag = 0;
             animator.SetBool("isRunning", true);
             float xChange = Input.GetAxis("Horizontal") * runSpeed; // we don't put deltaTime here. See notes.
-            if (!scene.name.Contains("Circular"))
+            if (!scene.name.Contains("Circular") && !beingHit)
             {
                 rigidBody.velocity = new Vector2(xChange, rigidBody.velocity.y);
             }
@@ -470,7 +471,10 @@ public class PlayerTileVania : MonoBehaviour
             if (canJump == true && (feetLowGravity.AreOnSomething || grapinJump))
             {
                 //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+                if (!beingHit)
+                {
+                    rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+                }
                 IsJumping = true;
                 isRunning = false;
                 canJump = false;
@@ -497,7 +501,10 @@ public class PlayerTileVania : MonoBehaviour
             if (canJump == true && (feet.AreOnSomething || grapinJump))
             {
                 //rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+                if (!beingHit)
+                {
+                    rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+                }
                 IsJumping = true;
                 isRunning = false;
                 canJump = false;
@@ -750,8 +757,10 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (collision.gameObject.tag == gameObject.tag)
             {
+                beingHit = true;
                 float damage = 100f;
                 ProcessHit(damage);
+                GetComponent<Rigidbody2D>().velocity = new Vector3(Mathf.Sign(transform.position.x - collision.transform.position.x) * 5f, 5f, 0f);
             }
         }
     }
@@ -778,6 +787,7 @@ public class PlayerTileVania : MonoBehaviour
         spriterenderer.color = Color.red;
         yield return new WaitForSeconds(0.2f);
         spriterenderer.color = Color.white;
+        beingHit = false;
     }
 
 }
