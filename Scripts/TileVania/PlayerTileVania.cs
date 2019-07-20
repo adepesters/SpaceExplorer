@@ -5,10 +5,16 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
+using UnityEngine.UI;
 
 public class PlayerTileVania : MonoBehaviour
 {
+    // health variables
     float health = 10000f;
+    [SerializeField] Image[] hearts; // actual UI hearts
+    [SerializeField] Image[] heartsSprites; // heart sprites with quarter/half/3 quarters hearts
+    float initialHealth = 20f;
+    float maxHealth = 64f;
 
     float runSpeed = 8f;
     [SerializeField] float jumpSpeed = 14f;
@@ -140,6 +146,27 @@ public class PlayerTileVania : MonoBehaviour
         currentFeetContact = false;
 
         scene = SceneManager.GetActiveScene();
+
+        health = initialHealth;
+
+        foreach (Image heart in hearts)
+        {
+            heart.GetComponent<Image>().sprite = heartsSprites[3].GetComponent<Image>().sprite;
+        }
+
+        // initializing heart UI appearance
+        for (int i = 0; i < (int)initialHealth / 4; i++)
+        {
+            hearts[i].GetComponent<Image>().enabled = true;
+        }
+
+        for (int i = (int)initialHealth / 4; i < (int)maxHealth / 4; i++)
+        {
+            hearts[i].GetComponent<Image>().enabled = false;
+        }
+
+
+
     }
 
     void Update()
@@ -714,7 +741,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (collision.gameObject.tag == gameObject.tag)
             {
-                float damage = 100f;
+                float damage = 1f;
                 Destroy(collision.gameObject);
                 ProcessHit(damage);
             }
@@ -759,7 +786,7 @@ public class PlayerTileVania : MonoBehaviour
             {
                 animator.SetTrigger("isHurt");
                 beingHit = true;
-                float damage = 100f;
+                float damage = 1f;
                 ProcessHit(damage);
                 GetComponent<Rigidbody2D>().velocity = new Vector3(Mathf.Sign(transform.position.x - collision.transform.position.x) * 5f, 5f, 0f);
             }
