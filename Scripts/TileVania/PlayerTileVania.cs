@@ -182,7 +182,6 @@ public class PlayerTileVania : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(gameSession.CurrentHealthPlanetPlayer);
         previousFeetContact = currentFeetContact;
         currentFeetContact = feet.AreOnSomething;
 
@@ -208,7 +207,7 @@ public class PlayerTileVania : MonoBehaviour
             }
         }
 
-        if (!isDead && !playerIsFrozen && !playerOnAir)
+        if (!isDead && !playerIsFrozen && !playerOnAir && !pauseController.IsPaused)
         {
             animator.speed = 1f;
             CheckIfIsImmobile();
