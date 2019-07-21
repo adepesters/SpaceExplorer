@@ -18,6 +18,7 @@ public class PauseController : MonoBehaviour
     Camera cam;
     float originalAperture;
 
+    // player sprite in canvas
     [SerializeField] Image playerSprite;
     Vector3 originalSpriteScale; // original scale of player sprite
 
@@ -53,8 +54,11 @@ public class PauseController : MonoBehaviour
                                                                                             // when we go from one page of the menu to the next
             if (gameSession.SceneType == "planet")
             {
+                // change cam settings
                 cam.GetComponent<DepthOfField>().aperture = 1;
                 cam.GetComponent<Blur>().enabled = true;
+
+                // add player sprite in UI
                 playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
                 playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
                 originalSpriteScale.y, originalSpriteScale.z);
