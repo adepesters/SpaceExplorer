@@ -26,7 +26,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
     PS4ControllerCheck PS4ControllerCheck;
     GameSession gameSession;
 
-    string selectedButton = "health";
+    string selectedButton = "heal";
 
     float timeBetweenUpgrade = 0.1f;
     float counterUpgrade;
@@ -38,8 +38,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
         PS4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
 
-        upgradeHealthText.GetComponent<Text>().color = selected;
-        upgradeHealthArrow.GetComponent<Image>().color = selected;
+        healText.GetComponent<Text>().color = selected;
+        healArrow.GetComponent<Image>().color = selected;
+        upgradeHealthText.GetComponent<Text>().color = nonselected;
+        upgradeHealthArrow.GetComponent<Image>().color = nonselected;
         upgradeStrengthText.GetComponent<Text>().color = nonselected;
         upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
 
@@ -49,29 +51,56 @@ public class UpgradeUtilityPlanet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        availablePixelBlood.GetComponent<Text>().text = gameSession.CounterPixelBlood.ToString();
+        numbersHealth.GetComponent<Text>().text = gameSession.CurrentHealthPlanetPlayer + " / " + gameSession.MaxHealthPlanetPlayer;
+        numberStrength.GetComponent<Text>().text = "Att. " + gameSession.SwordDamage;
+
         if (pauseController.IsGamePaused())
         {
             counterUpgrade -= Time.fixedDeltaTime;
-            //Debug.Log(counterUpgrade);
-            //Debug.Log(counterUpgrade % 0.3f < 0.1f);
-            if (PS4ControllerCheck.DiscreteMoveUp())
+
+            if (PS4ControllerCheck.DiscreteMoveUp() && selectedButton == "strengthUpgrade")
             {
-                selectedButton = "health";
+                selectedButton = "healthUpgrade";
                 upgradeHealthText.GetComponent<Text>().color = selected;
                 upgradeHealthArrow.GetComponent<Image>().color = selected;
                 upgradeStrengthText.GetComponent<Text>().color = nonselected;
                 upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
+                healText.GetComponent<Text>().color = nonselected;
+                healArrow.GetComponent<Image>().color = nonselected;
             }
             else if (PS4ControllerCheck.DiscreteMoveDown())
             {
-                selectedButton = "strength";
+                selectedButton = "strengthUpgrade";
                 upgradeHealthText.GetComponent<Text>().color = nonselected;
                 upgradeHealthArrow.GetComponent<Image>().color = nonselected;
                 upgradeStrengthText.GetComponent<Text>().color = selected;
                 upgradeStrengthArrow.GetComponent<Image>().color = selected;
+                healText.GetComponent<Text>().color = nonselected;
+                healArrow.GetComponent<Image>().color = nonselected;
+            }
+            if (PS4ControllerCheck.DiscreteMoveRight() && selectedButton == "heal")
+            {
+                selectedButton = "healthUpgrade";
+                upgradeHealthText.GetComponent<Text>().color = selected;
+                upgradeHealthArrow.GetComponent<Image>().color = selected;
+                upgradeStrengthText.GetComponent<Text>().color = nonselected;
+                upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
+                healText.GetComponent<Text>().color = nonselected;
+                healArrow.GetComponent<Image>().color = nonselected;
+            }
+            if (PS4ControllerCheck.DiscreteMoveLeft() && (selectedButton == "healthUpgrade" || selectedButton == "strengthUpgrade"))
+            {
+                selectedButton = "heal";
+                healText.GetComponent<Text>().color = selected;
+                healArrow.GetComponent<Image>().color = selected;
+                upgradeHealthText.GetComponent<Text>().color = nonselected;
+                upgradeHealthArrow.GetComponent<Image>().color = nonselected;
+                upgradeStrengthText.GetComponent<Text>().color = nonselected;
+                upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
             }
 
-            if (selectedButton == "health")
+            if (selectedButton == "healthUpgrade")
             {
                 if (PS4ControllerCheck.ContinuousXPress())
                 {
@@ -93,7 +122,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                     timeBetweenUpgrade = 0.1f;
                 }
             }
-            else if (selectedButton == "strength")
+            else if (selectedButton == "strengthUpgrade")
             {
                 if (PS4ControllerCheck.ContinuousXPress())
                 {
@@ -115,10 +144,31 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                     timeBetweenUpgrade = 0.1f;
                 }
             }
-
-            numbersHealth.GetComponent<Text>().text = gameSession.CurrentHealthPlanetPlayer + " / " + gameSession.MaxHealthPlanetPlayer;
-            numberStrength.GetComponent<Text>().text = "Att. " + gameSession.SwordDamage;
-            availablePixelBlood.GetComponent<Text>().text = gameSession.CounterPixelBlood.ToString();
+            else if (selectedButton == "heal")
+            {
+                if (PS4ControllerCheck.ContinuousXPress())
+                {
+                    if (gameSession.CurrentHealthPlanetPlayer != gameSession.MaxHealthPlanetPlayer)
+                    {
+                        healText.GetComponent<Text>().color = clicked;
+                        healArrow.GetComponent<Image>().color = clicked;
+                        if (counterUpgrade < 0f && gameSession.CounterPixelBlood > 0)
+                        {
+                            gameSession.CounterPixelBlood--;
+                            gameSession.CurrentHealthPlanetPlayer++;
+                            counterUpgrade = timeBetweenUpgrade;
+                            timeBetweenUpgrade -= 0.002f;
+                            timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
+                        }
+                    }
+                }
+                else
+                {
+                    healText.GetComponent<Text>().color = selected;
+                    healArrow.GetComponent<Image>().color = selected;
+                    timeBetweenUpgrade = 0.1f;
+                }
+            }
         }
     }
 
