@@ -686,11 +686,21 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("Bridge"))
         {
-            InFrontOfBridge = true;
-            entryFrontLayer = collision.gameObject.transform.Find("Entry Front Layer").gameObject.transform;
-            entryBackLayer = collision.gameObject.transform.Find("Entry Back Layer").gameObject.transform;
-            doubleMirror.EntryFrontLayer = entryFrontLayer;
-            doubleMirror.EntryBackLayer = entryBackLayer;
+            // check if portals are actually on layer where the player is or on layer where the layer can access via the portal
+            int tmpPreviousLayer = currentLayer - 1;
+            int tmpNextLayer = currentLayer + 1;
+            if (collision.gameObject.transform.Find("Entry Front Layer").gameObject.tag == "Layer" + currentLayer ||
+            collision.gameObject.transform.Find("Entry Front Layer").gameObject.tag == "Layer" + tmpPreviousLayer ||
+                collision.gameObject.transform.Find("Entry Back Layer").gameObject.tag == "Layer" + currentLayer ||
+            collision.gameObject.transform.Find("Entry Back Layer").gameObject.tag == "Layer" + tmpNextLayer)
+            {
+                InFrontOfBridge = true;
+                entryFrontLayer = collision.gameObject.transform.Find("Entry Front Layer").gameObject.transform;
+                entryBackLayer = collision.gameObject.transform.Find("Entry Back Layer").gameObject.transform;
+
+                doubleMirror.EntryFrontLayer = entryFrontLayer;
+                doubleMirror.EntryBackLayer = entryBackLayer;
+            }
         }
 
         if (collision.gameObject.name.Contains("Bridge") && playerInPortal)
