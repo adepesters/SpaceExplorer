@@ -12,6 +12,9 @@ public class UpgradeUtilityPlanet : MonoBehaviour
     [SerializeField] Image upgradeHealthArrow;
     [SerializeField] Image upgradeStrengthArrow;
     [SerializeField] Image healArrow;
+    [SerializeField] Text upgradeHealthPriceText;
+    [SerializeField] Text upgradeStrengthPriceText;
+    [SerializeField] Text healPriceText;
 
     // upgrade numbers
     [SerializeField] Text numbersHealth;
@@ -40,10 +43,13 @@ public class UpgradeUtilityPlanet : MonoBehaviour
 
         healText.GetComponent<Text>().color = selected;
         healArrow.GetComponent<Image>().color = selected;
+        healPriceText.GetComponent<Text>().color = selected;
         upgradeHealthText.GetComponent<Text>().color = nonselected;
         upgradeHealthArrow.GetComponent<Image>().color = nonselected;
         upgradeStrengthText.GetComponent<Text>().color = nonselected;
         upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
+        upgradeHealthPriceText.GetComponent<Text>().color = nonselected;
+        upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
 
         counterUpgrade = timeBetweenUpgrade;
     }
@@ -54,6 +60,9 @@ public class UpgradeUtilityPlanet : MonoBehaviour
         availablePixelBlood.GetComponent<Text>().text = gameSession.CounterPixelBlood.ToString();
         numbersHealth.GetComponent<Text>().text = gameSession.CurrentHealthPlanetPlayer + " / " + gameSession.MaxHealthPlanetPlayer;
         numberStrength.GetComponent<Text>().text = "Att. " + gameSession.SwordDamage;
+        upgradeHealthPriceText.GetComponent<Text>().text = "(" + gameSession.UpgradeHealthPrice + "pxl/1)";
+        healPriceText.GetComponent<Text>().text = "(" + gameSession.HealPrice + "pxl/1)";
+        upgradeStrengthPriceText.GetComponent<Text>().text = "(" + gameSession.UpgradeStrengthPrice + "pxl/1)";
 
         if (pauseController.IsGamePaused())
         {
@@ -68,6 +77,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
                 healText.GetComponent<Text>().color = nonselected;
                 healArrow.GetComponent<Image>().color = nonselected;
+
+                upgradeHealthPriceText.GetComponent<Text>().color = selected;
+                upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
+                healPriceText.GetComponent<Text>().color = nonselected;
             }
             else if (PS4ControllerCheck.DiscreteMoveDown())
             {
@@ -78,6 +91,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 upgradeStrengthArrow.GetComponent<Image>().color = selected;
                 healText.GetComponent<Text>().color = nonselected;
                 healArrow.GetComponent<Image>().color = nonselected;
+
+                upgradeHealthPriceText.GetComponent<Text>().color = nonselected;
+                upgradeStrengthPriceText.GetComponent<Text>().color = selected;
+                healPriceText.GetComponent<Text>().color = nonselected;
             }
             if (PS4ControllerCheck.DiscreteMoveRight() && selectedButton == "heal")
             {
@@ -88,6 +105,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
                 healText.GetComponent<Text>().color = nonselected;
                 healArrow.GetComponent<Image>().color = nonselected;
+
+                upgradeHealthPriceText.GetComponent<Text>().color = selected;
+                upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
+                healPriceText.GetComponent<Text>().color = nonselected;
             }
             if (PS4ControllerCheck.DiscreteMoveLeft() && (selectedButton == "healthUpgrade" || selectedButton == "strengthUpgrade"))
             {
@@ -98,6 +119,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 upgradeHealthArrow.GetComponent<Image>().color = nonselected;
                 upgradeStrengthText.GetComponent<Text>().color = nonselected;
                 upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
+
+                upgradeHealthPriceText.GetComponent<Text>().color = nonselected;
+                upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
+                healPriceText.GetComponent<Text>().color = selected;
             }
 
             if (selectedButton == "healthUpgrade")
@@ -106,9 +131,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 {
                     upgradeHealthText.GetComponent<Text>().color = clicked;
                     upgradeHealthArrow.GetComponent<Image>().color = clicked;
-                    if (counterUpgrade < 0f && gameSession.CounterPixelBlood > 0)
+                    upgradeHealthPriceText.GetComponent<Text>().color = clicked;
+                    if (counterUpgrade < 0f && gameSession.CounterPixelBlood >= gameSession.UpgradeHealthPrice)
                     {
-                        gameSession.CounterPixelBlood--;
+                        gameSession.CounterPixelBlood -= gameSession.UpgradeHealthPrice;
                         gameSession.MaxHealthPlanetPlayer++;
                         counterUpgrade = timeBetweenUpgrade;
                         timeBetweenUpgrade -= 0.002f;
@@ -119,6 +145,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 {
                     upgradeHealthText.GetComponent<Text>().color = selected;
                     upgradeHealthArrow.GetComponent<Image>().color = selected;
+                    upgradeHealthPriceText.GetComponent<Text>().color = selected;
                     timeBetweenUpgrade = 0.1f;
                 }
             }
@@ -128,9 +155,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 {
                     upgradeStrengthText.GetComponent<Text>().color = clicked;
                     upgradeStrengthArrow.GetComponent<Image>().color = clicked;
-                    if (counterUpgrade < 0f && gameSession.CounterPixelBlood > 0)
+                    upgradeStrengthPriceText.GetComponent<Text>().color = clicked;
+                    if (counterUpgrade < 0f && gameSession.CounterPixelBlood >= gameSession.UpgradeStrengthPrice)
                     {
-                        gameSession.CounterPixelBlood--;
+                        gameSession.CounterPixelBlood -= gameSession.UpgradeStrengthPrice;
                         gameSession.SwordDamage++;
                         counterUpgrade = timeBetweenUpgrade;
                         timeBetweenUpgrade -= 0.002f;
@@ -141,6 +169,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 {
                     upgradeStrengthText.GetComponent<Text>().color = selected;
                     upgradeStrengthArrow.GetComponent<Image>().color = selected;
+                    upgradeStrengthPriceText.GetComponent<Text>().color = selected;
                     timeBetweenUpgrade = 0.1f;
                 }
             }
@@ -152,9 +181,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                     {
                         healText.GetComponent<Text>().color = clicked;
                         healArrow.GetComponent<Image>().color = clicked;
-                        if (counterUpgrade < 0f && gameSession.CounterPixelBlood > 0)
+                        healPriceText.GetComponent<Text>().color = clicked;
+                        if (counterUpgrade < 0f && gameSession.CounterPixelBlood >= gameSession.HealPrice)
                         {
-                            gameSession.CounterPixelBlood--;
+                            gameSession.CounterPixelBlood -= gameSession.HealPrice;
                             gameSession.CurrentHealthPlanetPlayer++;
                             counterUpgrade = timeBetweenUpgrade;
                             timeBetweenUpgrade -= 0.002f;
@@ -166,6 +196,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 {
                     healText.GetComponent<Text>().color = selected;
                     healArrow.GetComponent<Image>().color = selected;
+                    healPriceText.GetComponent<Text>().color = selected;
                     timeBetweenUpgrade = 0.1f;
                 }
             }
