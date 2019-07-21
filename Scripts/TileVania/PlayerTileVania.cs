@@ -113,6 +113,8 @@ public class PlayerTileVania : MonoBehaviour
 
     bool beingHit = false;
 
+    PauseController pauseController;
+
     void Start()
     {
         grapin = FindObjectOfType<Grapin>();
@@ -127,6 +129,7 @@ public class PlayerTileVania : MonoBehaviour
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         dataManager = GameObject.FindWithTag("DataManager").GetComponent<DataManager>();
         doubleMirror = FindObjectOfType<PlayerTileVaniaDoubleMirror>();
+        pauseController = FindObjectOfType<PauseController>();
 
         gameObject.tag = "Layer" + currentLayer;
         foreach (Transform child in transform)
@@ -349,23 +352,26 @@ public class PlayerTileVania : MonoBehaviour
         }
         else
         {
-            isRunning = true;
-            rigidBody.drag = 0;
-            animator.SetBool("isRunning", true);
-            float xChange = Input.GetAxis("Horizontal") * runSpeed; // we don't put deltaTime here. See notes.
-            if (!scene.name.Contains("Circular") && !beingHit)
+            if (!pauseController.IsPaused)
             {
-                rigidBody.velocity = new Vector2(xChange, rigidBody.velocity.y);
-            }
-            if (xChange != 0)
-            {
-                transform.localScale = new Vector3(Mathf.Sign(xChange) * originalScale.x, originalScale.y, originalScale.z);
-            }
-            if (feet.CurrentSurface != null)
-            {
-                if (feet.AreOnSomething && feet.CurrentSurface.name.Contains("Ground"))
+                isRunning = true;
+                rigidBody.drag = 0;
+                animator.SetBool("isRunning", true);
+                float xChange = Input.GetAxis("Horizontal") * runSpeed; // we don't put deltaTime here. See notes.
+                if (!scene.name.Contains("Circular") && !beingHit)
                 {
-                    WalkOnDryLeavesSFX(xChange);
+                    rigidBody.velocity = new Vector2(xChange, rigidBody.velocity.y);
+                }
+                if (xChange != 0)
+                {
+                    transform.localScale = new Vector3(Mathf.Sign(xChange) * originalScale.x, originalScale.y, originalScale.z);
+                }
+                if (feet.CurrentSurface != null)
+                {
+                    if (feet.AreOnSomething && feet.CurrentSurface.name.Contains("Ground"))
+                    {
+                        WalkOnDryLeavesSFX(xChange);
+                    }
                 }
             }
         }
