@@ -150,10 +150,13 @@ public class PlayerTileVania : MonoBehaviour
 
         health = initialHealth;
 
-        foreach (Image heart in hearts)
-        {
-            heart.GetComponent<Image>().sprite = heartsSprites[3].GetComponent<Image>().sprite;
-        }
+
+        /////// hearts UI ///////
+
+        //foreach (Image heart in hearts)
+        //{
+        //    heart.GetComponent<Image>().sprite = heartsSprites[3].GetComponent<Image>().sprite;
+        //}
 
         // initializing heart UI appearance
         //for (int i = 0; i < (int)initialHealth / 4; i++)
@@ -166,10 +169,12 @@ public class PlayerTileVania : MonoBehaviour
         //    hearts[i].GetComponent<Image>().enabled = false;
         //}
 
-        for (int i = 0; i < 5; i++)
-        {
-            counterHeartFragments[i] = 4;
-        }
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    counterHeartFragments[i] = 4;
+        //}
+
+        ///////////////////
     }
 
     void Update()
@@ -790,7 +795,7 @@ public class PlayerTileVania : MonoBehaviour
                 animator.SetTrigger("isHurt");
                 beingHit = true;
                 float damage = 1f;
-                UpdateHeartsUI(damage);
+                //UpdateHeartsUI(damage);
 
                 ProcessHit(damage);
                 GetComponent<Rigidbody2D>().velocity = new Vector3(Mathf.Sign(transform.position.x - collision.transform.position.x) * 5f, 5f, 0f);
