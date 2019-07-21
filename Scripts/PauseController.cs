@@ -8,6 +8,8 @@ public class PauseController : MonoBehaviour
 
     PauseMenuController pauseMenuController;
 
+    public bool IsPaused { get => isPaused; set => isPaused = value; }
+
     void Start()
     {
         pauseMenuController = FindObjectOfType<PauseMenuController>();
@@ -18,11 +20,11 @@ public class PauseController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.JoystickButton13))
         {
-            isPaused = !isPaused;
+            IsPaused = !IsPaused;
             pauseMenuController.SetIndexMenuPage(0);
         }
 
-        if (isPaused)
+        if (IsPaused)
         {
             Time.timeScale = 0;
             GameObject.Find("Background Pause Menu").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
@@ -37,6 +39,6 @@ public class PauseController : MonoBehaviour
 
     public bool IsGamePaused()
     {
-        return isPaused;
+        return IsPaused;
     }
 }
