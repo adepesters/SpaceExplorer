@@ -131,7 +131,7 @@ public class RessourceAsteroid : MonoBehaviour
             bloodPixel.GetComponent<Bonus>().SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude - 2f);
             if (gameSession != null)
             {
-                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
+                //                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
     }

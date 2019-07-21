@@ -6,7 +6,7 @@ using System;
 
 public class EnemyTileVania : MonoBehaviour
 {
-    float health = 400f;
+    float health = 60f;
     Color originalColor;
     float[] maxNumberOfParticles = new float[] { 10f, 4f, 4f, 4f, 4f, 4f, 4f };
     float[] probabilityOfParticles = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
@@ -311,7 +311,7 @@ public class EnemyTileVania : MonoBehaviour
                     bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                     if (gameSession != null)
                     {
-                        gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
+                        //                        gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
                     }
                     bloodPixel.tag = gameObject.tag;
                 }

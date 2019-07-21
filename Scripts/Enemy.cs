@@ -229,7 +229,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
+                //                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
 
@@ -247,7 +247,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
+                //    gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
 
@@ -265,7 +265,7 @@ public class Enemy : MonoBehaviour
                 bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
                 Bonus newBonus = bloodPixel.GetComponent<Bonus>();
                 newBonus.SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
-                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
+                //    gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
 

@@ -9,17 +9,17 @@ public class GameSession : MonoBehaviour
 {
     [SerializeField] public int numberOfBronzeStars;
     [SerializeField] public int numberOfSilverStars;
-    [SerializeField] public int numberOfGoldStars;
+    [SerializeField] private int numberOfGoldStars;
 
     public int counterStarBronze = 0;
     public int counterStarSilver = 0;
     public int counterStarGold = 0;
 
-    int[] counterPixelBlood = new int[8];
+    int counterPixelBlood = 2000;
 
     Player player;
 
-    public int[] CounterPixelBlood { get => counterPixelBlood; set => counterPixelBlood = value; }
+    public int CounterPixelBlood { get => counterPixelBlood; set => counterPixelBlood = value; }
     public string SceneType { get => sceneType; set => sceneType = value; }
     public bool[,] OpenChests { get => openChests; set => openChests = value; }
     public bool[] HasBeenDiscovered { get => hasBeenDiscovered; set => hasBeenDiscovered = value; }
@@ -34,6 +34,8 @@ public class GameSession : MonoBehaviour
     public bool[] IsCleaned { get => isCleaned; set => isCleaned = value; }
     public int CurrentHealthPlanetPlayer { get => currentHealthPlanetPlayer; set => currentHealthPlanetPlayer = value; }
     public int MaxHealthPlanetPlayer { get => maxHealthPlanetPlayer; set => maxHealthPlanetPlayer = value; }
+    public int SwordDamage { get => swordDamage; set => swordDamage = value; }
+    public int NumberOfGoldStars { get => numberOfGoldStars; set => numberOfGoldStars = value; }
 
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
@@ -43,8 +45,11 @@ public class GameSession : MonoBehaviour
     float maxFuelSpacePlayer;
     int currentHealthSpacePlayer;
     int maxHealthSpacePlayer;
+
+    // planet player info to save/load
     int currentHealthPlanetPlayer;
     int maxHealthPlanetPlayer;
+    int swordDamage;
 
     // planets info to save/load
     bool[,] openChests = new bool[50, 50];
@@ -119,19 +124,20 @@ public class GameSession : MonoBehaviour
             // initializes planet player data
             maxHealthPlanetPlayer = 100;
             currentHealthPlanetPlayer = maxHealthPlanetPlayer;
+            SwordDamage = 15;
         }
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
-        if (sceneType == "space")
-        {
-            for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
-            {
-                CounterPixelBlood[i] = 0;
-            }
-        }
-    }
+    //void Start()
+    //{
+    //    if (sceneType == "space")
+    //    {
+    //        for (int i = 0; i < CounterPixelBlood.Length - 1; i++)
+    //        {
+    //            CounterPixelBlood[i] = 0;
+    //        }
+    //    }
+    //}
 
 }

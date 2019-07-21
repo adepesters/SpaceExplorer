@@ -145,7 +145,7 @@ public class RessourceAsteroidFragment : MonoBehaviour
             bloodPixel.GetComponent<Bonus>().SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude);
             if (gameSession != null)
             {
-                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
+                //                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
     }
@@ -166,7 +166,7 @@ public class RessourceAsteroidFragment : MonoBehaviour
             bloodPixel.GetComponent<Bonus>().SetEnemySize(GetComponent<Renderer>().bounds.extents.magnitude - 2f);
             if (gameSession != null)
             {
-                gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
+                //       gameSession.CounterPixelBlood[colorClassifier.WhatColorIsThat(randomColor)]++;
             }
         }
     }

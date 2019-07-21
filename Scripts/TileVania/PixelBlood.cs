@@ -38,17 +38,9 @@ public class PixelBlood : MonoBehaviour
                     if (playSFX == null)
                     {
                         playSFX = StartCoroutine(PlaySFX());
+                        GameObject.FindWithTag("GameSession").GetComponent<GameSession>().CounterPixelBlood++;
                         Destroy(gameObject, 0.1f);
                     }
-                    //Destroy(gameObject);
-
-                    //if (this.name.Contains("pink"))
-                    //{
-                    //    FindObjectOfType<GameSession>().counterStarBronze++;
-                    //    Destroy(gameObject);
-                    //    AudioSource.PlayClipAtPoint(coinSound, player.transform.position, volumeSound);
-                    //}
-
                 }
             }
         }
