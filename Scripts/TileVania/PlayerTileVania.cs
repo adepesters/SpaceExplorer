@@ -341,13 +341,16 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (playerIsImmobile || (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")) && (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon)) || isTargeting)
         {
-            animator.SetTrigger("isIdle");
-            animator.SetBool("isRunning", false);
-            isRunning = false;
-            rigidBody.drag = 1000;
-            if (doubleMirror != null)
+            if (!pauseController.IsPaused)
             {
-                doubleMirror.IsJumping = false;
+                animator.SetTrigger("isIdle");
+                animator.SetBool("isRunning", false);
+                isRunning = false;
+                rigidBody.drag = 1000;
+                if (doubleMirror != null)
+                {
+                    doubleMirror.IsJumping = false;
+                }
             }
         }
         else
