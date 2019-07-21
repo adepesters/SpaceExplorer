@@ -32,6 +32,8 @@ public class GameSession : MonoBehaviour
     public int MaxHealthSpacePlayer { get => maxHealthSpacePlayer; set => maxHealthSpacePlayer = value; }
     public Vector3 PositionPointer { get => positionPointer; set => positionPointer = value; }
     public bool[] IsCleaned { get => isCleaned; set => isCleaned = value; }
+    public int CurrentHealthPlanetPlayer { get => currentHealthPlanetPlayer; set => currentHealthPlanetPlayer = value; }
+    public int MaxHealthPlanetPlayer { get => maxHealthPlanetPlayer; set => maxHealthPlanetPlayer = value; }
 
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
@@ -41,6 +43,8 @@ public class GameSession : MonoBehaviour
     float maxFuelSpacePlayer;
     int currentHealthSpacePlayer;
     int maxHealthSpacePlayer;
+    int currentHealthPlanetPlayer;
+    int maxHealthPlanetPlayer;
 
     // planets info to save/load
     bool[,] openChests = new bool[50, 50];
@@ -95,7 +99,7 @@ public class GameSession : MonoBehaviour
             //Vector3 initialPos = GameObject.Find("Zone 3").gameObject.transform.position;
             Vector3 initialPos = player.transform.position;
             positionSpacePlayer = new Vector3(initialPos.x, initialPos.y, 0);
-            maxFuelSpacePlayer = 2000f;
+            maxFuelSpacePlayer = 20000f;
             currentFuelSpacePlayer = maxFuelSpacePlayer;
             maxHealthSpacePlayer = 6000;
             currentHealthSpacePlayer = maxHealthSpacePlayer;
@@ -108,6 +112,13 @@ public class GameSession : MonoBehaviour
             {
                 IsCleaned[spawningArea] = false;
             }
+        }
+
+        if (sceneType == "planet")
+        {
+            // initializes planet player data
+            maxHealthPlanetPlayer = 100;
+            currentHealthPlanetPlayer = maxHealthPlanetPlayer;
         }
     }
 

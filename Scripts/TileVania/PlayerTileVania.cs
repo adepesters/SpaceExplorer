@@ -10,12 +10,12 @@ using UnityEngine.UI;
 public class PlayerTileVania : MonoBehaviour
 {
     // health variables
-    float health = 10000f;
+    //float health = 10000f;
     [SerializeField] Image[] hearts; // actual UI hearts
     [SerializeField] Image[] heartsSprites; // heart sprites with quarter/half/3 quarters hearts
-    float initialHealth = 20f;
-    float maxHealth = 64f;
-    int[] counterHeartFragments = new int[16];
+    //float initialHealth = 20f;
+    //float maxHealth = 64f;
+    //int[] counterHeartFragments = new int[16];
 
     float runSpeed = 8f;
     [SerializeField] float jumpSpeed = 14f;
@@ -148,7 +148,7 @@ public class PlayerTileVania : MonoBehaviour
 
         scene = SceneManager.GetActiveScene();
 
-        health = initialHealth;
+        //health = initialHealth;
 
 
         /////// hearts UI ///////
@@ -179,6 +179,7 @@ public class PlayerTileVania : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(gameSession.CurrentHealthPlanetPlayer);
         previousFeetContact = currentFeetContact;
         currentFeetContact = feet.AreOnSomething;
 
@@ -759,7 +760,7 @@ public class PlayerTileVania : MonoBehaviour
         {
             if (collision.gameObject.tag == gameObject.tag)
             {
-                float damage = 1f;
+                int damage = 10;
                 Destroy(collision.gameObject);
                 ProcessHit(damage);
             }
@@ -804,7 +805,7 @@ public class PlayerTileVania : MonoBehaviour
             {
                 animator.SetTrigger("isHurt");
                 beingHit = true;
-                float damage = 1f;
+                int damage = 10;
                 //UpdateHeartsUI(damage);
 
                 ProcessHit(damage);
@@ -813,55 +814,55 @@ public class PlayerTileVania : MonoBehaviour
         }
     }
 
-    private void UpdateHeartsUI(float damage)
-    {
-        int tmpDamage = (int)damage;
+    //private void UpdateHeartsUI(float damage)
+    //{
+    //    int tmpDamage = (int)damage;
 
-        while (tmpDamage > 0)
-        {
-            for (int i = 15; i >= 0; i--)
-            {
-                int tmp = tmpDamage - counterHeartFragments[i];
-                if (tmp > 0 && i != 0)
-                {
-                    tmpDamage = tmp;
-                    counterHeartFragments[i] = 0;
-                }
-                else if (tmp <= 0)
-                {
-                    counterHeartFragments[i] = -tmp;
-                    tmpDamage = 0;
-                    break;
-                }
-                else if (tmp > 0 && i == 0)
-                {
-                    tmpDamage = 0;
-                    counterHeartFragments[i] = 0;
-                }
-            }
-        }
+    //    while (tmpDamage > 0)
+    //    {
+    //        for (int i = 15; i >= 0; i--)
+    //        {
+    //            int tmp = tmpDamage - counterHeartFragments[i];
+    //            if (tmp > 0 && i != 0)
+    //            {
+    //                tmpDamage = tmp;
+    //                counterHeartFragments[i] = 0;
+    //            }
+    //            else if (tmp <= 0)
+    //            {
+    //                counterHeartFragments[i] = -tmp;
+    //                tmpDamage = 0;
+    //                break;
+    //            }
+    //            else if (tmp > 0 && i == 0)
+    //            {
+    //                tmpDamage = 0;
+    //                counterHeartFragments[i] = 0;
+    //            }
+    //        }
+    //    }
 
-        int j = 0;
-        foreach (Image heart in hearts)
-        {
-            if (counterHeartFragments[j] == 0)
-            {
-                heart.GetComponent<Image>().enabled = false;
-            }
-            else
-            {
-                heart.GetComponent<Image>().sprite = heartsSprites[counterHeartFragments[j] - 1].GetComponent<Image>().sprite;
-            }
-            j++;
-        }
-    }
+    //    int j = 0;
+    //    foreach (Image heart in hearts)
+    //    {
+    //        if (counterHeartFragments[j] == 0)
+    //        {
+    //            heart.GetComponent<Image>().enabled = false;
+    //        }
+    //        else
+    //        {
+    //            heart.GetComponent<Image>().sprite = heartsSprites[counterHeartFragments[j] - 1].GetComponent<Image>().sprite;
+    //        }
+    //        j++;
+    //    }
+    //}
 
-    void ProcessHit(float damage)
+    void ProcessHit(int damage)
     {
         if (counterHit > 0.2f)
         {
-            health -= damage;
-            if (health <= 0)
+            gameSession.CurrentHealthPlanetPlayer -= damage;
+            if (gameSession.CurrentHealthPlanetPlayer <= 0)
             {
                 Debug.Log("dead");
                 //Die(); not yet implemented
