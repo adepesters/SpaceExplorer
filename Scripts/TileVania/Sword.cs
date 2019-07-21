@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    float damage = 100;
+    int damage = 15;
     float speedAnimation = 1f;
 
     Animator animator;
     bool canHit;
 
+    GameSession gameSession;
+
     // Start is called before the first frame update
     void Start()
     {
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         animator = GetComponent<Animator>();
         canHit = true;
     }
@@ -20,6 +23,7 @@ public class Sword : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        damage = gameSession.SwordDamage;
         if (!canHit)
         {
             GetComponent<CapsuleCollider2D>().enabled = false;
@@ -34,7 +38,7 @@ public class Sword : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public float GetDamage()
+    public int GetDamage()
     {
         return damage;
     }
