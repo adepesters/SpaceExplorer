@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    int damage = 15;
+    int damage;
     float speedAnimation = 1f;
 
     Animator animator;
@@ -18,6 +18,7 @@ public class Sword : MonoBehaviour
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         animator = GetComponent<Animator>();
         canHit = true;
+        damage = gameSession.SwordDamage;
     }
 
     // Update is called once per frame
