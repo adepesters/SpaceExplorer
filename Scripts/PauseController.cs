@@ -54,6 +54,7 @@ public class PauseController : MonoBehaviour
             if (gameSession.SceneType == "planet")
             {
                 cam.GetComponent<DepthOfField>().aperture = 1;
+                cam.GetComponent<Blur>().enabled = true;
                 playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
                 playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
                 originalSpriteScale.y, originalSpriteScale.z);
@@ -67,6 +68,7 @@ public class PauseController : MonoBehaviour
             if (gameSession.SceneType == "planet")
             {
                 cam.GetComponent<DepthOfField>().aperture = originalAperture;
+                cam.GetComponent<Blur>().enabled = false;
             }
         }
     }
