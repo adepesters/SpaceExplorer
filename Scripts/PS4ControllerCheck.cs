@@ -22,6 +22,9 @@ public class PS4ControllerCheck : MonoBehaviour
     float currentPosVerticalStick = 0;
     float previousPosVerticalStick = 0;
 
+    float currentPosHorizontalStick = 0;
+    float previousPosHorizontalStick = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +36,9 @@ public class PS4ControllerCheck : MonoBehaviour
     {
         previousPosVerticalStick = currentPosVerticalStick;
         currentPosVerticalStick = Input.GetAxis("Vertical");
+
+        previousPosHorizontalStick = currentPosHorizontalStick;
+        currentPosHorizontalStick = Input.GetAxis("Horizontal");
 
         LongL1Press();
         LongR1Press();
@@ -201,8 +207,8 @@ public class PS4ControllerCheck : MonoBehaviour
 
     public bool DiscreteMoveDown()
     {
-        bool isTrue = false; ;
-        if (Mathf.Abs(previousPosVerticalStick) < Mathf.Epsilon)
+        bool isTrue = false;
+        if (Mathf.Abs(previousPosVerticalStick) < Mathf.Epsilon && Mathf.Abs(previousPosHorizontalStick) < Mathf.Epsilon)
         {
             if (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon && Input.GetAxis("Vertical") < 0)
             {
@@ -218,11 +224,44 @@ public class PS4ControllerCheck : MonoBehaviour
 
     public bool DiscreteMoveUp()
     {
-
-        bool isTrue = false; ;
-        if (Mathf.Abs(previousPosVerticalStick) < Mathf.Epsilon)
+        bool isTrue = false;
+        if (Mathf.Abs(previousPosVerticalStick) < Mathf.Epsilon && Mathf.Abs(previousPosHorizontalStick) < Mathf.Epsilon)
         {
             if (Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon && Input.GetAxis("Vertical") > 0)
+            {
+                isTrue = true;
+            }
+        }
+        else
+        {
+            isTrue = false;
+        }
+        return isTrue;
+    }
+
+    public bool DiscreteMoveLeft()
+    {
+        bool isTrue = false;
+        if (Mathf.Abs(previousPosHorizontalStick) < Mathf.Epsilon && Mathf.Abs(previousPosHorizontalStick) < Mathf.Epsilon)
+        {
+            if (Mathf.Abs(Input.GetAxis("Horizontal")) > Mathf.Epsilon && Input.GetAxis("Horizontal") < 0)
+            {
+                isTrue = true;
+            }
+        }
+        else
+        {
+            isTrue = false;
+        }
+        return isTrue;
+    }
+
+    public bool DiscreteMoveRight()
+    {
+        bool isTrue = false;
+        if (Mathf.Abs(previousPosHorizontalStick) < Mathf.Epsilon && Mathf.Abs(previousPosHorizontalStick) < Mathf.Epsilon)
+        {
+            if (Mathf.Abs(Input.GetAxis("Horizontal")) > Mathf.Epsilon && Input.GetAxis("Horizontal") > 0)
             {
                 isTrue = true;
             }
