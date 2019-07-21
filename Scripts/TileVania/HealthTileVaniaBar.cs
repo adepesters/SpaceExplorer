@@ -21,5 +21,6 @@ public class HealthTileVaniaBar : MonoBehaviour
     void Update()
     {
         slider.value = gameSession.CurrentHealthPlanetPlayer;
+        slider.maxValue = gameSession.MaxHealthPlanetPlayer;
     }
 }
