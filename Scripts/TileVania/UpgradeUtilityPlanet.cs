@@ -252,7 +252,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                     //exitPlanet.GetComponent<Text>().color = Color.red;
                     //Debug.Log("exitPlanet");
                     LoadingScreen.Instance.Show("Space Try");
-                    gameSession.SceneType = "space";
+                    Input.ResetInputAxes();
                     pauseController.IsPaused = false;
                 }
                 else

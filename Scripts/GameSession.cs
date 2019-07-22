@@ -145,4 +145,14 @@ public class GameSession : MonoBehaviour
     //    }
     //}
 
+    void Update()
+    {
+        if (sceneType == "space")
+        {
+            if (GameObject.FindWithTag("Player") != null)
+            {
+                player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            }
+        }
+    }
 }

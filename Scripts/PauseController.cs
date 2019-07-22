@@ -33,8 +33,11 @@ public class PauseController : MonoBehaviour
         if (gameSession.SceneType == "planet")
         {
             playerTileVania = FindObjectOfType<PlayerTileVania>();
-            originalSpriteScale = new Vector3(playerSprite.GetComponent<RectTransform>().localScale.x,
-            playerSprite.GetComponent<RectTransform>().localScale.y, playerSprite.GetComponent<RectTransform>().localScale.z);
+            if (playerSprite != null)
+            {
+                originalSpriteScale = new Vector3(playerSprite.GetComponent<RectTransform>().localScale.x,
+                playerSprite.GetComponent<RectTransform>().localScale.y, playerSprite.GetComponent<RectTransform>().localScale.z);
+            }
         }
     }
 
