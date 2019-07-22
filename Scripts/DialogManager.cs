@@ -35,7 +35,10 @@ public class DialogManager : MonoBehaviour
     ActionBoxManager actionBoxManager;
     GameSession gameSession;
 
+    bool dontNeedToPressX = false;
+
     public bool CanShow { get => canShow; set => canShow = value; }
+    public bool DontNeedToPressX { get => dontNeedToPressX; set => dontNeedToPressX = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -62,7 +65,7 @@ public class DialogManager : MonoBehaviour
         //Debug.Log(selectedChoice);
         if (CanShow)
         {
-            if (PS4ControllerCheck.IsXPressed() && makeLineAppear == null)
+            if ((dontNeedToPressX || PS4ControllerCheck.IsXPressed()) && makeLineAppear == null)
             {
                 actionBoxManager.gameObject.GetComponent<Canvas>().enabled = false;
                 currentLineIndex++;
@@ -176,6 +179,7 @@ public class DialogManager : MonoBehaviour
             GetComponent<AudioSource>().PlayOneShot(blipSound, blipSoundVolume);
             yield return new WaitForSeconds(textDisplaySpeed);
         }
+        dontNeedToPressX = false;
         makeLineAppear = null;
     }
 

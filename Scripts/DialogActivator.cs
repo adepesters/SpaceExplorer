@@ -7,6 +7,7 @@ public class DialogActivator : MonoBehaviour
     [SerializeField] [TextArea] string[] lines;
     [SerializeField] string actionText;
     [SerializeField] bool[] isQuestion;
+    [SerializeField] bool dontNeedToPressX; // don't need to press X to activate dialog --> automatically launches dialog when entering trigger collider
 
     bool canActivate;
     bool exitedTheScene = false;
@@ -48,7 +49,14 @@ public class DialogActivator : MonoBehaviour
         if (collision.gameObject.layer == 8) // player
         {
             canActivate = true;
-            EnableActionBox();
+            if (dontNeedToPressX)
+            {
+                dialogManager.DontNeedToPressX = true;
+            }
+            else
+            {
+                EnableActionBox();
+            }
         }
     }
 
@@ -64,7 +72,10 @@ public class DialogActivator : MonoBehaviour
         if (collision.gameObject.layer == 8) // player
         {
             canActivate = false;
-            DisableActionBox();
+            if (!dontNeedToPressX)
+            {
+                DisableActionBox();
+            }
         }
     }
 
