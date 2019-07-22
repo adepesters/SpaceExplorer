@@ -341,7 +341,7 @@ public class PlayerTileVania : MonoBehaviour
 
     private void CheckIfIsImmobile()
     {
-        if (PS4ControllerCheck.noButtonPressed() && feet.AreOnSomething && !beingHit)
+        if (PS4ControllerCheck.noFunctionalPlanetPlayerButtonPressed() && feet.AreOnSomething && !beingHit)
         {
             rigidBody.velocity = new Vector2(0f, 0f);
             playerIsImmobile = true;

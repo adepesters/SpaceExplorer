@@ -290,4 +290,10 @@ public class PS4ControllerCheck : MonoBehaviour
             continuousR2Press || continuousL2Press || continuousXPress || IsXPressed() || IsXReleased() ||
         (Mathf.Abs(Input.GetAxis("Horizontal")) > Mathf.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon));
     }
+
+    public bool noFunctionalPlanetPlayerButtonPressed()  // buttons that trigger actions in planet player
+    {
+        return !(IsSquarePressed() || IsSquareReleased() || continuousXPress || IsXPressed() || IsXReleased() ||
+        (Mathf.Abs(Input.GetAxis("Horizontal")) > Mathf.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) > Mathf.Epsilon));
+    }
 }
