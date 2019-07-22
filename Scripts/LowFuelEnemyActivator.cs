@@ -53,58 +53,58 @@ public class LowFuelEnemyActivator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        leftSpawnerCenter = GameObject.FindWithTag("LeftSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
-        leftSpawnerExtents = GameObject.FindWithTag("LeftSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
-        rightSpawnerCenter = GameObject.FindWithTag("RightSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
-        rightSpawnerExtents = GameObject.FindWithTag("RightSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
-        topSpawnerCenter = GameObject.FindWithTag("TopSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
-        topSpawnerExtents = GameObject.FindWithTag("TopSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
-        bottomSpawnerCenter = GameObject.FindWithTag("BottomSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
-        bottomSpawnerExtents = GameObject.FindWithTag("BottomSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
+        //leftSpawnerCenter = GameObject.FindWithTag("LeftSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
+        //leftSpawnerExtents = GameObject.FindWithTag("LeftSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
+        //rightSpawnerCenter = GameObject.FindWithTag("RightSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
+        //rightSpawnerExtents = GameObject.FindWithTag("RightSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
+        //topSpawnerCenter = GameObject.FindWithTag("TopSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
+        //topSpawnerExtents = GameObject.FindWithTag("TopSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
+        //bottomSpawnerCenter = GameObject.FindWithTag("BottomSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.center;
+        //bottomSpawnerExtents = GameObject.FindWithTag("BottomSpawner").gameObject.GetComponent<BoxCollider2D>().bounds.extents;
 
-        var distance = Vector2.Distance(player.transform.position, fuelRadar.TargetZone.transform.position);
+        //var distance = Vector2.Distance(player.transform.position, fuelRadar.TargetZone.transform.position);
 
-        spawningFrequencyZone = (gameSession.MaxFuelSpacePlayer) / (distance);
-        //Debug.Log("distance: " + distance);
-        //Debug.Log(gameSession.MaxFuelSpacePlayer);
-        //Debug.Log("frequency:" + spawningFrequencyZone);
+        //spawningFrequencyZone = (gameSession.MaxFuelSpacePlayer) / (distance);
+        ////Debug.Log("distance: " + distance);
+        ////Debug.Log(gameSession.MaxFuelSpacePlayer);
+        ////Debug.Log("frequency:" + spawningFrequencyZone);
 
-        if (gameSession.CurrentFuelSpacePlayer <= 0f)
-        {
-            CurrentlyFighting = true;
+        //if (gameSession.CurrentFuelSpacePlayer <= 0f)
+        //{
+        //    CurrentlyFighting = true;
 
-            shouldSpawn = true;
-            canDestroyLasers = true;
+        //    shouldSpawn = true;
+        //    canDestroyLasers = true;
 
-            if (spawnZoneCoroutineHandler == null)
-            {
-                spawnZoneCoroutineHandler = StartCoroutine(SpawnZone());
-            }
-        }
-        else
-        {
-            if (canDestroyLasers)
-            {
-                GameObject[] lasers = GameObject.FindGameObjectsWithTag("LaserEnemy");
-                foreach (GameObject laser in lasers)
-                {
-                    Destroy(laser.gameObject);
-                }
+        //    if (spawnZoneCoroutineHandler == null)
+        //    {
+        //        spawnZoneCoroutineHandler = StartCoroutine(SpawnZone());
+        //    }
+        //}
+        //else
+        //{
+        //    if (canDestroyLasers)
+        //    {
+        //        GameObject[] lasers = GameObject.FindGameObjectsWithTag("LaserEnemy");
+        //        foreach (GameObject laser in lasers)
+        //        {
+        //            Destroy(laser.gameObject);
+        //        }
 
-                GameObject[] enemies = GameObject.FindGameObjectsWithTag("LowFuelEnemy");
-                foreach (GameObject enemy in enemies)
-                {
-                    enemy.GetComponent<Enemy>().ExplodeEnemy();
-                }
+        //        GameObject[] enemies = GameObject.FindGameObjectsWithTag("LowFuelEnemy");
+        //        foreach (GameObject enemy in enemies)
+        //        {
+        //            enemy.GetComponent<Enemy>().ExplodeEnemy();
+        //        }
 
-                canDestroyLasers = false;
-                spawnZoneCoroutineHandler = null;
-            }
+        //        canDestroyLasers = false;
+        //        spawnZoneCoroutineHandler = null;
+        //    }
 
-            CurrentlyFighting = false;
+        //    CurrentlyFighting = false;
 
-            shouldSpawn = false;
-        }
+        //    shouldSpawn = false;
+        //}
 
     }
 
