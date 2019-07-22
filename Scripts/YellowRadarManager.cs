@@ -44,6 +44,10 @@ public class YellowRadarManager : MonoBehaviour
                         //}
                     }
                 }
+                else
+                {
+                    targetsFound.Remove(target.gameObject);
+                }
             }
             else
             {
