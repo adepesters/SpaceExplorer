@@ -127,13 +127,10 @@ public class GameSession : MonoBehaviour
             }
         }
 
-        if (sceneType == "planet")
-        {
-            // initializes planet player data
-            maxHealthPlanetPlayer = 100;
-            currentHealthPlanetPlayer = maxHealthPlanetPlayer;
-            SwordDamage = 15;
-        }
+        // initializes planet player data
+        maxHealthPlanetPlayer = 100;
+        currentHealthPlanetPlayer = maxHealthPlanetPlayer;
+        SwordDamage = 15;
     }
 
     // Start is called before the first frame update
