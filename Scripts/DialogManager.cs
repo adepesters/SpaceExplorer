@@ -37,9 +37,12 @@ public class DialogManager : MonoBehaviour
 
     bool dontNeedToPressX = false;
 
+    bool currentDialogIsDone = false;
+
     public bool CanShow { get => canShow; set => canShow = value; }
     public bool DontNeedToPressX { get => dontNeedToPressX; set => dontNeedToPressX = value; }
     public Sprite AvatarSprite { get => avatarSprite; set => avatarSprite = value; }
+    public bool CurrentDialogIsDone { get => currentDialogIsDone; set => currentDialogIsDone = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -75,6 +78,7 @@ public class DialogManager : MonoBehaviour
                     MakeGameObjectsMobile();
                     dialogPanel.SetActive(false);
                     CanShow = false;
+                    currentDialogIsDone = true;
                 }
                 else
                 {

@@ -10,12 +10,16 @@ public class DialogActivator : MonoBehaviour
     [SerializeField] bool[] isQuestion;
     [SerializeField] bool dontNeedToPressX; // don't need to press X to activate dialog --> automatically launches dialog when entering trigger collider
     [SerializeField] GameObject avatarSprite;
+    [SerializeField] bool activatesNextDialog;
+    [SerializeField] GameObject nextDialog;
 
     bool canActivate;
     bool exitedTheScene = false;
 
     DialogManager dialogManager;
     ActionBoxManager actionBoxManager;
+
+    float counter; // to make sure dialog don't jump from one to the next before even playing
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +36,6 @@ public class DialogActivator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(FindObjectOfType<DialogManager>().transform.GetChild(0).gameObject);
         if (canActivate && !dialogManager.transform.GetChild(0).gameObject.activeInHierarchy)
         {
             if (GetComponent<MultipleChoiceDialog>() != null)
@@ -44,6 +47,21 @@ public class DialogActivator : MonoBehaviour
             {
                 dialogManager.ShowDialog(lines, isQuestion, null, transform.gameObject);
                 dialogManager.AvatarSprite = avatarSprite.GetComponent<SpriteRenderer>().sprite;
+            }
+        }
+
+        if (canActivate)
+        {
+            counter += Time.fixedDeltaTime;
+        }
+
+        if (dialogManager.CurrentDialogIsDone)
+        {
+            if (activatesNextDialog && counter > 0.5f)
+            {
+                GetComponent<Collider2D>().enabled = false;
+                nextDialog.GetComponent<Collider2D>().enabled = true;
+                dialogManager.CurrentDialogIsDone = false;
             }
         }
     }
