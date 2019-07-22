@@ -7,6 +7,10 @@ using UnityEngine.SceneManagement;
 public class LoadingScreen : MonoBehaviour
 {
     public static LoadingScreen Instance;
+
+    [SerializeField] Text loadingPlanetText;
+    [SerializeField] Text loadingSpaceText;
+
     // Make sure the loading screen shows for at least 1 second:
     //private const float MIN_TIME_TO_SHOW = 1f;
     // The reference to the current loading operation running in the background:
@@ -50,7 +54,7 @@ public class LoadingScreen : MonoBehaviour
     private void Update()
     {
         Counter += Time.fixedDeltaTime;
-        if (counter > 0.1f)
+        if (counter > 1f)
         {
             SceneManager.LoadScene(sceneToLoad);
         }
@@ -112,6 +116,16 @@ public class LoadingScreen : MonoBehaviour
     {
         // Enable the loading screen:
         gameObject.SetActive(true);
+        if (sceneName.Contains("Planet"))
+        {
+            loadingSpaceText.GetComponent<Text>().enabled = false;
+            loadingPlanetText.GetComponent<Text>().enabled = true;
+        }
+        if (sceneName.Contains("Space"))
+        {
+            loadingSpaceText.GetComponent<Text>().enabled = true;
+            loadingPlanetText.GetComponent<Text>().enabled = false;
+        }
         sceneToLoad = sceneName;
         // Store the reference:
         //currentLoadingOperation = loadingOperation;
