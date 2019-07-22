@@ -8,6 +8,7 @@ public class ActionTrigger : MonoBehaviour
 
     ActionBoxManager actionBoxManager;
     PS4ControllerCheck pS4Controller;
+    PauseController pauseController;
 
     [SerializeField] string actionText;
 
@@ -22,6 +23,7 @@ public class ActionTrigger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pauseController = FindObjectOfType<PauseController>();
         actionBoxManager = FindObjectOfType<ActionBoxManager>();
         pS4Controller = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
     }
@@ -29,7 +31,7 @@ public class ActionTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canActivate && pS4Controller.IsXPressed())
+        if (canActivate && pS4Controller.IsXPressed() && !pauseController.IsPaused)
         {
             myDelegate();
         }

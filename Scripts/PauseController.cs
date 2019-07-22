@@ -50,6 +50,7 @@ public class PauseController : MonoBehaviour
         if (IsPaused)
         {
             Time.timeScale = 0;
+            FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = false; // remove potential visible action box
             GameObject.Find("Pause Menu Planet").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
                                                                                         // when we go from one page of the menu to the next
             if (gameSession.SceneType == "planet")
