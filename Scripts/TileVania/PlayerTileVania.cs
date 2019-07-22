@@ -762,6 +762,10 @@ public class PlayerTileVania : MonoBehaviour
         {
             inDialogZone = true;
         }
+        else
+        {
+            inDialogZone = false;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -779,11 +783,6 @@ public class PlayerTileVania : MonoBehaviour
         if (collision.gameObject.name.Contains("portail Front Layer") || collision.gameObject.name.Contains("portail Back Layer"))
         {
             playerInPortal = false;
-        }
-
-        if (collision.gameObject.name.Contains("EndOfLand"))
-        {
-            inDialogZone = false;
         }
     }
 
