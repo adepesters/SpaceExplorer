@@ -164,6 +164,9 @@ public class Player : MonoBehaviour
         xcoordinate = GameObject.FindWithTag("XCoordinateDisplay");
         ycoordinate = GameObject.FindWithTag("YCoordinateDisplay");
         zcoordinate = GameObject.FindWithTag("ZCoordinateDisplay");
+
+        // initiates player layer based on recorded game session info
+        currentLayer = gameSession.CurrentLayerSpacePlayer;
     }
 
     // Update is called once per frame
@@ -193,6 +196,7 @@ public class Player : MonoBehaviour
         gameSession.CurrentFuelSpacePlayer -= Vector2.Distance(transform.position, oldPos);
         oldPos = transform.position;
         gameSession.PositionSpacePlayer = transform.position;
+        gameSession.CurrentLayerSpacePlayer = currentLayer;
 
         // update Space UI coordinates
         float modifiedX = (int)transform.position.x;
@@ -504,8 +508,6 @@ public class Player : MonoBehaviour
             var deltaY = Input.GetAxis("Vertical") * MoveSpeed;
 
             rigidBody.velocity = new Vector2(deltaX, deltaY);
-
-            //Debug.Log(rigidBody.velocity);
 
             bool accelerate = ps4ControllerCheck.ContinuousL1Press();
 

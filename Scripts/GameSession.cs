@@ -44,6 +44,7 @@ public class GameSession : MonoBehaviour
     public int HealPrice { get => healPrice; set => healPrice = value; }
     public int UpgradeHealthPrice { get => upgradeHealthPrice; set => upgradeHealthPrice = value; }
     public int UpgradeStrengthPrice { get => upgradeStrengthPrice; set => upgradeStrengthPrice = value; }
+    public int CurrentLayerSpacePlayer { get => currentLayerSpacePlayer; set => currentLayerSpacePlayer = value; }
 
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
@@ -68,6 +69,8 @@ public class GameSession : MonoBehaviour
     int currentPlanetID;
 
     Vector3 positionPointer;
+
+    int currentLayerSpacePlayer = 1;
 
     private void Awake()
     {
