@@ -47,33 +47,36 @@ public class PauseController : MonoBehaviour
             pauseMenuController.SetIndexMenuPage(0);
         }
 
-        if (IsPaused)
+        if (gameSession.SceneType == "planet")
         {
-            Time.timeScale = 0;
-            FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = false; // remove potential visible action box
-            GameObject.Find("Pause Menu Planet").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
-                                                                                        // when we go from one page of the menu to the next
-            if (gameSession.SceneType == "planet")
+            if (IsPaused)
             {
-                // change cam settings
-                cam.GetComponent<DepthOfField>().aperture = 1;
-                cam.GetComponent<Blur>().enabled = true;
+                Time.timeScale = 0;
+                FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = false; // remove potential visible action box
+                GameObject.Find("Pause Menu Planet").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
+                                                                                            // when we go from one page of the menu to the next
+                if (gameSession.SceneType == "planet")
+                {
+                    // change cam settings
+                    cam.GetComponent<DepthOfField>().aperture = 1;
+                    cam.GetComponent<Blur>().enabled = true;
 
-                // add player sprite in UI
-                playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
-                playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
-                originalSpriteScale.y, originalSpriteScale.z);
+                    // add player sprite in UI
+                    playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
+                    playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
+                    originalSpriteScale.y, originalSpriteScale.z);
+                }
             }
-        }
-        else
-        {
-            Time.timeScale = 1;
-            GameObject.Find("Pause Menu Planet").GetComponent<Canvas>().enabled = false;
-
-            if (gameSession.SceneType == "planet")
+            else
             {
-                cam.GetComponent<DepthOfField>().aperture = originalAperture;
-                cam.GetComponent<Blur>().enabled = false;
+                Time.timeScale = 1;
+                GameObject.Find("Pause Menu Planet").GetComponent<Canvas>().enabled = false;
+
+                if (gameSession.SceneType == "planet")
+                {
+                    cam.GetComponent<DepthOfField>().aperture = originalAperture;
+                    cam.GetComponent<Blur>().enabled = false;
+                }
             }
         }
     }
