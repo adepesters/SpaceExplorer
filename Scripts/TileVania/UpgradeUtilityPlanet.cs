@@ -34,6 +34,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
     float timeBetweenUpgrade = 0.1f;
     float counterUpgrade;
 
+    [SerializeField] Text exitPlanet;
+
+    float counterMove;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,6 +54,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
         upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
         upgradeHealthPriceText.GetComponent<Text>().color = nonselected;
         upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
+        exitPlanet.GetComponent<Text>().color = new Color(1, 1, 1, 0.4f);
 
         counterUpgrade = timeBetweenUpgrade;
     }
@@ -67,8 +72,9 @@ public class UpgradeUtilityPlanet : MonoBehaviour
         if (pauseController.IsGamePaused())
         {
             counterUpgrade -= Time.fixedDeltaTime;
+            counterMove += Time.fixedDeltaTime;
 
-            if (PS4ControllerCheck.DiscreteMoveUp() && selectedButton == "strengthUpgrade")
+            if (PS4ControllerCheck.DiscreteMoveUp() && selectedButton == "strengthUpgrade" && counterMove > 0.1f)
             {
                 selectedButton = "healthUpgrade";
                 upgradeHealthText.GetComponent<Text>().color = selected;
@@ -77,12 +83,13 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
                 healText.GetComponent<Text>().color = nonselected;
                 healArrow.GetComponent<Image>().color = nonselected;
+                exitPlanet.GetComponent<Text>().color = new Color(1, 1, 1, 0.4f);
 
                 upgradeHealthPriceText.GetComponent<Text>().color = selected;
                 upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
                 healPriceText.GetComponent<Text>().color = nonselected;
             }
-            else if (PS4ControllerCheck.DiscreteMoveDown())
+            if (PS4ControllerCheck.DiscreteMoveDown() && (selectedButton == "heal" || selectedButton == "healthUpgrade"))
             {
                 selectedButton = "strengthUpgrade";
                 upgradeHealthText.GetComponent<Text>().color = nonselected;
@@ -91,10 +98,13 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 upgradeStrengthArrow.GetComponent<Image>().color = selected;
                 healText.GetComponent<Text>().color = nonselected;
                 healArrow.GetComponent<Image>().color = nonselected;
+                exitPlanet.GetComponent<Text>().color = new Color(1, 1, 1, 0.4f);
 
                 upgradeHealthPriceText.GetComponent<Text>().color = nonselected;
                 upgradeStrengthPriceText.GetComponent<Text>().color = selected;
                 healPriceText.GetComponent<Text>().color = nonselected;
+
+                counterMove = 0f;
             }
             if (PS4ControllerCheck.DiscreteMoveRight() && selectedButton == "heal")
             {
@@ -105,6 +115,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
                 healText.GetComponent<Text>().color = nonselected;
                 healArrow.GetComponent<Image>().color = nonselected;
+                exitPlanet.GetComponent<Text>().color = new Color(1, 1, 1, 0.4f);
 
                 upgradeHealthPriceText.GetComponent<Text>().color = selected;
                 upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
@@ -119,11 +130,45 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 upgradeHealthArrow.GetComponent<Image>().color = nonselected;
                 upgradeStrengthText.GetComponent<Text>().color = nonselected;
                 upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
+                exitPlanet.GetComponent<Text>().color = new Color(1, 1, 1, 0.4f);
 
                 upgradeHealthPriceText.GetComponent<Text>().color = nonselected;
                 upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
                 healPriceText.GetComponent<Text>().color = selected;
             }
+            if (PS4ControllerCheck.DiscreteMoveDown() && selectedButton == "strengthUpgrade" && counterMove > 0.1f)
+            {
+                selectedButton = "exitPlanet";
+                upgradeHealthText.GetComponent<Text>().color = nonselected;
+                upgradeHealthArrow.GetComponent<Image>().color = nonselected;
+                upgradeStrengthText.GetComponent<Text>().color = nonselected;
+                upgradeStrengthArrow.GetComponent<Image>().color = nonselected;
+                healText.GetComponent<Text>().color = nonselected;
+                healArrow.GetComponent<Image>().color = nonselected;
+                exitPlanet.GetComponent<Text>().color = new Color(1, 1, 1, 1f);
+
+                upgradeHealthPriceText.GetComponent<Text>().color = nonselected;
+                upgradeStrengthPriceText.GetComponent<Text>().color = nonselected;
+                healPriceText.GetComponent<Text>().color = nonselected;
+            }
+            if (PS4ControllerCheck.DiscreteMoveUp() && selectedButton == "exitPlanet")
+            {
+                selectedButton = "strengthUpgrade";
+                upgradeHealthText.GetComponent<Text>().color = nonselected;
+                upgradeHealthArrow.GetComponent<Image>().color = nonselected;
+                upgradeStrengthText.GetComponent<Text>().color = selected;
+                upgradeStrengthArrow.GetComponent<Image>().color = selected;
+                healText.GetComponent<Text>().color = nonselected;
+                healArrow.GetComponent<Image>().color = nonselected;
+                exitPlanet.GetComponent<Text>().color = new Color(1, 1, 1, 0.4f);
+
+                upgradeHealthPriceText.GetComponent<Text>().color = nonselected;
+                upgradeStrengthPriceText.GetComponent<Text>().color = selected;
+                healPriceText.GetComponent<Text>().color = nonselected;
+
+                counterMove = 0f;
+            }
+
 
             if (selectedButton == "healthUpgrade")
             {
@@ -198,6 +243,18 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                     healArrow.GetComponent<Image>().color = selected;
                     healPriceText.GetComponent<Text>().color = selected;
                     timeBetweenUpgrade = 0.1f;
+                }
+            }
+            else if (selectedButton == "exitPlanet")
+            {
+                if (PS4ControllerCheck.IsXPressed())
+                {
+                    exitPlanet.GetComponent<Text>().color = Color.red;
+                    Debug.Log("exitPlanet");
+                }
+                else
+                {
+                    exitPlanet.GetComponent<Text>().color = Color.white;
                 }
             }
         }

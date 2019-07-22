@@ -50,8 +50,8 @@ public class PauseController : MonoBehaviour
         if (IsPaused)
         {
             Time.timeScale = 0;
-            GameObject.Find("Background Pause Menu").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
-                                                                                            // when we go from one page of the menu to the next
+            GameObject.Find("Pause Menu Planet").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
+                                                                                        // when we go from one page of the menu to the next
             if (gameSession.SceneType == "planet")
             {
                 // change cam settings
@@ -67,7 +67,7 @@ public class PauseController : MonoBehaviour
         else
         {
             Time.timeScale = 1;
-            GameObject.Find("Background Pause Menu").GetComponent<Canvas>().enabled = false;
+            GameObject.Find("Pause Menu Planet").GetComponent<Canvas>().enabled = false;
 
             if (gameSession.SceneType == "planet")
             {
