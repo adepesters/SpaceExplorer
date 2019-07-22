@@ -249,8 +249,10 @@ public class UpgradeUtilityPlanet : MonoBehaviour
             {
                 if (PS4ControllerCheck.IsXPressed())
                 {
-                    exitPlanet.GetComponent<Text>().color = Color.red;
-                    Debug.Log("exitPlanet");
+                    //exitPlanet.GetComponent<Text>().color = Color.red;
+                    //Debug.Log("exitPlanet");
+                    LoadingScreen.Instance.Show("Space Try");
+                    gameSession.SceneType = "space";
                 }
                 else
                 {

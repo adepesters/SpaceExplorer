@@ -21,6 +21,13 @@ public class LoadingScreen : MonoBehaviour
     //[SerializeField] private Text percentLoadedText;
     // The elapsed time since the new scene started loading:
     //private float timeElapsed;
+
+    float counter = 0; // delay before launching the loading. If we don't use it, the scene begins to load before loadingScreen appears.
+
+    public float Counter { get => counter; set => counter = value; }
+
+    string sceneToLoad;
+
     private void Awake()
     {
         // Singleton logic:
@@ -40,6 +47,15 @@ public class LoadingScreen : MonoBehaviour
         Hide();
     }
 
+    private void Update()
+    {
+        Counter += Time.fixedDeltaTime;
+        if (counter > 0.1f)
+        {
+            SceneManager.LoadScene(sceneToLoad);
+        }
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Hide();
@@ -48,6 +64,7 @@ public class LoadingScreen : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        counter = 0f;
     }
 
     private void OnDisable()
@@ -95,7 +112,7 @@ public class LoadingScreen : MonoBehaviour
     {
         // Enable the loading screen:
         gameObject.SetActive(true);
-        SceneManager.LoadScene(sceneName);
+        sceneToLoad = sceneName;
         // Store the reference:
         //currentLoadingOperation = loadingOperation;
         // Stop the loading operation from finishing, even if it technically did:
@@ -114,4 +131,5 @@ public class LoadingScreen : MonoBehaviour
         //currentLoadingOperation = null;
         //isLoading = false;
     }
+
 }
