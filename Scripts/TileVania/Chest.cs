@@ -11,8 +11,14 @@ public class Chest : MonoBehaviour
     int planetID;
     [SerializeField] Sprite chestOpenSprite;
 
+    float[] maxNumberOfParticles = new float[] { 100f, 100f, 100f, 100f, 100f, 100f, 100f };
+    float[] probabilityOfParticles = new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f };
+
     GameSession gameSession;
     PlayerTileVania player;
+
+    ListOfBonuses ListOfBonuses;
+    List<Color> colorSet;
 
     public bool IsOpen { get => isOpen; set => isOpen = value; }
 
@@ -23,6 +29,8 @@ public class Chest : MonoBehaviour
         planetID = int.Parse(numbersOnly);
 
         player = FindObjectOfType<PlayerTileVania>();
+
+        ListOfBonuses = FindObjectOfType<ListOfBonuses>();
 
         GetComponent<ActionTrigger>().MyDelegate1 = OpenChest;
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
@@ -36,17 +44,64 @@ public class Chest : MonoBehaviour
             player.XisActionTrigger1 = false;
             transform.GetChild(0).gameObject.SetActive(false);
         }
+        colorSet = new List<Color>();
+        colorSet.Add(new Color(0, 0.4148602f, 1, 1));
+        colorSet.Add(new Color(0, 0.8751855f, 1, 1));
+        colorSet.Add(new Color(1, 0, 0.8056722f, 1));
+        colorSet.Add(new Color(1, 0.7929319f, 0.5801887f, 1));
+        colorSet.Add(new Color(1, 0, 0.4358644f, 1));
+        colorSet.Add(new Color(1, 0.514151f, 0.6382167f, 1));
+        colorSet.Add(new Color(1, 0.9897198f, 0.4481132f, 1));
     }
 
     void OpenChest()
     {
         isOpen = true;
         GetComponentInParent<SpriteRenderer>().sprite = chestOpenSprite;
+        BleedParticles();
         GetComponent<Collider2D>().enabled = false;
         GetComponent<ActionTrigger>().CanAppear = false;
         GetComponent<ActionTrigger>().DisableActionBox();
         gameSession.OpenChests[1, chestID] = true;
         player.XisActionTrigger1 = false;
         transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    private void BleedParticles()
+    {
+        List<GameObject> listOfBonuses = ListOfBonuses.listOfBonuses;
+        int numBonuses = listOfBonuses.Count;
+        RandomizeOrder(listOfBonuses);
+        System.Random randomizer = new System.Random();
+
+        for (int bonusIndex = 0; bonusIndex < numBonuses; bonusIndex++)
+        {
+            for (int i = 0; i < maxNumberOfParticles[bonusIndex]; i++)
+            {
+                float rand = UnityEngine.Random.Range(0f, 1f);
+                if (rand < probabilityOfParticles[bonusIndex])
+                {
+                    Color randomColor = colorSet[randomizer.Next(colorSet.Count)];
+
+                    Vector3 bonusPos = new Vector3(transform.position.x + Random.Range(-0.3f, 0.3f), transform.position.y + Random.Range(-0.3f, 0.3f), transform.position.z - 0.01f);
+                    GameObject bloodPixel = Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, transform);
+                    bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 25f);
+                    //bloodPixel.GetComponent<Collider2D>().enabled = false;
+                    bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
+                    bloodPixel.tag = gameObject.tag;
+                }
+            }
+        }
+    }
+
+    private static void RandomizeOrder(List<GameObject> listOfBonuses)
+    {
+        for (int i = 0; i < listOfBonuses.Count; i++)
+        {
+            GameObject temp = listOfBonuses[i];
+            int randomIndex = UnityEngine.Random.Range(i, listOfBonuses.Count);
+            listOfBonuses[i] = listOfBonuses[randomIndex];
+            listOfBonuses[randomIndex] = temp;
+        }
     }
 }
