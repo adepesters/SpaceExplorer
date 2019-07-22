@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
-
     [SerializeField] GameObject dialogPanel;
     [SerializeField] Text dialogText;
+    Sprite avatarSprite;
 
     string[] dialogLines;
     bool[] isAQuestion;
@@ -39,6 +39,7 @@ public class DialogManager : MonoBehaviour
 
     public bool CanShow { get => canShow; set => canShow = value; }
     public bool DontNeedToPressX { get => dontNeedToPressX; set => dontNeedToPressX = value; }
+    public Sprite AvatarSprite { get => avatarSprite; set => avatarSprite = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -84,6 +85,7 @@ public class DialogManager : MonoBehaviour
                             if (!isAQuestion[currentLineIndex])
                             {
                                 dialogPanel.SetActive(true);
+                                GameObject.FindWithTag("SpeakerAvatar").GetComponent<Image>().sprite = avatarSprite;
                                 MakeGameObjectsImmobile();
                                 dialogText.text = "";
                                 makeLineAppear = StartCoroutine(MakeLineAppear(dialogLines[currentLineIndex]));
@@ -93,6 +95,7 @@ public class DialogManager : MonoBehaviour
                                 MakeGameObjectsImmobile();
                                 //Debug.Log("is question");
                                 dialogPanel.SetActive(true);
+                                GameObject.FindWithTag("SpeakerAvatar").GetComponent<Image>().sprite = avatarSprite;
                                 dialogText.text = "";
                                 makeQuestionAppear = StartCoroutine(MakeQuestionAppear(dialogLines[currentLineIndex]));
                             }
@@ -101,6 +104,7 @@ public class DialogManager : MonoBehaviour
                         {
                             MakeGameObjectsImmobile();
                             dialogPanel.SetActive(true);
+                            GameObject.FindWithTag("SpeakerAvatar").GetComponent<Image>().sprite = avatarSprite;
                             dialogText.text = "";
                             makeLineAppear = StartCoroutine(MakeLineAppear(dialogLines[currentLineIndex]));
                         }

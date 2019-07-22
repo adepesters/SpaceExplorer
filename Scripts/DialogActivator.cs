@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogActivator : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class DialogActivator : MonoBehaviour
     [SerializeField] string actionText;
     [SerializeField] bool[] isQuestion;
     [SerializeField] bool dontNeedToPressX; // don't need to press X to activate dialog --> automatically launches dialog when entering trigger collider
+    [SerializeField] GameObject avatarSprite;
 
     bool canActivate;
     bool exitedTheScene = false;
@@ -36,10 +38,12 @@ public class DialogActivator : MonoBehaviour
             if (GetComponent<MultipleChoiceDialog>() != null)
             {
                 dialogManager.ShowDialog(lines, isQuestion, GetComponent<MultipleChoiceDialog>().GetChoices(), transform.gameObject);
+                dialogManager.AvatarSprite = avatarSprite.GetComponent<SpriteRenderer>().sprite;
             }
             else
             {
                 dialogManager.ShowDialog(lines, isQuestion, null, transform.gameObject);
+                dialogManager.AvatarSprite = avatarSprite.GetComponent<SpriteRenderer>().sprite;
             }
         }
     }
