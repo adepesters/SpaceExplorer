@@ -9,6 +9,7 @@ public class Chest : MonoBehaviour
     [SerializeField] int chestID;
     [SerializeField] bool isOpen = false;
     int planetID;
+    [SerializeField] Sprite chestOpenSprite;
 
     GameSession gameSession;
     PlayerTileVania player;
@@ -28,7 +29,7 @@ public class Chest : MonoBehaviour
         isOpen = gameSession.OpenChests[planetID, chestID];
         if (isOpen)
         {
-            GetComponentInParent<SpriteRenderer>().color = Color.red;
+            GetComponentInParent<SpriteRenderer>().sprite = chestOpenSprite;
             GetComponent<Collider2D>().enabled = false;
             GetComponent<ActionTrigger>().CanAppear = false;
             GetComponent<ActionTrigger>().DisableActionBox();
@@ -40,7 +41,7 @@ public class Chest : MonoBehaviour
     void OpenChest()
     {
         isOpen = true;
-        GetComponentInParent<SpriteRenderer>().color = Color.red;
+        GetComponentInParent<SpriteRenderer>().sprite = chestOpenSprite;
         GetComponent<Collider2D>().enabled = false;
         GetComponent<ActionTrigger>().CanAppear = false;
         GetComponent<ActionTrigger>().DisableActionBox();
