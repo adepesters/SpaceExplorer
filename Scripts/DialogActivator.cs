@@ -76,6 +76,11 @@ public class DialogActivator : MonoBehaviour
             {
                 DisableActionBox();
             }
+            else
+            {
+                GetComponent<Collider2D>().enabled = false;
+                FindObjectOfType<DialogManager>().StopCanShow();
+            }
         }
     }
 
