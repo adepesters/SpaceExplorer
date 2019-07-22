@@ -28,15 +28,15 @@ public class ToolSelector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PS4ControllerCheck.IsL2Pressed())
-        {
-            ChangeToLeftTool();
-        }
+        //if (PS4ControllerCheck.IsL2Pressed())
+        //{
+        //    ChangeToLeftTool();
+        //}
 
-        if (PS4ControllerCheck.IsR2Pressed())
-        {
-            ChangeToRightTool();
-        }
+        //if (PS4ControllerCheck.IsR2Pressed())
+        //{
+        //    ChangeToRightTool();
+        //}
     }
 
     private void ChangeToRightTool()
