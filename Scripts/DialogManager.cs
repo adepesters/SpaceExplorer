@@ -31,13 +31,25 @@ public class DialogManager : MonoBehaviour
 
     PS4ControllerCheck PS4ControllerCheck;
     Player player;
+    PlayerTileVania playerTileVania;
     ActionBoxManager actionBoxManager;
+    GameSession gameSession;
+
+    public bool CanShow { get => canShow; set => canShow = value; }
 
     // Start is called before the first frame update
     void Start()
     {
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         PS4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        if (gameSession.SceneType == "space")
+        {
+            player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        }
+        else if (gameSession.SceneType == "planet")
+        {
+            playerTileVania = FindObjectOfType<PlayerTileVania>();
+        }
         actionBoxManager = FindObjectOfType<ActionBoxManager>();
     }
 
@@ -48,7 +60,7 @@ public class DialogManager : MonoBehaviour
         //Debug.Log(makeQuestionAppear);
         //Debug.Log(questionWasAsked);
         //Debug.Log(selectedChoice);
-        if (canShow)
+        if (CanShow)
         {
             if (PS4ControllerCheck.IsXPressed() && makeLineAppear == null)
             {
@@ -58,7 +70,7 @@ public class DialogManager : MonoBehaviour
                 {
                     MakeGameObjectsMobile();
                     dialogPanel.SetActive(false);
-                    canShow = false;
+                    CanShow = false;
                 }
                 else
                 {
@@ -191,69 +203,83 @@ public class DialogManager : MonoBehaviour
         choices = currentChoices;
         parent = currentParent;
         currentLineIndex = -1;
-        canShow = true;
+        CanShow = true;
     }
 
     public void StopCanShow()
     {
-        canShow = false;
+        CanShow = false;
     }
 
     private void MakeGameObjectsImmobile()
     {
-        player.IsImmobile1 = true;
-
-        Laser[] lasers = FindObjectsOfType<Laser>();
-        foreach (Laser laser in lasers)
+        if (gameSession.SceneType == "space")
         {
-            laser.SetImmobile(true);
+            player.IsImmobile1 = true;
+
+            Laser[] lasers = FindObjectsOfType<Laser>();
+            foreach (Laser laser in lasers)
+            {
+                laser.SetImmobile(true);
+            }
+
+            Enemy[] enemies = FindObjectsOfType<Enemy>();
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.SetImmobile(true);
+            }
+
+            FacePlayer[] facePlayers = FindObjectsOfType<FacePlayer>();
+            foreach (FacePlayer facePlayer in facePlayers)
+            {
+                facePlayer.SetImmobile(true);
+            }
+
+            MoveAroundPlayer[] moveAroundPlayers = FindObjectsOfType<MoveAroundPlayer>();
+            foreach (MoveAroundPlayer moveAroundPlayer in moveAroundPlayers)
+            {
+                moveAroundPlayer.SetImmobile(true);
+            }
         }
-
-        Enemy[] enemies = FindObjectsOfType<Enemy>();
-        foreach (Enemy enemy in enemies)
+        else if (gameSession.SceneType == "planet")
         {
-            enemy.SetImmobile(true);
-        }
-
-        FacePlayer[] facePlayers = FindObjectsOfType<FacePlayer>();
-        foreach (FacePlayer facePlayer in facePlayers)
-        {
-            facePlayer.SetImmobile(true);
-        }
-
-        MoveAroundPlayer[] moveAroundPlayers = FindObjectsOfType<MoveAroundPlayer>();
-        foreach (MoveAroundPlayer moveAroundPlayer in moveAroundPlayers)
-        {
-            moveAroundPlayer.SetImmobile(true);
+            playerTileVania.ForceImmobility = true;
         }
     }
 
     private void MakeGameObjectsMobile()
     {
-        player.IsImmobile1 = false;
-
-        Laser[] lasers = FindObjectsOfType<Laser>();
-        foreach (Laser laser in lasers)
+        if (gameSession.SceneType == "space")
         {
-            laser.SetImmobile(false);
+            player.IsImmobile1 = false;
+
+            Laser[] lasers = FindObjectsOfType<Laser>();
+            foreach (Laser laser in lasers)
+            {
+                laser.SetImmobile(false);
+            }
+
+            Enemy[] enemies = FindObjectsOfType<Enemy>();
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.SetImmobile(false);
+            }
+
+            FacePlayer[] facePlayers = FindObjectsOfType<FacePlayer>();
+            foreach (FacePlayer facePlayer in facePlayers)
+            {
+                facePlayer.SetImmobile(false);
+            }
+
+            MoveAroundPlayer[] moveAroundPlayers = FindObjectsOfType<MoveAroundPlayer>();
+            foreach (MoveAroundPlayer moveAroundPlayer in moveAroundPlayers)
+            {
+                moveAroundPlayer.SetImmobile(false);
+            }
         }
-
-        Enemy[] enemies = FindObjectsOfType<Enemy>();
-        foreach (Enemy enemy in enemies)
+        else if (gameSession.SceneType == "planet")
         {
-            enemy.SetImmobile(false);
-        }
-
-        FacePlayer[] facePlayers = FindObjectsOfType<FacePlayer>();
-        foreach (FacePlayer facePlayer in facePlayers)
-        {
-            facePlayer.SetImmobile(false);
-        }
-
-        MoveAroundPlayer[] moveAroundPlayers = FindObjectsOfType<MoveAroundPlayer>();
-        foreach (MoveAroundPlayer moveAroundPlayer in moveAroundPlayers)
-        {
-            moveAroundPlayer.SetImmobile(false);
+            playerTileVania.ForceImmobility = false;
         }
     }
 }

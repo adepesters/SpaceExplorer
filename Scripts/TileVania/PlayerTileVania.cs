@@ -28,6 +28,7 @@ public class PlayerTileVania : MonoBehaviour
 
     bool isDead = false;
     bool playerIsImmobile = true;
+    bool forceImmobility = false;
 
     bool isJumping = false;
 
@@ -58,6 +59,7 @@ public class PlayerTileVania : MonoBehaviour
     public bool XisActionTrigger1 { get => XisActionTrigger; set => XisActionTrigger = value; }
     public bool IsJumping { get => isJumping; set => isJumping = value; }
     public bool InFrontOfBridge { get => inFrontOfBridge; set => inFrontOfBridge = value; }
+    public bool ForceImmobility { get => forceImmobility; set => forceImmobility = value; }
 
     float currentPos;
     float previousPos;
@@ -114,6 +116,9 @@ public class PlayerTileVania : MonoBehaviour
     bool beingHit = false;
 
     PauseController pauseController;
+    DialogManager dialogManager;
+
+    bool inDialogZone = false;
 
     void Start()
     {
@@ -130,6 +135,7 @@ public class PlayerTileVania : MonoBehaviour
         dataManager = GameObject.FindWithTag("DataManager").GetComponent<DataManager>();
         doubleMirror = FindObjectOfType<PlayerTileVaniaDoubleMirror>();
         pauseController = FindObjectOfType<PauseController>();
+        dialogManager = FindObjectOfType<DialogManager>();
 
         gameObject.tag = "Layer" + currentLayer;
         foreach (Transform child in transform)
@@ -185,15 +191,25 @@ public class PlayerTileVania : MonoBehaviour
         previousFeetContact = currentFeetContact;
         currentFeetContact = feet.AreOnSomething;
 
-        if (feet.AreOnSomething && !previousFeetContact)
+        counterHit += Time.deltaTime;
+
+        if (forceImmobility)
+        {
+            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            animator.speed = 0f;
+        }
+        else
+        {
+            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        }
+
+        if (feet.AreOnSomething && !previousFeetContact && !forceImmobility)
         {
             IsJumping = false;
             animator.SetBool("isJumping", false);
         }
 
-        counterHit += Time.deltaTime;
-
-        if (!isDead && playerOnAir && !playerIsFrozen)
+        if (!isDead && playerOnAir && !playerIsFrozen && !forceImmobility)
         {
             animator.speed = 0.2f;
             transform.position = onAirPos;
@@ -207,7 +223,7 @@ public class PlayerTileVania : MonoBehaviour
             }
         }
 
-        if (!isDead && !playerIsFrozen && !playerOnAir && !pauseController.IsPaused)
+        if (!isDead && !playerIsFrozen && !playerOnAir && !pauseController.IsPaused && !forceImmobility)
         {
             animator.speed = 1f;
             CheckIfIsImmobile();
@@ -239,7 +255,7 @@ public class PlayerTileVania : MonoBehaviour
             //StartCoroutine(WalkDryLeavesSFX());
         }
 
-        if (!isDead && playerIsFrozen)
+        if (!isDead && playerIsFrozen && !forceImmobility)
         {
             animator.speed = 0f;
             transform.position = frozenPosition;
@@ -506,7 +522,7 @@ public class PlayerTileVania : MonoBehaviour
     {
         if (originalGravity < 1)
         {
-            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump) && !XisActionTrigger1)
+            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump) && !XisActionTrigger1 && !inDialogZone)
             {
                 canJump = true;
                 rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
@@ -536,7 +552,7 @@ public class PlayerTileVania : MonoBehaviour
         }
         else
         {
-            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump) && !XisActionTrigger1)
+            if (PS4ControllerCheck.IsXPressed() && ((extendedLegs.AreOnSomething) || grapinJump) && !XisActionTrigger1 && !inDialogZone)
             {
                 canJump = true;
                 rigidBody.gravityScale = originalGravity; // in case we jump from a ladder (where gravity is 0)
@@ -742,6 +758,10 @@ public class PlayerTileVania : MonoBehaviour
             doubleMirror.GetComponentInChildren<ErasePixels>().UpdateColors = false;
         }
 
+        if (collision.gameObject.name.Contains("EndOfLand"))
+        {
+            inDialogZone = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -759,6 +779,11 @@ public class PlayerTileVania : MonoBehaviour
         if (collision.gameObject.name.Contains("portail Front Layer") || collision.gameObject.name.Contains("portail Back Layer"))
         {
             playerInPortal = false;
+        }
+
+        if (collision.gameObject.name.Contains("EndOfLand"))
+        {
+            inDialogZone = false;
         }
     }
 
