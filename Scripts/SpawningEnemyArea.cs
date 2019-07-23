@@ -19,7 +19,7 @@ public class SpawningEnemyArea : MonoBehaviour
     bool enteredZone = false;
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
-    int maxNumEnemiesZone = 5;
+    int maxNumEnemiesZone = 1;
     const string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
@@ -64,7 +64,7 @@ public class SpawningEnemyArea : MonoBehaviour
         }
 
         Color color = new Color(1f, 0.9243603f, 0.2028302f, 0);
-        areaClearedText.GetComponent<Text>().color = color;
+        //areaClearedText.GetComponent<Text>().color = color;
         gameSession.IsCleaned[SpawningEnemyAreaID] = false;
     }
 
@@ -231,6 +231,7 @@ public class SpawningEnemyArea : MonoBehaviour
         }
         while (true)
         {
+            //areaClearedText.GetComponent<Text>().enabled = true;
             Color color = new Color(1f, 0.9243603f, 0.2028302f, a);
             areaClearedText.GetComponent<Text>().color = color;
             yield return new WaitForSeconds(0.01f);
@@ -252,6 +253,10 @@ public class SpawningEnemyArea : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
             a -= 0.01f;
             a = Mathf.Clamp(a, 0f, 1f);
+            if (a == 0f)
+            {
+                Destroy(this);
+            }
         }
     }
 
