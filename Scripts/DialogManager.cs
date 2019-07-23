@@ -53,11 +53,12 @@ public class DialogManager : MonoBehaviour
     {
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         PS4ControllerCheck = GameObject.FindWithTag("PS4ControllerCheck").GetComponent<PS4ControllerCheck>();
-        if (gameSession.SceneType == "space")
+
+        if (GameObject.FindWithTag("Player") != null)
         {
             player = GameObject.FindWithTag("Player").GetComponent<Player>();
         }
-        else if (gameSession.SceneType == "planet")
+        if (FindObjectOfType<PlayerTileVania>() != null)
         {
             playerTileVania = FindObjectOfType<PlayerTileVania>();
         }
@@ -67,16 +68,18 @@ public class DialogManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(canShow);
+        Debug.Log(currentLineIndex);
         counterNextLineAutomatedDialog += Time.fixedDeltaTime;
         if (CanShow)
         {
-            Debug.Log(currentLineIndex);
             if ((dontNeedToPressXToPass && counterNextLineAutomatedDialog > 5f && currentLineIndex > -1 ||
                 dontNeedToPressXToLaunch && currentLineIndex == -1 ||
             PS4ControllerCheck.IsXPressed()) && makeLineAppear == null)
             {
                 actionBoxManager.gameObject.GetComponent<Canvas>().enabled = false;
                 currentLineIndex++;
+                Debug.Log("length:" + dialogLines.Length);
                 if (currentLineIndex >= dialogLines.Length)
                 {
                     MakeGameObjectsMobile();
@@ -184,6 +187,14 @@ public class DialogManager : MonoBehaviour
                 }
             }
         }
+        else if (!canShow && PS4ControllerCheck.IsXPressed()) // in rare bugs, found that canShow is false but it hasn't deactivated dialog panel
+        {
+            MakeGameObjectsMobile();
+            dialogPanel.SetActive(false);
+            currentDialogIsDone = true;
+            dontNeedToPressXToLaunch = false;
+            dontNeedToPressXToPass = false;
+        }
 
         if (PS4ControllerCheck.ContinuousXPress())
         {
@@ -246,6 +257,8 @@ public class DialogManager : MonoBehaviour
     {
         if (gameSession.SceneType == "space")
         {
+            player.ForceImmobility = true;
+
             player.IsImmobile1 = true;
 
             Laser[] lasers = FindObjectsOfType<Laser>();
@@ -282,6 +295,7 @@ public class DialogManager : MonoBehaviour
     {
         if (gameSession.SceneType == "space")
         {
+            player.ForceImmobility = false;
             player.IsImmobile1 = false;
 
             Laser[] lasers = FindObjectsOfType<Laser>();
