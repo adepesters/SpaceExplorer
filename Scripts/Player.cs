@@ -579,8 +579,12 @@ public class Player : MonoBehaviour
         if (collision.gameObject.name.Contains("Spawner Zone"))
         {
             zoneEntered = collision.gameObject.GetComponentInChildren<SpawningEnemyArea>();
-            zoneEntered.EnteredZone = true;
-            zoneEntered.gameObject.GetComponent<EnemyRadarActivator>().HasBeenDiscovered = true;
+            if (zoneEntered != null)
+            {
+                zoneEntered.EnteredZone = true;
+                zoneEntered.SpawningDepth = transform.position.z;
+                zoneEntered.gameObject.GetComponent<EnemyRadarActivator>().HasBeenDiscovered = true;
+            }
         }
 
         if (collision.gameObject.name.Contains("Planet"))
@@ -594,18 +598,18 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.name.Contains("Spawner Zone"))
-        {
-            zoneEntered.EnteredZone = false;
-            zoneEntered.GetComponent<EnemyRadarActivator>().HasBeenDiscovered = false;
-            zoneEntered.SpawnZoneCoroutineHandler = null;
+        //if (collision.gameObject.name.Contains("Spawner Zone"))
+        //{
+        //    zoneEntered.EnteredZone = false;
+        //    zoneEntered.GetComponent<EnemyRadarActivator>().HasBeenDiscovered = false;
+        //    zoneEntered.SpawnZoneCoroutineHandler = null;
 
-            StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
-            foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)
-            {
-                starfieldGenerator.SetCanSpawn(true);
-            }
-        }
+        //    StarfieldGeneratorFast[] starfieldGenerators = FindObjectsOfType<StarfieldGeneratorFast>();
+        //    foreach (StarfieldGeneratorFast starfieldGenerator in starfieldGenerators)
+        //    {
+        //        starfieldGenerator.SetCanSpawn(true);
+        //    }
+        //}
     }
 
     private void ProcessHit(DamageDealer damageDealer, int layer_collider)

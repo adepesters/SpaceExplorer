@@ -19,11 +19,11 @@ public class SpawningEnemyArea : MonoBehaviour
     bool enteredZone = false;
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
-    int maxNumEnemiesZone = 1;
+    int maxNumEnemiesZone = 5;
     const string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
-    float spawningFrequencyZone = 0.3f;
+    float spawningFrequencyZone = 1f; //0.3f
 
     [SerializeField] GameObject areaClearedText;
 
@@ -40,11 +40,14 @@ public class SpawningEnemyArea : MonoBehaviour
     GameSession gameSession;
     Player player;
 
+    float spawningDepth;
+
     public bool EnteredZone { get => enteredZone; set => enteredZone = value; }
     public Coroutine SpawnZoneCoroutineHandler { get => spawnZoneCoroutineHandler; set => spawnZoneCoroutineHandler = value; }
     public bool CurrentlyFighting { get => currentlyFighting; set => currentlyFighting = value; }
     public bool ZoneCleaned { get => zoneCleaned; set => zoneCleaned = value; }
     public int SpawningEnemyAreaID { get => spawningEnemyAreaID; set => spawningEnemyAreaID = value; }
+    public float SpawningDepth { get => spawningDepth; set => spawningDepth = value; }
 
     void Awake()
     {
@@ -56,6 +59,12 @@ public class SpawningEnemyArea : MonoBehaviour
     void Start()
     {
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+
+        if (gameSession.IsCleaned[SpawningEnemyAreaID] == true)
+        {
+            Destroy(this);
+        }
+
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         zoneEnemiesParent = GameObject.Find(ZONE_ENEMIES_PARENT);
         if (zoneEnemiesParent == null)
@@ -65,7 +74,7 @@ public class SpawningEnemyArea : MonoBehaviour
 
         Color color = new Color(1f, 0.9243603f, 0.2028302f, 0);
         //areaClearedText.GetComponent<Text>().color = color;
-        gameSession.IsCleaned[SpawningEnemyAreaID] = false;
+        //gameSession.IsCleaned[SpawningEnemyAreaID] = false;
     }
 
     // Update is called once per frame
@@ -111,7 +120,7 @@ public class SpawningEnemyArea : MonoBehaviour
             if (numEnemiesZone == 0 && indexEnemiesZone == maxNumEnemiesZone && ZoneCleaned == false)
             {
                 ZoneCleaned = true;
-                GetComponent<PolygonCollider2D>().enabled = false;
+                GetComponent<CircleCollider2D>().enabled = false;
 
                 if (areaCleanedRoutine == null)
                 {
@@ -134,32 +143,32 @@ public class SpawningEnemyArea : MonoBehaviour
 
             }
         }
-        else
-        {
-            enteredZone = false;
-            indexEnemiesZone = 0;
-            foreach (Transform enemy in zoneEnemiesParent.transform)
-            {
-                Destroy(enemy.gameObject);
-            }
-        }
+        //else
+        //{
+        //    enteredZone = false;
+        //    indexEnemiesZone = 0;
+        //    foreach (Transform enemy in zoneEnemiesParent.transform)
+        //    {
+        //        Destroy(enemy.gameObject);
+        //    }
+        //}
     }
 
-    private List<int> GetSpawnersCollidingWithArea()
+    private List<int> GetSpawnersCollidingWithArea() // I don't use the colliding function anymore
     {
         GameObject spawnersAroundPlayer = GameObject.FindWithTag("SpawnersAroundPlayer");
         List<int> indexOfCollidingSpawners = new List<int>();
         int i = 0;
         foreach (Transform spawner in spawnersAroundPlayer.transform)
         {
-            if (spawner.GetComponent<ColliderSpawner>().IsCollidingWithArea())
-            {
-                indexOfCollidingSpawners.Add(i);
-            }
-            else
-            {
-                indexOfCollidingSpawners.Remove(i);
-            }
+            //if (spawner.GetComponent<ColliderSpawner>().IsCollidingWithArea())
+            //{
+            indexOfCollidingSpawners.Add(i);
+            //}
+            //else
+            //{
+            //   indexOfCollidingSpawners.Remove(i);
+            //}
             i++;
         }
 
@@ -170,6 +179,7 @@ public class SpawningEnemyArea : MonoBehaviour
     {
         while (EnteredZone)
         {
+            Debug.Log("ok");
             if (indexEnemiesZone < maxNumEnemiesZone &&
             GetComponent<ManualLayer>().Layer == player.CurrentLayer)
             {
@@ -182,7 +192,7 @@ public class SpawningEnemyArea : MonoBehaviour
                 {
                     Vector3 position = new Vector3(leftSpawnerCenter[0] + UnityEngine.Random.Range(-leftSpawnerExtents[0] / 2f, leftSpawnerExtents[0] / 2f),
                     leftSpawnerCenter[1] + UnityEngine.Random.Range(-leftSpawnerExtents[1] / 2f, leftSpawnerExtents[1] / 2f),
-                        transform.position.z);
+                        spawningDepth);
 
                     Instantiate(randomEnemy, position, Quaternion.identity, zoneEnemiesParent.transform);
                 }
@@ -190,7 +200,7 @@ public class SpawningEnemyArea : MonoBehaviour
                 {
                     Vector3 position = new Vector3(rightSpawnerCenter[0] + UnityEngine.Random.Range(-rightSpawnerExtents[0] / 2f, rightSpawnerExtents[0] / 2f),
                     rightSpawnerCenter[1] + UnityEngine.Random.Range(-rightSpawnerExtents[1] / 2f, rightSpawnerExtents[1] / 2f),
-                        transform.position.z);
+                        spawningDepth);
 
                     Instantiate(randomEnemy, position, Quaternion.identity, zoneEnemiesParent.transform);
                 }
@@ -198,7 +208,7 @@ public class SpawningEnemyArea : MonoBehaviour
                 {
                     Vector3 position = new Vector3(bottomSpawnerCenter[0] + UnityEngine.Random.Range(-bottomSpawnerExtents[0] / 2f, bottomSpawnerExtents[0] / 2f),
                     bottomSpawnerCenter[1] + UnityEngine.Random.Range(-bottomSpawnerExtents[1] / 2f, bottomSpawnerExtents[1] / 2f),
-                        transform.position.z);
+                        spawningDepth);
 
                     Instantiate(randomEnemy, position, Quaternion.identity, zoneEnemiesParent.transform);
                 }
@@ -206,7 +216,7 @@ public class SpawningEnemyArea : MonoBehaviour
                 {
                     Vector3 position = new Vector3(topSpawnerCenter[0] + UnityEngine.Random.Range(-topSpawnerExtents[0] / 2f, topSpawnerExtents[0] / 2f),
                     topSpawnerCenter[1] + UnityEngine.Random.Range(-topSpawnerExtents[1] / 2f, topSpawnerExtents[1] / 2f),
-                    transform.position.z);
+                    spawningDepth);
 
                     Instantiate(randomEnemy, position, Quaternion.identity, zoneEnemiesParent.transform);
                 }
