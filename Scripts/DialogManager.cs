@@ -41,6 +41,7 @@ public class DialogManager : MonoBehaviour
     bool currentDialogIsDone = false;
 
     float counterNextLineAutomatedDialog; // how much time between lines of dialog when it passes automatically
+    float timeBeforeNextLine = 5f;
 
     public bool CanShow { get => canShow; set => canShow = value; }
     public bool DontNeedToPressXToLaunch { get => dontNeedToPressXToLaunch; set => dontNeedToPressXToLaunch = value; }
@@ -75,7 +76,12 @@ public class DialogManager : MonoBehaviour
         counterNextLineAutomatedDialog += Time.fixedDeltaTime;
         if (CanShow)
         {
-            if ((dontNeedToPressXToPass && counterNextLineAutomatedDialog > 5f && currentLineIndex > -1 ||
+            if (currentLineIndex != -1)
+            {
+                timeBeforeNextLine = dialogLines[currentLineIndex].Length * 2f / 50f;
+                timeBeforeNextLine = Mathf.Clamp(timeBeforeNextLine, 3.5f, 8f);
+            }
+            if ((dontNeedToPressXToPass && counterNextLineAutomatedDialog > timeBeforeNextLine && currentLineIndex > -1 ||
                 dontNeedToPressXToLaunch && currentLineIndex == -1 ||
             PS4ControllerCheck.IsXPressed()) && makeLineAppear == null && !(isAQuestion.Length != 0 && currentLineIndex == dialogLines.Length - 1))
             {
