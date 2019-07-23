@@ -8,10 +8,11 @@ public class DialogActivator : MonoBehaviour
     [SerializeField] [TextArea] string[] lines;
     [SerializeField] string actionText;
     [SerializeField] bool[] isQuestion;
-    [SerializeField] bool dontNeedToPressX; // don't need to press X to activate dialog --> automatically launches dialog when entering trigger collider
+    [SerializeField] bool dontNeedToPressXToLaunch; // don't need to press X to activate dialog --> automatically launches dialog when entering trigger collider
     [SerializeField] GameObject avatarSprite;
     [SerializeField] bool activatesNextDialog;
     [SerializeField] GameObject nextDialog;
+    [SerializeField] bool dontNeedToPressXToPass; // don't need to press X to go to next line
 
     bool canActivate;
     bool exitedTheScene = false;
@@ -57,10 +58,15 @@ public class DialogActivator : MonoBehaviour
 
         if (dialogManager.CurrentDialogIsDone)
         {
-            if (activatesNextDialog && counter > 0.5f)
+            if (activatesNextDialog && counter > 0.1f)
             {
                 GetComponent<Collider2D>().enabled = false;
                 nextDialog.GetComponent<Collider2D>().enabled = true;
+                dialogManager.CurrentDialogIsDone = false;
+            }
+            else if (dontNeedToPressXToLaunch && counter > 0.1f)
+            {
+                GetComponent<Collider2D>().enabled = false;
                 dialogManager.CurrentDialogIsDone = false;
             }
         }
@@ -71,13 +77,17 @@ public class DialogActivator : MonoBehaviour
         if (collision.gameObject.layer == 8) // player
         {
             canActivate = true;
-            if (dontNeedToPressX)
+            if (dontNeedToPressXToLaunch)
             {
-                dialogManager.DontNeedToPressX = true;
+                dialogManager.DontNeedToPressXToLaunch = true;
             }
             else
             {
                 EnableActionBox();
+            }
+            if (dontNeedToPressXToPass)
+            {
+                dialogManager.DontNeedToPressXToPass = true;
             }
         }
     }
@@ -94,7 +104,7 @@ public class DialogActivator : MonoBehaviour
         if (collision.gameObject.layer == 8) // player
         {
             canActivate = false;
-            if (!dontNeedToPressX)
+            if (!dontNeedToPressXToLaunch)
             {
                 DisableActionBox();
             }

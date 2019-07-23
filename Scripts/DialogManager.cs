@@ -35,14 +35,18 @@ public class DialogManager : MonoBehaviour
     ActionBoxManager actionBoxManager;
     GameSession gameSession;
 
-    bool dontNeedToPressX = false;
+    bool dontNeedToPressXToLaunch = false; // dialog launches automatically
+    bool dontNeedToPressXToPass = false; // dialog goes to next line automatically
 
     bool currentDialogIsDone = false;
 
+    float counterNextLineAutomatedDialog; // how much time between lines of dialog when it passes automatically
+
     public bool CanShow { get => canShow; set => canShow = value; }
-    public bool DontNeedToPressX { get => dontNeedToPressX; set => dontNeedToPressX = value; }
+    public bool DontNeedToPressXToLaunch { get => dontNeedToPressXToLaunch; set => dontNeedToPressXToLaunch = value; }
     public Sprite AvatarSprite { get => avatarSprite; set => avatarSprite = value; }
     public bool CurrentDialogIsDone { get => currentDialogIsDone; set => currentDialogIsDone = value; }
+    public bool DontNeedToPressXToPass { get => dontNeedToPressXToPass; set => dontNeedToPressXToPass = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -63,13 +67,13 @@ public class DialogManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(canShow);
-        //Debug.Log(makeQuestionAppear);
-        //Debug.Log(questionWasAsked);
-        //Debug.Log(selectedChoice);
+        counterNextLineAutomatedDialog += Time.fixedDeltaTime;
         if (CanShow)
         {
-            if ((dontNeedToPressX || PS4ControllerCheck.IsXPressed()) && makeLineAppear == null)
+            Debug.Log(currentLineIndex);
+            if ((dontNeedToPressXToPass && counterNextLineAutomatedDialog > 5f && currentLineIndex > -1 ||
+                dontNeedToPressXToLaunch && currentLineIndex == -1 ||
+            PS4ControllerCheck.IsXPressed()) && makeLineAppear == null)
             {
                 actionBoxManager.gameObject.GetComponent<Canvas>().enabled = false;
                 currentLineIndex++;
@@ -79,6 +83,8 @@ public class DialogManager : MonoBehaviour
                     dialogPanel.SetActive(false);
                     CanShow = false;
                     currentDialogIsDone = true;
+                    dontNeedToPressXToLaunch = false;
+                    dontNeedToPressXToPass = false;
                 }
                 else
                 {
@@ -109,6 +115,19 @@ public class DialogManager : MonoBehaviour
                             MakeGameObjectsImmobile();
                             dialogPanel.SetActive(true);
                             GameObject.FindWithTag("SpeakerAvatar").GetComponent<Image>().sprite = avatarSprite;
+
+                            // deals with mini cat avatar
+                            if (avatarSprite.name.Contains("mini"))
+                            {
+                                GameObject.FindWithTag("SpeakerAvatar").GetComponent<RectTransform>().localPosition = new Vector2(-618, -308);
+                                GameObject.FindWithTag("SpeakerAvatar").GetComponent<RectTransform>().sizeDelta = new Vector2(395.4f, 527.6f);
+                            }
+                            else
+                            {
+                                GameObject.FindWithTag("SpeakerAvatar").GetComponent<RectTransform>().localPosition = new Vector2(-590.9f, -115.8f);
+                                GameObject.FindWithTag("SpeakerAvatar").GetComponent<RectTransform>().sizeDelta = new Vector2(395.4f, 746.1f);
+                            }
+
                             dialogText.text = "";
                             makeLineAppear = StartCoroutine(MakeLineAppear(dialogLines[currentLineIndex]));
                         }
@@ -187,8 +206,8 @@ public class DialogManager : MonoBehaviour
             GetComponent<AudioSource>().PlayOneShot(blipSound, blipSoundVolume);
             yield return new WaitForSeconds(textDisplaySpeed);
         }
-        dontNeedToPressX = false;
         makeLineAppear = null;
+        counterNextLineAutomatedDialog = 0f;
     }
 
     IEnumerator MakeQuestionAppear(string line)
