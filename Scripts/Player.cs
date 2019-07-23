@@ -591,9 +591,12 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.transform.parent.gameObject.name.Contains("Planet"))
+        if (collision.gameObject.transform.parent != null)
         {
-            cantCross = true;
+            if (collision.gameObject.transform.parent.gameObject.name.Contains("Planet"))
+            {
+                cantCross = true;
+            }
         }
 
         if (collision.gameObject.name.Contains("Planet"))
@@ -620,9 +623,12 @@ public class Player : MonoBehaviour
         //    }
         //}
 
-        if (collision.gameObject.transform.parent.gameObject.name.Contains("Planet"))
+        if (collision.gameObject.transform.parent != null)
         {
-            cantCross = false;
+            if (collision.gameObject.transform.parent.gameObject.name.Contains("Planet"))
+            {
+                cantCross = false;
+            }
         }
     }
 
