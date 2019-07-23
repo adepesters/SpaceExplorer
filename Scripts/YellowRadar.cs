@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class YellowRadar : MonoBehaviour
 {
@@ -19,10 +20,15 @@ public class YellowRadar : MonoBehaviour
 
     float discoveryThresholdDist = 15f;
 
+    int planetID;
+
+    GameSession gameSession;
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
     }
 
     // Update is called once per frame
@@ -57,15 +63,31 @@ public class YellowRadar : MonoBehaviour
         {
             case 0:
                 GetComponent<Image>().sprite = yellowRadarSprites[3];
+                if (gameSession.IsCleaned[planetID])
+                {
+                    GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1);
+                }
                 break;
             case 1:
                 GetComponent<Image>().sprite = yellowRadarSprites[2];
+                if (gameSession.IsCleaned[planetID])
+                {
+                    GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1);
+                }
                 break;
             case 2:
                 GetComponent<Image>().sprite = yellowRadarSprites[1];
+                if (gameSession.IsCleaned[planetID])
+                {
+                    GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1);
+                }
                 break;
             case 3:
                 GetComponent<Image>().sprite = yellowRadarSprites[0];
+                if (gameSession.IsCleaned[planetID])
+                {
+                    GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1);
+                }
                 break;
         }
     }
@@ -83,5 +105,7 @@ public class YellowRadar : MonoBehaviour
     {
         target = currentTarget;
         detectionDistance = currentDetectionDistance;
+        string numbersOnly = Regex.Replace(target.gameObject.name, "[^0-9]", "");
+        planetID = int.Parse(numbersOnly);
     }
 }
