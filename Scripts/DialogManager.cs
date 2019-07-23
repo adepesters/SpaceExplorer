@@ -63,13 +63,15 @@ public class DialogManager : MonoBehaviour
             playerTileVania = FindObjectOfType<PlayerTileVania>();
         }
         actionBoxManager = FindObjectOfType<ActionBoxManager>();
+        dontNeedToPressXToPass = false;
+        dontNeedToPressXToLaunch = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(canShow);
-        Debug.Log(currentLineIndex);
+        //Debug.Log(canShow);
+        //Debug.Log(currentLineIndex);
         counterNextLineAutomatedDialog += Time.fixedDeltaTime;
         if (CanShow)
         {
@@ -79,7 +81,7 @@ public class DialogManager : MonoBehaviour
             {
                 actionBoxManager.gameObject.GetComponent<Canvas>().enabled = false;
                 currentLineIndex++;
-                Debug.Log("length:" + dialogLines.Length);
+                //Debug.Log("length:" + dialogLines.Length);
                 if (currentLineIndex >= dialogLines.Length)
                 {
                     MakeGameObjectsMobile();
@@ -187,13 +189,19 @@ public class DialogManager : MonoBehaviour
                 }
             }
         }
-        else if (!canShow && PS4ControllerCheck.IsXPressed()) // in rare bugs, found that canShow is false but it hasn't deactivated dialog panel
+        else if (!canShow)
         {
-            MakeGameObjectsMobile();
-            dialogPanel.SetActive(false);
-            currentDialogIsDone = true;
-            dontNeedToPressXToLaunch = false;
             dontNeedToPressXToPass = false;
+            dontNeedToPressXToPass = false;
+
+            if (PS4ControllerCheck.IsXPressed())
+            {
+                MakeGameObjectsMobile();
+                dialogPanel.SetActive(false);
+                currentDialogIsDone = true;
+                dontNeedToPressXToLaunch = false;
+                dontNeedToPressXToPass = false;
+            }
         }
 
         if (PS4ControllerCheck.ContinuousXPress())
@@ -250,6 +258,8 @@ public class DialogManager : MonoBehaviour
 
     public void StopCanShow()
     {
+        dontNeedToPressXToLaunch = false;
+        dontNeedToPressXToPass = false;
         CanShow = false;
     }
 

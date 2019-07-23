@@ -108,22 +108,6 @@ public class DialogActivator : MonoBehaviour
     {
         if (collision.gameObject.layer == 8) // player
         {
-            if (GetComponent<DialogDependencyPlanetScan>() == null)
-            {
-                canActivate = true;
-                if (dontNeedToPressXToLaunch)
-                {
-                    dialogManager.DontNeedToPressXToLaunch = true;
-                }
-                else
-                {
-                    EnableActionBox();
-                }
-                if (dontNeedToPressXToPass)
-                {
-                    dialogManager.DontNeedToPressXToPass = true;
-                }
-            }
             if (GetComponent<DialogDependencyPlanetScan>() != null && !GetComponent<DialogDependencyPlanetScan>().CanActivate)
             {
                 EnableActionBox();
@@ -154,8 +138,8 @@ public class DialogActivator : MonoBehaviour
             }
             else
             {
-                GetComponent<Collider2D>().enabled = false;
                 FindObjectOfType<DialogManager>().StopCanShow();
+                GetComponent<Collider2D>().enabled = false;
             }
         }
     }
