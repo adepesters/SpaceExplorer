@@ -29,15 +29,15 @@ public class AttackStyle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PS4ControllerCheck.IsL2Pressed())
-        {
-            ChangeToLeftAttackStyle();
-        }
+        //if (PS4ControllerCheck.IsL2Pressed())
+        //{
+        //    ChangeToLeftAttackStyle();
+        //}
 
-        if (PS4ControllerCheck.IsR2Pressed())
-        {
-            ChangeToRightAttackStyle();
-        }
+        //if (PS4ControllerCheck.IsR2Pressed())
+        //{
+        //    ChangeToRightAttackStyle();
+        //}
     }
 
     private void ChangeToRightAttackStyle()
