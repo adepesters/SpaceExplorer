@@ -11,11 +11,13 @@ public class MoveAroundPlayer : MonoBehaviour
     bool isImmobile;
 
     Player player;
+    float realDepth;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        realDepth = transform.position.z; // necessary, otherwise the move towards resets the depth to 0
     }
 
     // Update is called once per frame
@@ -29,7 +31,8 @@ public class MoveAroundPlayer : MonoBehaviour
                 moveAround = StartCoroutine(MoveAround());
             }
 
-            transform.position = Vector2.MoveTowards(transform.position, target, enemySpeed * Time.deltaTime);
+            transform.position = new Vector3(Vector2.MoveTowards(transform.position, target, enemySpeed * Time.deltaTime).x,
+            Vector2.MoveTowards(transform.position, target, enemySpeed * Time.deltaTime).y, realDepth);
         }
     }
 
