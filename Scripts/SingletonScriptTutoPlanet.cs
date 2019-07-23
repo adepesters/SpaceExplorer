@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingletonScript : MonoBehaviour
+public class SingletonScriptTutoPlanet : MonoBehaviour
 {
-
     void Awake()
     {
         if (FindObjectsOfType(GetType()).Length > 1)
@@ -17,5 +16,4 @@ public class SingletonScript : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
 }
