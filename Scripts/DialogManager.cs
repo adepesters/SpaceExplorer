@@ -70,18 +70,17 @@ public class DialogManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(questionWasAsked);
         //Debug.Log(canShow);
-        //Debug.Log(currentLineIndex);
         counterNextLineAutomatedDialog += Time.fixedDeltaTime;
         if (CanShow)
         {
             if ((dontNeedToPressXToPass && counterNextLineAutomatedDialog > 5f && currentLineIndex > -1 ||
                 dontNeedToPressXToLaunch && currentLineIndex == -1 ||
-            PS4ControllerCheck.IsXPressed()) && makeLineAppear == null)
+            PS4ControllerCheck.IsXPressed()) && makeLineAppear == null && !(isAQuestion.Length != 0 && currentLineIndex == dialogLines.Length - 1))
             {
                 actionBoxManager.gameObject.GetComponent<Canvas>().enabled = false;
                 currentLineIndex++;
-                //Debug.Log("length:" + dialogLines.Length);
                 if (currentLineIndex >= dialogLines.Length)
                 {
                     MakeGameObjectsMobile();
@@ -186,6 +185,11 @@ public class DialogManager : MonoBehaviour
                 {
                     parent.BroadcastMessage("SetSelectedChoice", new Vector2(1, selectedChoice));
                     questionWasAsked = false;
+                    MakeGameObjectsMobile();
+                    dialogPanel.SetActive(false);
+                    currentDialogIsDone = true;
+                    dontNeedToPressXToLaunch = false;
+                    dontNeedToPressXToPass = false;
                 }
             }
         }
@@ -231,11 +235,17 @@ public class DialogManager : MonoBehaviour
 
     IEnumerator MakeQuestionAppear(string line)
     {
+        int carIndex = 0;
         foreach (char caracter in line)
         {
             dialogText.text += caracter;
             GetComponent<AudioSource>().PlayOneShot(blipSound, blipSoundVolume);
             yield return new WaitForSeconds(textDisplaySpeed);
+            carIndex++;
+        }
+        if (carIndex == line.Length)
+        {
+            questionWasAsked = true;
         }
         dialogText.text += "\n" + "<color=yellow>" + choices[0] + "</color>";
         for (int i = 1; i < choices.Count; i++)
@@ -243,7 +253,6 @@ public class DialogManager : MonoBehaviour
             dialogText.text += "\n" + "<color=grey>" + choices[i] + "</color>";
         }
         makeQuestionAppear = null;
-        questionWasAsked = true;
     }
 
     public void ShowDialog(string[] currentLines, bool[] isQuestion, List<string> currentChoices, GameObject currentParent)
