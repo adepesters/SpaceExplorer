@@ -102,6 +102,7 @@ public class Player : MonoBehaviour
     float layer3Depth = 50f;
     Rigidbody2D[] rigidbodyObjects;
     Collider2D[] colliderObjects;
+    bool cantCross = false;
 
     // display position on Space UI
     GameObject xcoordinate, ycoordinate, zcoordinate;
@@ -175,6 +176,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(cantCross);
         if (ForceImmobility)
         {
             GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
@@ -190,15 +192,18 @@ public class Player : MonoBehaviour
             Fire();
             //AvoidAndFire();
 
-            MoveAcrossLayers();
-            if (moveToBackLayer)
+            if (!cantCross)
             {
-                MoveToBackLayer();
-            }
+                MoveAcrossLayers();
+                if (moveToBackLayer)
+                {
+                    MoveToBackLayer();
+                }
 
-            if (moveToFrontLayer)
-            {
-                MoveToFrontLayer();
+                if (moveToFrontLayer)
+                {
+                    MoveToFrontLayer();
+                }
             }
 
             if (damagePlayerVisualInstance != null)
@@ -587,6 +592,11 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (collision.gameObject.transform.parent.gameObject.name.Contains("Planet"))
+        {
+            cantCross = true;
+        }
+
         if (collision.gameObject.name.Contains("Planet"))
         {
             if (gameSession.HasBeenCompleted[collision.gameObject.GetComponent<Planet>().PlanetID])
@@ -610,6 +620,11 @@ public class Player : MonoBehaviour
         //        starfieldGenerator.SetCanSpawn(true);
         //    }
         //}
+
+        if (collision.gameObject.transform.parent.gameObject.name.Contains("Planet"))
+        {
+            cantCross = false;
+        }
     }
 
     private void ProcessHit(DamageDealer damageDealer, int layer_collider)
