@@ -8,7 +8,8 @@ public class LoadingScreen : MonoBehaviour
 {
     public static LoadingScreen Instance;
 
-    [SerializeField] Text loadingPlanetText;
+    [SerializeField] Text loadingPlanetText1;
+    [SerializeField] Text loadingPlanetText2;
     [SerializeField] Text loadingSpaceText;
 
     GameSession gameSession;
@@ -119,16 +120,25 @@ public class LoadingScreen : MonoBehaviour
     {
         // Enable the loading screen:
         gameObject.SetActive(true);
-        if (sceneName.Contains("Planet"))
+        if (sceneName == "Planet 1")
         {
             loadingSpaceText.GetComponent<Text>().enabled = false;
-            loadingPlanetText.GetComponent<Text>().enabled = true;
+            loadingPlanetText1.GetComponent<Text>().enabled = true;
+            loadingPlanetText2.GetComponent<Text>().enabled = false;
+            gameSession.SceneType = "planet";
+        }
+        if (sceneName == "Planet 2 Jungle")
+        {
+            loadingSpaceText.GetComponent<Text>().enabled = false;
+            loadingPlanetText1.GetComponent<Text>().enabled = false;
+            loadingPlanetText2.GetComponent<Text>().enabled = true;
             gameSession.SceneType = "planet";
         }
         if (sceneName.Contains("Space"))
         {
             loadingSpaceText.GetComponent<Text>().enabled = true;
-            loadingPlanetText.GetComponent<Text>().enabled = false;
+            loadingPlanetText1.GetComponent<Text>().enabled = false;
+            loadingPlanetText2.GetComponent<Text>().enabled = false;
             gameSession.SceneType = "space";
         }
         sceneToLoad = sceneName;
