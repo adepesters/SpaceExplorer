@@ -76,18 +76,62 @@ public class DialogActivator : MonoBehaviour
     {
         if (collision.gameObject.layer == 8) // player
         {
-            canActivate = true;
-            if (dontNeedToPressXToLaunch)
+            if (GetComponent<DialogDependencyPlanetScan>() == null)
             {
-                dialogManager.DontNeedToPressXToLaunch = true;
+                canActivate = true;
+                if (dontNeedToPressXToLaunch)
+                {
+                    dialogManager.DontNeedToPressXToLaunch = true;
+                }
+                else
+                {
+                    EnableActionBox();
+                }
+                if (dontNeedToPressXToPass)
+                {
+                    dialogManager.DontNeedToPressXToPass = true;
+                }
             }
-            else
+            if (GetComponent<DialogDependencyPlanetScan>() != null && !GetComponent<DialogDependencyPlanetScan>().CanActivate)
             {
                 EnableActionBox();
             }
-            if (dontNeedToPressXToPass)
+            if (GetComponent<DialogDependencyPlanetScan>() != null && GetComponent<DialogDependencyPlanetScan>().CanActivate)
             {
-                dialogManager.DontNeedToPressXToPass = true;
+                EnableActionBox();
+                canActivate = true;
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 8) // player
+        {
+            if (GetComponent<DialogDependencyPlanetScan>() == null)
+            {
+                canActivate = true;
+                if (dontNeedToPressXToLaunch)
+                {
+                    dialogManager.DontNeedToPressXToLaunch = true;
+                }
+                else
+                {
+                    EnableActionBox();
+                }
+                if (dontNeedToPressXToPass)
+                {
+                    dialogManager.DontNeedToPressXToPass = true;
+                }
+            }
+            if (GetComponent<DialogDependencyPlanetScan>() != null && !GetComponent<DialogDependencyPlanetScan>().CanActivate)
+            {
+                EnableActionBox();
+            }
+            if (GetComponent<DialogDependencyPlanetScan>() != null && GetComponent<DialogDependencyPlanetScan>().CanActivate)
+            {
+                EnableActionBox();
+                canActivate = true;
             }
         }
     }

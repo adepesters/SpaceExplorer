@@ -23,7 +23,6 @@ public class ActionBoxManager : MonoBehaviour
     void Update()
     {
         panel.GetComponent<RectTransform>().transform.position = Camera.main.WorldToScreenPoint(pos + Offset);
-
     }
 
     public void SetPos(Vector3 currentPos)
