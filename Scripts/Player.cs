@@ -106,6 +106,8 @@ public class Player : MonoBehaviour
     // display position on Space UI
     GameObject xcoordinate, ycoordinate, zcoordinate;
 
+    bool forceImmobility = false;
+
     public float LaserSpeed { get => laserSpeed; set => laserSpeed = value; }
     public float OriginalLaserSpeed { get => originalLaserSpeed; set => originalLaserSpeed = value; }
     public float LaserFiringPeriod { get => laserFiringPeriod; set => laserFiringPeriod = value; }
@@ -120,6 +122,7 @@ public class Player : MonoBehaviour
     public bool IsImmobile1 { get => isImmobile; set => isImmobile = value; }
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public int CurrentLayer { get => currentLayer; set => currentLayer = value; }
+    public bool ForceImmobility { get => forceImmobility; set => forceImmobility = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -172,24 +175,36 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Fire();
-        //AvoidAndFire();
-
-        MoveAcrossLayers();
-        if (moveToBackLayer)
+        if (ForceImmobility)
         {
-            MoveToBackLayer();
+            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+        else
+        {
+            GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
-        if (moveToFrontLayer)
+        if (!ForceImmobility)
         {
-            MoveToFrontLayer();
-        }
+            Move();
+            Fire();
+            //AvoidAndFire();
 
-        if (damagePlayerVisualInstance != null)
-        {
-            damagePlayerVisualInstance.gameObject.transform.position = transform.position;
+            MoveAcrossLayers();
+            if (moveToBackLayer)
+            {
+                MoveToBackLayer();
+            }
+
+            if (moveToFrontLayer)
+            {
+                MoveToFrontLayer();
+            }
+
+            if (damagePlayerVisualInstance != null)
+            {
+                damagePlayerVisualInstance.gameObject.transform.position = transform.position;
+            }
         }
 
         // update game session
