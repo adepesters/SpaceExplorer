@@ -91,9 +91,12 @@ public class MusicController : MonoBehaviour
         {
             foreach (GameObject spawningEnemyArea in spawningEnemyAreas)
             {
-                if (spawningEnemyArea.GetComponent<SpawningEnemyArea>().CurrentlyFighting)
+                if (spawningEnemyArea.GetComponent<SpawningEnemyArea>() != null)
                 {
-                    fighting++;
+                    if (spawningEnemyArea.GetComponent<SpawningEnemyArea>().CurrentlyFighting)
+                    {
+                        fighting++;
+                    }
                 }
             }
         }
