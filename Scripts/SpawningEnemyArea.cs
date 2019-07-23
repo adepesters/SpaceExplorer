@@ -20,7 +20,7 @@ public class SpawningEnemyArea : MonoBehaviour
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
     int maxNumEnemiesZone = 1;
-    const string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
+    string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
     float spawningFrequencyZone = 1f; //0.3f
@@ -66,10 +66,12 @@ public class SpawningEnemyArea : MonoBehaviour
         }
 
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        zoneEnemiesParent = GameObject.Find(ZONE_ENEMIES_PARENT);
+
+        // creating custom parent
+        zoneEnemiesParent = GameObject.Find("ZONE_ENEMIES_PARENT_Planet_" + SpawningEnemyAreaID);
         if (zoneEnemiesParent == null)
         {
-            zoneEnemiesParent = new GameObject(ZONE_ENEMIES_PARENT);
+            zoneEnemiesParent = new GameObject("ZONE_ENEMIES_PARENT_Planet_" + SpawningEnemyAreaID);
         }
 
         Color color = new Color(1f, 0.9243603f, 0.2028302f, 0);
