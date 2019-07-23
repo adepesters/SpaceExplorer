@@ -150,7 +150,6 @@ public class GameSession : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(sceneType);
         if (SceneManager.GetActiveScene().name.Contains("Space"))
         {
             sceneType = "space";

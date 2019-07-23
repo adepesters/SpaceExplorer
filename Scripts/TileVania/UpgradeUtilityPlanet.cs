@@ -251,9 +251,11 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                 {
                     //exitPlanet.GetComponent<Text>().color = Color.red;
                     //Debug.Log("exitPlanet");
+                    gameSession.SceneType = "space";
                     LoadingScreen.Instance.Show("Space Try");
                     Input.ResetInputAxes();
                     pauseController.IsPaused = false;
+                    //gameSession.SceneType = "space"; // this freezes the player once back in space for some reason...
                 }
                 else
                 {

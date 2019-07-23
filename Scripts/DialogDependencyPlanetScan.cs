@@ -12,19 +12,16 @@ public class DialogDependencyPlanetScan : MonoBehaviour
     int planetID;
 
     GameSession gameSession;
+    Player player;
 
     public bool CanActivate { get => canActivate; set => canActivate = value; }
-
-    // Start is called before the first frame update
-    void Awake()
-    {
-        offset = new Vector3(-2, 1.3f, 0);
-    }
 
     void Start()
     {
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         planetID = GetComponentInParent<Planet>().PlanetID;
+        offset = new Vector3(-2, 1.3f, 0);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,7 +32,6 @@ public class DialogDependencyPlanetScan : MonoBehaviour
             {
                 canActivate = false;
                 GameObject.FindWithTag("LockImage").GetComponent<Image>().enabled = true;
-                GameObject.FindWithTag("LockImage").GetComponent<RectTransform>().transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
             }
             else // player destroyed all enemies and can scan planet
             {
@@ -53,7 +49,6 @@ public class DialogDependencyPlanetScan : MonoBehaviour
             {
                 canActivate = false;
                 GameObject.FindWithTag("LockImage").GetComponent<Image>().enabled = true;
-                GameObject.FindWithTag("LockImage").GetComponent<RectTransform>().transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
             }
             else // player destroyed all enemies and can scan planet
             {

@@ -19,7 +19,7 @@ public class SpawningEnemyArea : MonoBehaviour
     bool enteredZone = false;
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
-    int maxNumEnemiesZone = 5;
+    int maxNumEnemiesZone = 1;
     const string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
@@ -51,7 +51,7 @@ public class SpawningEnemyArea : MonoBehaviour
 
     void Awake()
     {
-        string numbersOnly = Regex.Replace(this.gameObject.name, "[^0-9]", "");
+        string numbersOnly = Regex.Replace(this.gameObject.transform.parent.gameObject.name, "[^0-9]", "");
         SpawningEnemyAreaID = int.Parse(numbersOnly);
     }
 
@@ -179,7 +179,6 @@ public class SpawningEnemyArea : MonoBehaviour
     {
         while (EnteredZone)
         {
-            Debug.Log("ok");
             if (indexEnemiesZone < maxNumEnemiesZone &&
             GetComponent<ManualLayer>().Layer == player.CurrentLayer)
             {

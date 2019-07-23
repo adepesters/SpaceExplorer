@@ -11,6 +11,8 @@ public class ChoicesConsequencesPlanet1 : MonoBehaviour
     GameSession gameSession;
     DataManager dataManager;
 
+    [SerializeField] GameObject enemySpawnerZone;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,12 +36,14 @@ public class ChoicesConsequencesPlanet1 : MonoBehaviour
     private void Yes()
     {
         // Debug.Log("yes");
-        dataManager.SaveSpaceData();
+        //dataManager.SaveSpaceData();
+        gameSession.SceneType = "planet";
         LoadingScreen.Instance.Show("Planet 1");
         //SceneManager.LoadScene("Planet 1");
         hasAnswered = 0;
-        gameSession.SceneType = "planet";
         gameSession.CurrentPlanetID = 1;
+
+        //enemySpawnerZone.SetActive(true);
     }
 
     private void No()

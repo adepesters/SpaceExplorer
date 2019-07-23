@@ -159,7 +159,7 @@ public class Player : MonoBehaviour
 
         transform.position = gameSession.PositionSpacePlayer;
 
-        currentBase = GameObject.Find("Home Planet 0").gameObject;
+        currentBase = GameObject.Find("Planet 1").gameObject;
         //transform.position = currentBase.transform.position;
         //oldPos = currentBase.transform.position;
         oldPos = transform.position;
@@ -176,7 +176,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(cantCross);
         if (ForceImmobility)
         {
             GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
