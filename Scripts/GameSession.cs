@@ -84,7 +84,7 @@ public class GameSession : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
 
-        if (SceneManager.GetActiveScene().name == "Space")
+        if (SceneManager.GetActiveScene().name.Contains("Space"))
         {
             sceneType = "space";
         }
@@ -115,9 +115,9 @@ public class GameSession : MonoBehaviour
             //Vector3 initialPos = GameObject.Find("Zone 3").gameObject.transform.position;
             Vector3 initialPos = player.transform.position;
             positionSpacePlayer = new Vector3(initialPos.x, initialPos.y, 0);
-            maxFuelSpacePlayer = 20000f;
+            maxFuelSpacePlayer = 2000f;
             currentFuelSpacePlayer = maxFuelSpacePlayer;
-            maxHealthSpacePlayer = 6000;
+            maxHealthSpacePlayer = 1000;
             currentHealthSpacePlayer = maxHealthSpacePlayer;
 
             // initializes pointer data
@@ -150,6 +150,18 @@ public class GameSession : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(sceneType);
+        if (SceneManager.GetActiveScene().name.Contains("Space"))
+        {
+            sceneType = "space";
+        }
+        else if (SceneManager.GetActiveScene().name.Contains("Planet"))
+        {
+            sceneType = "planet";
+            string numbersOnly = Regex.Replace(SceneManager.GetActiveScene().name, "[^0-9]", "");
+            currentPlanetID = int.Parse(numbersOnly);
+        }
+
         if (sceneType == "space")
         {
             if (GameObject.FindWithTag("Player") != null)

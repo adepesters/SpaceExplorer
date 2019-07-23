@@ -11,6 +11,8 @@ public class LoadingScreen : MonoBehaviour
     [SerializeField] Text loadingPlanetText;
     [SerializeField] Text loadingSpaceText;
 
+    GameSession gameSession;
+
     // Make sure the loading screen shows for at least 1 second:
     //private const float MIN_TIME_TO_SHOW = 1f;
     // The reference to the current loading operation running in the background:
@@ -46,6 +48,7 @@ public class LoadingScreen : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
         // Save the bar fill's initial local scale:
         //barFillLocalScale = barFillRectTransform.localScale;
         Hide();
@@ -54,7 +57,7 @@ public class LoadingScreen : MonoBehaviour
     private void Update()
     {
         Counter += Time.fixedDeltaTime;
-        if (counter > 1f)
+        if (counter > 2f)
         {
             SceneManager.LoadScene(sceneToLoad);
         }
@@ -120,11 +123,13 @@ public class LoadingScreen : MonoBehaviour
         {
             loadingSpaceText.GetComponent<Text>().enabled = false;
             loadingPlanetText.GetComponent<Text>().enabled = true;
+            gameSession.SceneType = "planet";
         }
         if (sceneName.Contains("Space"))
         {
             loadingSpaceText.GetComponent<Text>().enabled = true;
             loadingPlanetText.GetComponent<Text>().enabled = false;
+            gameSession.SceneType = "space";
         }
         sceneToLoad = sceneName;
         // Store the reference:
