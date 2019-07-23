@@ -9,6 +9,9 @@ public class DialogDependencyPlanetScan : MonoBehaviour
 
     Vector3 offset;
     bool canActivate = false;
+    int planetID;
+
+    GameSession gameSession;
 
     public bool CanActivate { get => canActivate; set => canActivate = value; }
 
@@ -18,11 +21,17 @@ public class DialogDependencyPlanetScan : MonoBehaviour
         offset = new Vector3(-2, 1.3f, 0);
     }
 
+    void Start()
+    {
+        gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+        planetID = GetComponentInParent<Planet>().PlanetID;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name.Contains("Player"))
         {
-            if (dialogDependency.GetComponent<SpawningEnemyArea>() != null) // player can't scan planet yet
+            if (!gameSession.IsCleaned[planetID]) // player can't scan planet yet
             {
                 canActivate = false;
                 GameObject.FindWithTag("LockImage").GetComponent<Image>().enabled = true;
@@ -40,7 +49,7 @@ public class DialogDependencyPlanetScan : MonoBehaviour
     {
         if (collision.gameObject.name.Contains("Player"))
         {
-            if (dialogDependency.GetComponent<SpawningEnemyArea>() != null) // player can't scan planet yet
+            if (!gameSession.IsCleaned[planetID]) // player can't scan planet yet
             {
                 canActivate = false;
                 GameObject.FindWithTag("LockImage").GetComponent<Image>().enabled = true;
