@@ -63,9 +63,12 @@ public class PauseController : MonoBehaviour
                 cam.GetComponent<Blur>().enabled = true;
 
                 // add player sprite in UI
-                playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
-                playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
-                originalSpriteScale.y, originalSpriteScale.z);
+                if (playerTileVania != null)
+                {
+                    playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
+                    playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
+                    originalSpriteScale.y, originalSpriteScale.z);
+                }
             }
             else
             {
