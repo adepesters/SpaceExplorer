@@ -93,7 +93,7 @@ public class Player : MonoBehaviour
     bool moveToBackLayer;
     bool moveToFrontLayer;
     Vector3 currentPosition;
-    float speedBridge = 80f;
+    float speedBridge = 80f; //6f;
     int currentLayer = 1;
     [SerializeField] AudioClip layerChange;
     float volumeSoundLayerChange = 0.2f;

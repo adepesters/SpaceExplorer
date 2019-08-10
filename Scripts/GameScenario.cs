@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameScenario : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPlanet1;
 
     void Awake()
     {
@@ -19,16 +18,4 @@ public class GameScenario : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //enemyPlanet1.GetComponent<Collider2D>().enabled = false;
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

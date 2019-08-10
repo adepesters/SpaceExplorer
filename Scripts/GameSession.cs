@@ -115,9 +115,9 @@ public class GameSession : MonoBehaviour
             //Vector3 initialPos = GameObject.Find("Zone 3").gameObject.transform.position;
             Vector3 initialPos = player.transform.position;
             positionSpacePlayer = new Vector3(initialPos.x, initialPos.y, 0);
-            maxFuelSpacePlayer = 2000f;
+            maxFuelSpacePlayer = 50000f;
             currentFuelSpacePlayer = maxFuelSpacePlayer;
-            maxHealthSpacePlayer = 1000;
+            maxHealthSpacePlayer = 30000;
             currentHealthSpacePlayer = maxHealthSpacePlayer;
 
             // initializes pointer data
@@ -131,7 +131,7 @@ public class GameSession : MonoBehaviour
         }
 
         // initializes planet player data
-        maxHealthPlanetPlayer = 100;
+        maxHealthPlanetPlayer = 1000;
         currentHealthPlanetPlayer = maxHealthPlanetPlayer;
         SwordDamage = 15;
     }
