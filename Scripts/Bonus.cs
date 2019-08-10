@@ -81,7 +81,7 @@ public class Bonus : MonoBehaviour
         {
             if (Vector3.Distance(player.transform.position, transform.position) < attractionDistance)
             {
-                transform.position = Vector2.MoveTowards(transform.position, player.transform.position, (bonusSpeed + accelerationAttraction) * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, (bonusSpeed + accelerationAttraction) * Time.deltaTime);
                 accelerationAttraction += accelerationAttraction;
                 if (transform.position.x == player.transform.position.x && transform.position.y == player.transform.position.y)
                 {
