@@ -85,10 +85,41 @@ public class Chest : MonoBehaviour
 
                     Vector3 bonusPos = new Vector3(transform.position.x + Random.Range(-0.3f, 0.3f), transform.position.y + Random.Range(-0.3f, 0.3f), transform.position.z - 0.01f);
                     GameObject bloodPixel = Instantiate(listOfBonuses[bonusIndex], bonusPos, Quaternion.identity, transform);
-                    bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 25f);
+                    bloodPixel.tag = gameObject.tag;
+                    if (planetID == 1)
+                    {
+                        if (transform.position.z < 2)
+                        {
+                            bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 25f);
+                        }
+                        if (transform.position.z < 7 && transform.position.z > 3)
+                        {
+                            bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 25f);
+                        }
+                        if (transform.position.z > 9)
+                        {
+                            bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 5f);
+                        }
+                    }
+                    if (planetID == 2)
+                    {
+                        if (transform.position.z < 2)
+                        {
+                            bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 5f);
+                        }
+                        if (transform.position.z < 7 && transform.position.z > 3)
+                        {
+                            bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 5f);
+                        }
+                        if (transform.position.z > 9)
+                        {
+                            bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 5f);
+                        }
+                    }
+
+                    //bloodPixel.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-5f, 5f), 15f);
                     //bloodPixel.GetComponent<Collider2D>().enabled = false;
                     bloodPixel.GetComponent<SpriteRenderer>().color = randomColor;
-                    bloodPixel.tag = gameObject.tag;
                 }
             }
         }
