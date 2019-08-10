@@ -11,6 +11,7 @@ public class PauseController : MonoBehaviour
     PauseMenuController pauseMenuController;
     GameSession gameSession;
     PlayerTileVania playerTileVania;
+    Player player;
 
     public bool IsPaused { get => isPaused; set => isPaused = value; }
 
@@ -20,6 +21,7 @@ public class PauseController : MonoBehaviour
 
     // player sprite in canvas
     [SerializeField] Image playerSprite;
+    //[SerializeField] Image playerSpaceSprite;
     Vector3 originalSpriteScale; // original scale of player sprite
 
     void Start()
@@ -39,6 +41,14 @@ public class PauseController : MonoBehaviour
                 playerSprite.GetComponent<RectTransform>().localScale.y, playerSprite.GetComponent<RectTransform>().localScale.z);
             }
         }
+        //if (gameSession.SceneType == "space")
+        //{
+        //    player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        //    if (playerSpaceSprite != null)
+        //    {
+
+        //    }
+        //}
     }
 
     // Update is called once per frame
@@ -88,6 +98,45 @@ public class PauseController : MonoBehaviour
                 }
             }
         }
+
+        //if (gameSession.SceneType == "space")
+        //{
+        //    if (IsPaused)
+        //    {
+        //        Time.timeScale = 0;
+        //        FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = false; // remove potential visible action box
+        //        GameObject.Find("Pause Menu Space").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
+        //                                                                                   // when we go from one page of the menu to the next
+        //                                                                                   // change cam settings
+        //        cam.GetComponent<DepthOfField>().aperture = 1;
+        //        cam.GetComponent<Blur>().enabled = true;
+
+        //        // add player sprite in UI
+        //        if (playerTileVania != null)
+        //        {
+        //            playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
+        //            playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
+        //            originalSpriteScale.y, originalSpriteScale.z);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Time.timeScale = 1;
+        //        if (GameObject.Find("Pause Menu Space") != null)
+        //        {
+        //            GameObject.Find("Pause Menu Space").GetComponent<Canvas>().enabled = false;
+        //        }
+
+        //        if (cam.gameObject != null)
+        //        {
+        //            cam.GetComponent<DepthOfField>().aperture = originalAperture;
+        //            if (cam.GetComponent<Blur>() != null)
+        //            {
+        //                cam.GetComponent<Blur>().enabled = false;
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     public bool IsGamePaused()
