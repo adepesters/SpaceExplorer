@@ -41,10 +41,10 @@ public class YellowRadar : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (target.GetComponent<ManualLayer>().Layer != player.CurrentLayer) // destroys radar when target not on same layer than player
-        {
-            Destroy(gameObject);
-        }
+        //if (target.GetComponent<ManualLayer>().Layer != player.CurrentLayer) // destroys radar when target not on same layer than player
+        //{
+        //    Destroy(gameObject);
+        //}
 
         distanceThreshold = Mathf.Floor(Vector2.Distance(player.transform.position, target.transform.position) / 100);
 
@@ -63,32 +63,41 @@ public class YellowRadar : MonoBehaviour
         {
             case 0:
                 GetComponent<Image>().sprite = yellowRadarSprites[3];
-                if (gameSession.IsCleaned[planetID])
-                {
-                    GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1);
-                }
+                AdjustColor();
                 break;
             case 1:
                 GetComponent<Image>().sprite = yellowRadarSprites[2];
-                if (gameSession.IsCleaned[planetID])
-                {
-                    GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1);
-                }
+                AdjustColor();
                 break;
             case 2:
                 GetComponent<Image>().sprite = yellowRadarSprites[1];
-                if (gameSession.IsCleaned[planetID])
-                {
-                    GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1);
-                }
+                AdjustColor();
                 break;
             case 3:
                 GetComponent<Image>().sprite = yellowRadarSprites[0];
-                if (gameSession.IsCleaned[planetID])
-                {
-                    GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1);
-                }
+                AdjustColor();
                 break;
+        }
+
+    }
+
+    private void AdjustColor()
+    {
+        if (gameSession.IsCleaned[planetID] && target.GetComponent<ManualLayer>().Layer == player.CurrentLayer)
+        {
+            GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 1f);
+        }
+        else if (gameSession.IsCleaned[planetID] && target.GetComponent<ManualLayer>().Layer != player.CurrentLayer)
+        {
+            GetComponent<Image>().color = new Color(0.4708081f, 0.8679245f, 0.6094226f, 0.3f);
+        }
+        else if (!gameSession.IsCleaned[planetID] && target.GetComponent<ManualLayer>().Layer != player.CurrentLayer)
+        {
+            GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.3f);
+        }
+        else if (!gameSession.IsCleaned[planetID] && target.GetComponent<ManualLayer>().Layer == player.CurrentLayer)
+        {
+            GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         }
     }
 

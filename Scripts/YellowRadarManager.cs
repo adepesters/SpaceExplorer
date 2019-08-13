@@ -31,23 +31,24 @@ public class YellowRadarManager : MonoBehaviour
     {
         foreach (YellowRadarActivator target in targets)
         {
+            Debug.Log(Vector2.Distance(target.transform.position, player.transform.position));
             if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
             {
-                if (target.GetComponent<ManualLayer>().Layer == player.CurrentLayer)
+                //if (target.GetComponent<ManualLayer>().Layer == player.CurrentLayer)
+                //{
+                if (!targetsFound.Contains(target.gameObject))
                 {
-                    if (!targetsFound.Contains(target.gameObject))
-                    {
-                        //if (!gameSession.HasBeenDiscovered[target.gameObject.GetComponent<Planet>().PlanetID])
-                        //{
-                        targetsFound.Add(target.gameObject);
-                        StartCoroutine(DisplayYellowRadar(target));
-                        //}
-                    }
+                    //if (!gameSession.HasBeenDiscovered[target.gameObject.GetComponent<Planet>().PlanetID])
+                    //{
+                    targetsFound.Add(target.gameObject);
+                    StartCoroutine(DisplayYellowRadar(target));
+                    //}
                 }
-                else
-                {
-                    targetsFound.Remove(target.gameObject);
-                }
+                //}
+                //else
+                //{
+                //targetsFound.Remove(target.gameObject);
+                //}
             }
             else
             {
