@@ -14,6 +14,7 @@ public class YellowRadarManager : MonoBehaviour
     Player player;
 
     float detectionDistance = 600f;
+    float discoveryThresholdDist = 15f;
 
     GameSession gameSession;
 
@@ -31,8 +32,8 @@ public class YellowRadarManager : MonoBehaviour
     {
         foreach (YellowRadarActivator target in targets)
         {
-            Debug.Log(Vector2.Distance(target.transform.position, player.transform.position));
-            if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance)
+            // if player is close enough to target but not too close
+            if (Vector2.Distance(target.transform.position, player.transform.position) < detectionDistance && Vector2.Distance(target.transform.position, player.transform.position) > discoveryThresholdDist)
             {
                 //if (target.GetComponent<ManualLayer>().Layer == player.CurrentLayer)
                 //{
