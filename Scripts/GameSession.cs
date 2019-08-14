@@ -15,12 +15,19 @@ public class GameSession : MonoBehaviour
     public int counterStarSilver = 0;
     public int counterStarGold = 0;
 
-    int counterPixelBlood = 2000;
+    int counterPixelBlood = 100;
 
     // price for upgrade for planet player
     int healPrice = 2;
     int upgradeHealthPrice = 15;
     int upgradeStrengthPrice = 20;
+
+    // price for upgrade for space player
+    int restoreShieldPrice = 2;
+    int restoreFuelPrice = 5;
+    int upgradeShieldPrice = 15;
+    int upgradeAttackPrice = 20;
+    int upgradeFuelPrice = 15;
 
     Player player;
 
@@ -45,6 +52,12 @@ public class GameSession : MonoBehaviour
     public int UpgradeHealthPrice { get => upgradeHealthPrice; set => upgradeHealthPrice = value; }
     public int UpgradeStrengthPrice { get => upgradeStrengthPrice; set => upgradeStrengthPrice = value; }
     public int CurrentLayerSpacePlayer { get => currentLayerSpacePlayer; set => currentLayerSpacePlayer = value; }
+    public int LaserDamage { get => laserDamage; set => laserDamage = value; }
+    public int RestoreShieldPrice { get => restoreShieldPrice; set => restoreShieldPrice = value; }
+    public int RestoreFuelPrice { get => restoreFuelPrice; set => restoreFuelPrice = value; }
+    public int UpgradeShieldPrice { get => upgradeShieldPrice; set => upgradeShieldPrice = value; }
+    public int UpgradeAttackPrice { get => upgradeAttackPrice; set => upgradeAttackPrice = value; }
+    public int UpgradeFuelPrice { get => upgradeFuelPrice; set => upgradeFuelPrice = value; }
 
     [SerializeField] string sceneType = "space"; // "space" or "planet"
 
@@ -54,6 +67,7 @@ public class GameSession : MonoBehaviour
     float maxFuelSpacePlayer;
     int currentHealthSpacePlayer;
     int maxHealthSpacePlayer;
+    int laserDamage = 200;
 
     // planet player info to save/load
     int currentHealthPlanetPlayer;

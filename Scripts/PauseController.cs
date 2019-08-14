@@ -72,13 +72,13 @@ public class PauseController : MonoBehaviour
                 cam.GetComponent<DepthOfField>().aperture = 1;
                 cam.GetComponent<Blur>().enabled = true;
 
-                // add player sprite in UI
-                if (playerTileVania != null)
-                {
-                    playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
-                    playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
-                    originalSpriteScale.y, originalSpriteScale.z);
-                }
+                //// add player sprite in UI
+                //if (playerTileVania != null)
+                //{
+                //    playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
+                //    playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
+                //    originalSpriteScale.y, originalSpriteScale.z);
+                //}
             }
             else
             {
@@ -99,44 +99,44 @@ public class PauseController : MonoBehaviour
             }
         }
 
-        //if (gameSession.SceneType == "space")
-        //{
-        //    if (IsPaused)
-        //    {
-        //        Time.timeScale = 0;
-        //        FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = false; // remove potential visible action box
-        //        GameObject.Find("Pause Menu Space").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
-        //                                                                                   // when we go from one page of the menu to the next
-        //                                                                                   // change cam settings
-        //        cam.GetComponent<DepthOfField>().aperture = 1;
-        //        cam.GetComponent<Blur>().enabled = true;
+        if (gameSession.SceneType == "space")
+        {
+            if (IsPaused)
+            {
+                Time.timeScale = 0;
+                FindObjectOfType<ActionBoxManager>().gameObject.GetComponent<Canvas>().enabled = false; // remove potential visible action box
+                GameObject.Find("Pause Menu Space").GetComponent<Canvas>().enabled = true; // I added this background to prevent some clipping 
+                                                                                           // when we go from one page of the menu to the next
+                                                                                           // change cam settings
+                cam.GetComponent<DepthOfField>().aperture = 1;
+                cam.GetComponent<Blur>().enabled = true;
 
-        //        // add player sprite in UI
-        //        if (playerTileVania != null)
-        //        {
-        //            playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
-        //            playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
-        //            originalSpriteScale.y, originalSpriteScale.z);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Time.timeScale = 1;
-        //        if (GameObject.Find("Pause Menu Space") != null)
-        //        {
-        //            GameObject.Find("Pause Menu Space").GetComponent<Canvas>().enabled = false;
-        //        }
+                // add player sprite in UI
+                if (playerTileVania != null)
+                {
+                    playerSprite.GetComponent<Image>().sprite = playerTileVania.GetComponentInChildren<SpriteRenderer>().sprite;
+                    playerSprite.GetComponent<RectTransform>().localScale = new Vector3(originalSpriteScale.x * Mathf.Sign(playerTileVania.transform.localScale.x),
+                    originalSpriteScale.y, originalSpriteScale.z);
+                }
+            }
+            else
+            {
+                Time.timeScale = 1;
+                if (GameObject.Find("Pause Menu Space") != null)
+                {
+                    GameObject.Find("Pause Menu Space").GetComponent<Canvas>().enabled = false;
+                }
 
-        //        if (cam.gameObject != null)
-        //        {
-        //            cam.GetComponent<DepthOfField>().aperture = originalAperture;
-        //            if (cam.GetComponent<Blur>() != null)
-        //            {
-        //                cam.GetComponent<Blur>().enabled = false;
-        //            }
-        //        }
-        //    }
-        //}
+                if (cam.gameObject != null)
+                {
+                    cam.GetComponent<DepthOfField>().aperture = originalAperture;
+                    if (cam.GetComponent<Blur>() != null)
+                    {
+                        cam.GetComponent<Blur>().enabled = false;
+                    }
+                }
+            }
+        }
     }
 
     public bool IsGamePaused()

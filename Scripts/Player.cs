@@ -224,6 +224,8 @@ public class Player : MonoBehaviour
         ycoordinate.GetComponent<Text>().text = modifiedY.ToString();
         float modifiedZ = 100 + (int)transform.position.z * 25;
         zcoordinate.GetComponent<Text>().text = modifiedZ.ToString();
+
+        laserDamage = gameSession.LaserDamage;
     }
 
     private void MoveToFrontLayer()
