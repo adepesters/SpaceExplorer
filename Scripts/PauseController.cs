@@ -12,6 +12,7 @@ public class PauseController : MonoBehaviour
     GameSession gameSession;
     PlayerTileVania playerTileVania;
     Player player;
+    DialogManager dialogManager;
 
     public bool IsPaused { get => isPaused; set => isPaused = value; }
 
@@ -29,6 +30,7 @@ public class PauseController : MonoBehaviour
         pauseMenuController = FindObjectOfType<PauseMenuController>();
         cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         gameSession = GameObject.FindWithTag("GameSession").GetComponent<GameSession>();
+        dialogManager = FindObjectOfType<DialogManager>();
 
         originalAperture = cam.GetComponent<DepthOfField>().aperture;
 
@@ -54,7 +56,7 @@ public class PauseController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.JoystickButton13))
+        if (Input.GetKeyDown(KeyCode.JoystickButton13) && !dialogManager.transform.GetChild(0).gameObject.activeInHierarchy)
         {
             IsPaused = !IsPaused;
             pauseMenuController.SetIndexMenuPage(0);
