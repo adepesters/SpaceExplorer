@@ -43,6 +43,8 @@ public class DialogManager : MonoBehaviour
     float counterNextLineAutomatedDialog; // how much time between lines of dialog when it passes automatically
     float timeBeforeNextLine = 5f;
 
+    int idx = 0;
+
     public bool CanShow { get => canShow; set => canShow = value; }
     public bool DontNeedToPressXToLaunch { get => dontNeedToPressXToLaunch; set => dontNeedToPressXToLaunch = value; }
     public Sprite AvatarSprite { get => avatarSprite; set => avatarSprite = value; }
@@ -71,6 +73,7 @@ public class DialogManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(1.0f / Time.deltaTime);
         //Debug.Log(questionWasAsked);
         //Debug.Log(canShow);
         counterNextLineAutomatedDialog += Time.fixedDeltaTime;
@@ -140,6 +143,7 @@ public class DialogManager : MonoBehaviour
 
                             dialogText.text = "";
                             makeLineAppear = StartCoroutine(MakeLineAppear(dialogLines[currentLineIndex]));
+
                         }
                     }
                 }
@@ -224,16 +228,38 @@ public class DialogManager : MonoBehaviour
             textDisplaySpeed = 0.04f;
             blipSoundVolume = 1f;
         }
+
+        // this allows to show the entire line if x is pressed while line is unrolling caracter by caracter
+        if (PS4ControllerCheck.IsXPressed() && idx != 0 && currentLineIndex < dialogLines.Length && makeLineAppear != null)
+        {
+            dialogText.text = dialogLines[currentLineIndex];
+            StopCoroutine(makeLineAppear);
+            makeLineAppear = null;
+        }
+
     }
 
     IEnumerator MakeLineAppear(string line)
     {
         selectedChoice = 0;
+        var words = line.Split(" "[0]);
+
+        idx = 0;
         foreach (char caracter in line)
+        //foreach (string word in words)
         {
+            //Debug.Log(idx);
+            if (PS4ControllerCheck.IsXPressed() && idx != 0)
+            {
+                dialogText.text = line;
+                break;
+            }
+            //dialogText.text += word + " ";
             dialogText.text += caracter;
             GetComponent<AudioSource>().PlayOneShot(blipSound, blipSoundVolume);
             yield return new WaitForSeconds(textDisplaySpeed);
+            idx++;
+            //yield return new WaitForEndOfFrame();
         }
         makeLineAppear = null;
         counterNextLineAutomatedDialog = 0f;
@@ -246,7 +272,8 @@ public class DialogManager : MonoBehaviour
         {
             dialogText.text += caracter;
             GetComponent<AudioSource>().PlayOneShot(blipSound, blipSoundVolume);
-            yield return new WaitForSeconds(textDisplaySpeed);
+            //yield return new WaitForSeconds(textDisplaySpeed);
+            yield return new WaitForEndOfFrame();
             carIndex++;
         }
         if (carIndex == line.Length)
