@@ -20,6 +20,7 @@ public class HealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        slider.maxValue = gameSession.MaxHealthSpacePlayer;
         slider.value = gameSession.CurrentHealthSpacePlayer;
     }
 }

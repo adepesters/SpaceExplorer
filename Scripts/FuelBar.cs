@@ -20,6 +20,7 @@ public class FuelBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        slider.maxValue = gameSession.MaxFuelSpacePlayer;
         slider.value = gameSession.CurrentFuelSpacePlayer;
     }
 }
