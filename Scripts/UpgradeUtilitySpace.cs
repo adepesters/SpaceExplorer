@@ -84,8 +84,8 @@ public class UpgradeUtilitySpace : MonoBehaviour
 
         if (pauseController.IsGamePaused())
         {
-            counterUpgrade -= Time.deltaTime;
-            counterMove += Time.deltaTime;
+            counterUpgrade -= Time.fixedDeltaTime;
+            counterMove += Time.fixedDeltaTime;
 
             if (PS4ControllerCheck.DiscreteMoveUp() && selectedButton == "attackUpgrade" && counterMove > 0.1f)
             {
