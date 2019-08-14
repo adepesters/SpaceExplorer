@@ -84,8 +84,8 @@ public class UpgradeUtilitySpace : MonoBehaviour
 
         if (pauseController.IsGamePaused())
         {
-            counterUpgrade -= Time.fixedDeltaTime;
-            counterMove += Time.fixedDeltaTime;
+            counterUpgrade -= Time.deltaTime;
+            counterMove += Time.deltaTime;
 
             if (PS4ControllerCheck.DiscreteMoveUp() && selectedButton == "attackUpgrade" && counterMove > 0.1f)
             {
@@ -271,7 +271,7 @@ public class UpgradeUtilitySpace : MonoBehaviour
                         gameSession.CounterPixelBlood -= gameSession.UpgradeShieldPrice;
                         gameSession.MaxHealthSpacePlayer += 50;
                         counterUpgrade = timeBetweenUpgrade;
-                        timeBetweenUpgrade -= 0.002f;
+                        timeBetweenUpgrade -= 0.03f;
                         timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
                     }
                 }
@@ -295,7 +295,7 @@ public class UpgradeUtilitySpace : MonoBehaviour
                         gameSession.CounterPixelBlood -= gameSession.UpgradeFuelPrice;
                         gameSession.MaxFuelSpacePlayer += 50;
                         counterUpgrade = timeBetweenUpgrade;
-                        timeBetweenUpgrade -= 0.002f;
+                        timeBetweenUpgrade -= 0.03f;
                         timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
                     }
                 }
@@ -319,7 +319,7 @@ public class UpgradeUtilitySpace : MonoBehaviour
                         gameSession.CounterPixelBlood -= gameSession.UpgradeAttackPrice;
                         gameSession.LaserDamage += 5;
                         counterUpgrade = timeBetweenUpgrade;
-                        timeBetweenUpgrade -= 0.002f;
+                        timeBetweenUpgrade -= 0.03f;
                         timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
                     }
                 }
@@ -345,8 +345,8 @@ public class UpgradeUtilitySpace : MonoBehaviour
                             gameSession.CounterPixelBlood -= gameSession.RestoreShieldPrice;
                             gameSession.CurrentHealthSpacePlayer += 50;
                             counterUpgrade = timeBetweenUpgrade;
-                            timeBetweenUpgrade -= 0.002f;
-                            timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
+                            timeBetweenUpgrade -= 0.03f;
+                            timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.001f, 0.1f);
                         }
                     }
                 }
@@ -372,7 +372,7 @@ public class UpgradeUtilitySpace : MonoBehaviour
                             gameSession.CounterPixelBlood -= gameSession.RestoreFuelPrice;
                             gameSession.CurrentFuelSpacePlayer += 50;
                             counterUpgrade = timeBetweenUpgrade;
-                            timeBetweenUpgrade -= 0.002f;
+                            timeBetweenUpgrade -= 0.03f;
                             timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
                         }
                     }

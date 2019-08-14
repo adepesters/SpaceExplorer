@@ -182,7 +182,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                         gameSession.CounterPixelBlood -= gameSession.UpgradeHealthPrice;
                         gameSession.MaxHealthPlanetPlayer++;
                         counterUpgrade = timeBetweenUpgrade;
-                        timeBetweenUpgrade -= 0.002f;
+                        timeBetweenUpgrade -= 0.03f;
                         timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
                     }
                 }
@@ -206,7 +206,7 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                         gameSession.CounterPixelBlood -= gameSession.UpgradeStrengthPrice;
                         gameSession.SwordDamage++;
                         counterUpgrade = timeBetweenUpgrade;
-                        timeBetweenUpgrade -= 0.002f;
+                        timeBetweenUpgrade -= 0.03f;
                         timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
                     }
                 }
@@ -232,8 +232,8 @@ public class UpgradeUtilityPlanet : MonoBehaviour
                             gameSession.CounterPixelBlood -= gameSession.HealPrice;
                             gameSession.CurrentHealthPlanetPlayer++;
                             counterUpgrade = timeBetweenUpgrade;
-                            timeBetweenUpgrade -= 0.002f;
-                            timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.01f, 0.1f);
+                            timeBetweenUpgrade -= 0.03f;
+                            timeBetweenUpgrade = Mathf.Clamp(timeBetweenUpgrade, 0.001f, 0.1f);
                         }
                     }
                 }
