@@ -43,7 +43,7 @@ public class DialogManager : MonoBehaviour
     float counterNextLineAutomatedDialog; // how much time between lines of dialog when it passes automatically
     float timeBeforeNextLine = 5f;
 
-    int idx = 0;
+    int carIndex = 0;
 
     public bool CanShow { get => canShow; set => canShow = value; }
     public bool DontNeedToPressXToLaunch { get => dontNeedToPressXToLaunch; set => dontNeedToPressXToLaunch = value; }
@@ -230,11 +230,25 @@ public class DialogManager : MonoBehaviour
         }
 
         // this allows to show the entire line if x is pressed while line is unrolling caracter by caracter
-        if (PS4ControllerCheck.IsXPressed() && idx != 0 && currentLineIndex < dialogLines.Length && makeLineAppear != null)
+        if (PS4ControllerCheck.IsXPressed() && carIndex != 0 && currentLineIndex < dialogLines.Length && makeLineAppear != null)
         {
             dialogText.text = dialogLines[currentLineIndex];
             StopCoroutine(makeLineAppear);
             makeLineAppear = null;
+        }
+
+        if (PS4ControllerCheck.IsXPressed() && carIndex != 0 && currentLineIndex < dialogLines.Length && makeQuestionAppear != null)
+        {
+            dialogText.text = dialogLines[currentLineIndex];
+            //carIndex = dialogLines[currentLineIndex].Length;
+            StopCoroutine(makeQuestionAppear);
+            makeQuestionAppear = null;
+            questionWasAsked = true;
+            dialogText.text += "\n" + "<color=yellow>" + choices[0] + "</color>";
+            for (int i = 1; i < choices.Count; i++)
+            {
+                dialogText.text += "\n" + "<color=grey>" + choices[i] + "</color>";
+            }
         }
 
     }
@@ -242,23 +256,17 @@ public class DialogManager : MonoBehaviour
     IEnumerator MakeLineAppear(string line)
     {
         selectedChoice = 0;
-        var words = line.Split(" "[0]);
+        //var words = line.Split(" "[0]);
 
-        idx = 0;
+        carIndex = 0;
         foreach (char caracter in line)
         //foreach (string word in words)
         {
-            //Debug.Log(idx);
-            if (PS4ControllerCheck.IsXPressed() && idx != 0)
-            {
-                dialogText.text = line;
-                break;
-            }
             //dialogText.text += word + " ";
             dialogText.text += caracter;
             GetComponent<AudioSource>().PlayOneShot(blipSound, blipSoundVolume);
             yield return new WaitForSeconds(textDisplaySpeed);
-            idx++;
+            carIndex++;
             //yield return new WaitForEndOfFrame();
         }
         makeLineAppear = null;
@@ -267,7 +275,7 @@ public class DialogManager : MonoBehaviour
 
     IEnumerator MakeQuestionAppear(string line)
     {
-        int carIndex = 0;
+        carIndex = 0;
         foreach (char caracter in line)
         {
             dialogText.text += caracter;
