@@ -314,7 +314,8 @@ public class Player : MonoBehaviour
 
     private void MoveAcrossLayers()
     {
-        if (Input.GetAxis("Vertical") > 0.5 && ps4ControllerCheck.IsXPressed())
+        //if (Input.GetAxis("Vertical") > 0.5 && ps4ControllerCheck.IsXPressed())
+        if (ps4ControllerCheck.IsR1Pressed())
         {
             if (transform.position.z < 40f)
             {
@@ -325,7 +326,8 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Input.GetAxis("Vertical") < -0.5 && ps4ControllerCheck.IsXPressed())
+        //if (Input.GetAxis("Vertical") < -0.5 && ps4ControllerCheck.IsXPressed())
+        if (ps4ControllerCheck.IsL1Pressed())
         {
             if (transform.position.z > 5f)
             {
@@ -494,7 +496,7 @@ public class Player : MonoBehaviour
 
     private void InstantiateLaser(float xVelocity, float yVelocity)
     {
-        var projectilePos = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f);
+        var projectilePos = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f) + new Vector3(xVelocity * 1, yVelocity * 1, 0f);
         Laser projectile = Instantiate(laserPrefab, projectilePos, transform.rotation, playerLasersParent.transform);
         // projectileFiringPeriod = 0.1f;
         Vector2 directionOfFiring = new Vector2(xVelocity, yVelocity) * LaserSpeed;
@@ -530,7 +532,7 @@ public class Player : MonoBehaviour
 
             rigidBody.velocity = new Vector2(deltaX, deltaY);
 
-            bool accelerate = ps4ControllerCheck.ContinuousL1Press();
+            bool accelerate = ps4ControllerCheck.ContinuousXPress();
 
             if ((Mathf.Abs(Input.GetAxis("Horizontal")) > 0.01 || Mathf.Abs(Input.GetAxis("Vertical")) > 0.01))
             {
