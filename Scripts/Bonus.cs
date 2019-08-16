@@ -227,7 +227,7 @@ public class Bonus : MonoBehaviour
         shield = FindObjectOfType<Shield>();
         player.IsInvincible = true;
         shield.gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
-        shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 1f); // can't really play with transparency because of depth shader...
+        shield.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f); // can't really play with transparency because of depth shader...
         shield.gameObject.GetComponentInChildren<CircleCollider2D>().enabled = true;
         //enemyLasersParent.GetComponentInChildren<CapsuleCollider2D>().isTrigger = false;
 
