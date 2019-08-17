@@ -500,7 +500,8 @@ public class PlayerTileVania : MonoBehaviour
             if (colliderObject.tag != this.tag)
             {
                 if (!colliderObject.gameObject.name.Contains("Camera") && !colliderObject.gameObject.name.Contains("Bridge")
-            && !colliderObject.gameObject.name.Contains("Double Mirror"))
+            && !colliderObject.gameObject.name.Contains("Double Mirror") && !colliderObject.gameObject.name.Contains("StopUpdatingPixels")
+                    && !colliderObject.gameObject.name.Contains("StartUpdatingPixels"))
                 {
                     Physics2D.IgnoreCollision(colliderObject, GetComponent<Collider2D>(), true);
                     Physics2D.IgnoreCollision(colliderObject, feet.GetComponent<Collider2D>(), true);
