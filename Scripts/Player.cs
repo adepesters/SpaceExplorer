@@ -212,7 +212,7 @@ public class Player : MonoBehaviour
         }
 
         // update game session
-        gameSession.CurrentFuelSpacePlayer -= Vector2.Distance(transform.position, oldPos);
+        gameSession.CurrentFuelSpacePlayer -= Vector2.Distance(transform.position, oldPos); // Vector2.Distance(transform.position, oldPos) * 3;
         oldPos = transform.position;
         gameSession.PositionSpacePlayer = transform.position;
         gameSession.CurrentLayerSpacePlayer = currentLayer;
@@ -640,7 +640,8 @@ public class Player : MonoBehaviour
     {
         if (!IsInvincible)
         {
-            gameSession.CurrentHealthSpacePlayer -= damageDealer.Damage;
+            gameSession.CurrentFuelSpacePlayer -= damageDealer.Damage;
+            //gameSession.CurrentHealthSpacePlayer -= damageDealer.Damage;
             StartCoroutine(hitCanvas.HandleHitCanvas());
         }
 

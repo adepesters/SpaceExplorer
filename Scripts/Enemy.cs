@@ -156,6 +156,10 @@ public class Enemy : MonoBehaviour
 
     private void Fire()
     {
+        // float xVelocity = player.transform.position.x / (Mathf.Abs(Input.GetAxis("Mouse X")) + Mathf.Abs(Input.GetAxis("Mouse Y")));
+        // float yVelocity = Input.GetAxis("Mouse Y") / (Mathf.Abs(Input.GetAxis("Mouse X")) + Mathf.Abs(Input.GetAxis("Mouse Y")));
+        //var projectilePos = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f) + new Vector3(xVelocity * 1, yVelocity * 1, 0f);
+        var projectilePos = new Vector3(transform.position.x, transform.position.y, transform.position.z + 0.1f);
         Laser laser = Instantiate(laserPrefab, transform.position, transform.rotation, enemyLasersParent.transform);
         laser.SetParent(gameObject);
         if (trackTarget)
@@ -183,7 +187,7 @@ public class Enemy : MonoBehaviour
     {
         health -= damageDealer.Damage;
         damageDealer.Hit();
-        StartCoroutine(ChangeColorAfterHit());
+        //StartCoroutine(ChangeColorAfterHit());
         if (health <= 0 && !isDead) // the isDead is necessary to prevent going into this if condition
                                     // many times at once, which will happen is the fire power of the player is very high (which will cause health
                                     // to decrease much more than 0 before being able to destroy the gameObject)

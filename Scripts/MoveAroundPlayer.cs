@@ -41,7 +41,7 @@ public class MoveAroundPlayer : MonoBehaviour
         while (true)
         {
             enemySpeed += UnityEngine.Random.Range(-4f, 4f);
-            enemySpeed = Mathf.Clamp(enemySpeed, 0.5f, 25f);
+            enemySpeed = Mathf.Clamp(enemySpeed, 0.5f, 25f);//Mathf.Clamp(enemySpeed, 20f, 65f);
             Vector2 playerPos = player.transform.position;
             Vector2 randomJitter = new Vector2(UnityEngine.Random.Range(-40f, 40f), UnityEngine.Random.Range(-30f, 30f));
             target = playerPos + randomJitter;

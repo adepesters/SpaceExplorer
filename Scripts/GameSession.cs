@@ -15,7 +15,7 @@ public class GameSession : MonoBehaviour
     public int counterStarSilver = 0;
     public int counterStarGold = 0;
 
-    int counterPixelBlood = 100;
+    int counterPixelBlood = 2000;
 
     // price for upgrade for planet player
     int healPrice = 2;
@@ -129,7 +129,7 @@ public class GameSession : MonoBehaviour
             //Vector3 initialPos = GameObject.Find("Zone 3").gameObject.transform.position;
             Vector3 initialPos = player.transform.position;
             positionSpacePlayer = new Vector3(initialPos.x, initialPos.y, 0);
-            maxFuelSpacePlayer = 50000f;
+            maxFuelSpacePlayer = 50000f;//300f;
             currentFuelSpacePlayer = maxFuelSpacePlayer;
             maxHealthSpacePlayer = 30000;
             currentHealthSpacePlayer = maxHealthSpacePlayer;

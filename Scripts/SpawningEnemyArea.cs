@@ -19,11 +19,11 @@ public class SpawningEnemyArea : MonoBehaviour
     bool enteredZone = false;
     Coroutine spawnZoneCoroutineHandler;
     int indexEnemiesZone = 0;
-    int maxNumEnemiesZone = 10;
+    int maxNumEnemiesZone = 1;
     string ZONE_ENEMIES_PARENT = "Zone Enemies Parent";
     GameObject zoneEnemiesParent;
     bool zoneCleaned = false;
-    float spawningFrequencyZone = 0.3f; //0.3f
+    float spawningFrequencyZone = 0.3f; //0.8f
 
     [SerializeField] GameObject areaClearedText;
 
@@ -76,7 +76,7 @@ public class SpawningEnemyArea : MonoBehaviour
 
         Color color = new Color(1f, 0.9243603f, 0.2028302f, 0);
 
-        maxNumEnemiesZone = Random.Range(15, 30);
+        maxNumEnemiesZone = Random.Range(20, 30);//Random.Range(60, 80);
         //areaClearedText.GetComponent<Text>().color = color;
         //gameSession.IsCleaned[SpawningEnemyAreaID] = false;
     }
